@@ -1,3 +1,9 @@
+udisks2 (2.9.4-deepin1) unstable; urgency=medium
+
+  * fix Unable to automatically mount non-system partitions.
+
+ -- LiChengGang <lichenggang@uniontech.com>  Fri, 07 Apr 2023 14:41:27 +0800
+
 udisks2 (2.9.4-deepin) stable; urgency=medium
 
   * ['Rebuild  against by  current gcc 11.2']
