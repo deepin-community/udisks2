@@ -1,7 +1,7 @@
 debian/local/udisks2-inhibit usr/libexec/udisks2/
 etc/
 lib/systemd/system/udisks2.service
-lib/udev/rules.d/80-udisks2.rules
+lib/udev/rules.d/
 usr/bin/
 usr/libexec/udisks2/
 usr/sbin/* /sbin/
