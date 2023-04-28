@@ -1,0 +1,52 @@
+Index: udisks2/data/80-udisks2-uos.rules
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ udisks2/data/80-udisks2-uos.rules	2022-11-03 17:31:35.727738323 +0800
+@@ -0,0 +1,5 @@
++# 解决/usr/lib/udev/rules.d/80-udisks2.rule被/etc/udev/rules.d/80-udisks2.rule功能冲突问题
++# hide swap
++ENV{ID_FS_TYPE}=="swap", ENV{UDISKS_IGNORE}="1"
++# hide extended
++ENV{ID_PART_ENTRY_SCHEME}=="dos", ENV{ID_PART_ENTRY_TYPE}=="0x5",  ENV{UDISKS_IGNORE}="1"
+Index: udisks2/data/Makefile.am
+===================================================================
+--- udisks2.orig/data/Makefile.am	2022-11-03 17:31:35.731738323 +0800
++++ udisks2/data/Makefile.am	2022-11-03 17:31:35.727738323 +0800
+@@ -29,7 +29,7 @@
+ endif
+ 
+ udevrulesdir = $(udevdir)/rules.d
+-udevrules_DATA = 80-udisks2.rules
++udevrules_DATA = 80-udisks2.rules 80-udisks2-uos.rules
+ 
+ polkitdir        = $(datadir)/polkit-1/actions
+ polkit_in_files  = org.freedesktop.UDisks2.policy.in
+@@ -46,6 +46,7 @@
+ 
+ EXTRA_DIST =                                                                   \
+ 	80-udisks2.rules                                                       \
++    80-udisks2-uos.rules                                                   \
+ 	org.freedesktop.UDisks2.xml                                            \
+ 	builtin_mount_options.conf                                             \
+ 	$(systemdservice_in_files)                                             \
+Index: udisks2/data/Makefile.in
+===================================================================
+--- udisks2.orig/data/Makefile.in	2022-11-03 17:31:35.731738323 +0800
++++ udisks2/data/Makefile.in	2022-11-03 17:34:36.679730903 +0800
+@@ -437,7 +437,7 @@
+ @ENABLE_DAEMON_TRUE@@HAVE_SYSTEMD_TRUE@systemdservicedir = $(systemdsystemunitdir)
+ @ENABLE_DAEMON_TRUE@@HAVE_SYSTEMD_TRUE@systemdservice_DATA = $(systemdservice_in_files:.service.in=.service)
+ @ENABLE_DAEMON_TRUE@udevrulesdir = $(udevdir)/rules.d
+-@ENABLE_DAEMON_TRUE@udevrules_DATA = 80-udisks2.rules
++@ENABLE_DAEMON_TRUE@udevrules_DATA = 80-udisks2.rules 80-udisks2-uos.rules
+ @ENABLE_DAEMON_TRUE@polkitdir = $(datadir)/polkit-1/actions
+ @ENABLE_DAEMON_TRUE@polkit_in_files = org.freedesktop.UDisks2.policy.in
+ @ENABLE_DAEMON_TRUE@polkit_DATA = $(polkit_in_files:.policy.in=.policy)
+@@ -448,6 +448,7 @@
+ 
+ EXTRA_DIST = \
+ 	80-udisks2.rules                                                       \
++    80-udisks2-uos.rules                                                   \
+ 	org.freedesktop.UDisks2.xml                                            \
+ 	builtin_mount_options.conf                                             \
+ 	$(systemdservice_in_files)                                             \

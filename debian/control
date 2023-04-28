@@ -1,8 +1,8 @@
 Source: udisks2
 Section: admin
 Priority: optional
-Maintainer: Deepin Developer <deepin-dev@deepin.org>
-Uploaders: Deepin Packages Builder <packages@deepin.org>
+Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
+Uploaders: Michael Biebl <biebl@debian.org>,
            Martin Pitt <mpitt@debian.org>,
 Build-Depends: debhelper-compat (= 13),
                docbook-xml,
@@ -37,8 +37,8 @@ Build-Depends-Indep: libglib2.0-doc <!nodoc>,
                      policykit-1-doc <!nodoc>,
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
-#Vcs-Git
-#Vcs-Browser
+Vcs-Git: https://salsa.debian.org/utopia-team/udisks2.git
+Vcs-Browser: https://salsa.debian.org/utopia-team/udisks2
 Homepage: https://www.freedesktop.org/wiki/Software/udisks
 
 Package: udisks2
