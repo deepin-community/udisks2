@@ -2,7 +2,7 @@ import udiskstestcase
 import dbus
 import os
 import six
-from distutils.spawn import find_executable
+import shutil
 
 from config_h import UDISKS_MODULES_ENABLED
 
@@ -10,12 +10,9 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
     '''This is a base test suite'''
 
     # A map between module name (ID) and corresponding org.freedesktop.UDisks2.Manager interface
-    UDISKS_MODULE_MANAGER_IFACES = {'bcache': 'Bcache',
-                                    'btrfs': 'BTRFS',
+    UDISKS_MODULE_MANAGER_IFACES = {'btrfs': 'BTRFS',
                                     'iscsi': 'ISCSI.Initiator',
-                                    'lvm2': 'LVM2',
-                                    'zram': 'ZRAM',
-                                    'vdo': 'VDO'}
+                                    'lvm2': 'LVM2'}
 
     def setUp(self):
         self.manager_obj = self.get_object('/Manager')
@@ -95,31 +92,20 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
     def test_30_supported_filesystems(self):
         fss = self.get_property(self.manager_obj, '.Manager', 'SupportedFilesystems')
         self.assertEqual({str(s) for s in fss.value},
-                         {'nilfs2', 'btrfs', 'swap', 'ext3', 'udf', 'xfs', 'minix', 'ext2', 'ext4', 'f2fs', 'reiserfs', 'ntfs', 'vfat', 'exfat'})
+                         {'nilfs2', 'btrfs', 'swap', 'ext2', 'ext3', 'ext4', 'udf', 'xfs', 'f2fs', 'ntfs', 'vfat', 'exfat'})
 
     def test_40_can_format(self):
         '''Test for installed filesystem creation utility with CanFormat'''
         manager = self.get_interface(self.manager_obj, '.Manager')
         with self.assertRaises(dbus.exceptions.DBusException):
             manager.CanFormat('wxyz')
-        avail, util = manager.CanFormat('xfs')
-        if avail:
-            self.assertEqual(util, '')
-        else:
-            self.assertEqual(util, 'mkfs.xfs')
-        self.assertEqual(avail, find_executable('mkfs.xfs') is not None)
-        avail, util = manager.CanFormat('f2fs')
-        if avail:
-            self.assertEqual(util, '')
-        else:
-            self.assertEqual(util, 'mkfs.f2fs')
-        self.assertEqual(avail, find_executable('mkfs.f2fs') is not None)
-        avail, util = manager.CanFormat('ext4')
-        if avail:
-            self.assertEqual(util, '')
-        else:
-            self.assertEqual(util, 'mkfs.ext4')
-        self.assertEqual(avail, find_executable('mkfs.ext4') is not None)
+        for fs in ('xfs', 'f2fs', 'ext4'):
+            avail, util = manager.CanFormat(fs)
+            if avail:
+                self.assertEqual(util, '')
+            else:
+                self.assertEqual(util, 'mkfs.%s' % fs)
+            self.assertEqual(avail, shutil.which('mkfs.%s' % fs) is not None)
         for fs in map(str, self.get_property(self.manager_obj, '.Manager', 'SupportedFilesystems').value):
             avail, util = manager.CanFormat(fs)
             # currently UDisks relies on executables for filesystem creation
@@ -144,18 +130,22 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'xfs_growfs')
-        self.assertEqual(avail, find_executable('xfs_growfs') is not None)
+        self.assertEqual(avail, shutil.which('xfs_growfs') is not None)
         avail, mode, util = manager.CanResize('ext4')
         self.assertEqual(mode, offline_shrink | offline_grow | online_grow)
         if avail:
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'resize2fs')
-        self.assertEqual(avail, find_executable('resize2fs') is not None)
+        self.assertEqual(avail, shutil.which('resize2fs') is not None)
         avail, mode, util = manager.CanResize('vfat')
-        self.assertTrue(avail)  # libparted, no executable
-        self.assertEqual(util, '')
-        self.assertEqual(mode, offline_shrink | offline_grow)
+        # the only valid reason for VFAT not being available is missing vfat-resize
+        # the support is either compiled in (libblockdev 2.x) or via vfat-resize (3.x)
+        if not avail:
+            self.assertEqual(util, 'vfat-resize')
+
+        if shutil.which('vfat-resize') is not None:
+            self.assertTrue(avail)
 
     def test_40_can_repair(self):
         '''Test for installed filesystem repair utility with CanRepair'''
@@ -167,13 +157,13 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'xfs_repair')
-        self.assertEqual(avail, find_executable('xfs_repair') is not None)
+        self.assertEqual(avail, shutil.which('xfs_repair') is not None)
         avail, util = manager.CanRepair('ext4')
         if avail:
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'e2fsck')
-        self.assertEqual(avail, find_executable('e2fsck') is not None)
+        self.assertEqual(avail, shutil.which('e2fsck') is not None)
         avail, util = manager.CanRepair('vfat')
         self.assertTrue(avail)  # libparted, no executable
         self.assertEqual(util, '')
@@ -188,13 +178,13 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'xfs_db')
-        self.assertEqual(avail, find_executable('xfs_db') is not None)
+        self.assertEqual(avail, shutil.which('xfs_db') is not None)
         avail, util = manager.CanCheck('ext4')
         if avail:
             self.assertEqual(util, '')
         else:
             self.assertEqual(util, 'e2fsck')
-        self.assertEqual(avail, find_executable('e2fsck') is not None)
+        self.assertEqual(avail, shutil.which('e2fsck') is not None)
         avail, util = manager.CanCheck('vfat')
         self.assertTrue(avail)  # libparted, no executable
         self.assertEqual(util, '')
@@ -225,8 +215,29 @@ class UdisksBaseTest(udiskstestcase.UdisksTestCase):
     def test_60_resolve_device(self):
         manager = self.get_interface(self.manager_obj, '.Manager')
 
+        # empty/invalid devspec supplied
+        spec = dbus.Dictionary({}, signature='sv')
+        msg = r'Invalid device specification provided'
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            manager.ResolveDevice(spec, self.no_options)
+        spec = dbus.Dictionary({'PATH': '/dev/i-dont-exist'}, signature='sv')
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            manager.ResolveDevice(spec, self.no_options)
+
         # try some non-existing device first
         spec = dbus.Dictionary({'path': '/dev/i-dont-exist'}, signature='sv')
+        devices = manager.ResolveDevice(spec, self.no_options)
+        self.assertEqual(len(devices), 0)
+        spec = dbus.Dictionary({'uuid': 'I-DONT-EXIST'}, signature='sv')
+        devices = manager.ResolveDevice(spec, self.no_options)
+        self.assertEqual(len(devices), 0)
+        spec = dbus.Dictionary({'label': 'I-DONT-EXIST'}, signature='sv')
+        devices = manager.ResolveDevice(spec, self.no_options)
+        self.assertEqual(len(devices), 0)
+        spec = dbus.Dictionary({'partuuid': 'I-DONT-EXIST'}, signature='sv')
+        devices = manager.ResolveDevice(spec, self.no_options)
+        self.assertEqual(len(devices), 0)
+        spec = dbus.Dictionary({'partlabel': 'I-DONT-EXIST'}, signature='sv')
         devices = manager.ResolveDevice(spec, self.no_options)
         self.assertEqual(len(devices), 0)
 

@@ -34,8 +34,12 @@ typedef struct {
   const gchar *vg_name;
   const gchar *lv_name;
   const gchar *new_lv_name;
+  const gchar *new_lv_layout;
+  const gchar **new_lv_pvs;
   const gchar *pool_name;
   guint64 new_lv_size;
+  guint32 new_lv_stripes;
+  guint32 new_lv_mirrors;
   guint64 virtual_size;
   guint64 extent_size;
   gboolean resize_fs;
@@ -94,6 +98,11 @@ gboolean lvrename_job_func (UDisksThreadedJob  *job,
                             GError            **error);
 
 gboolean lvresize_job_func (UDisksThreadedJob  *job,
+                            GCancellable       *cancellable,
+                            gpointer            user_data,
+                            GError            **error);
+
+gboolean lvrepair_job_func (UDisksThreadedJob  *job,
                             GCancellable       *cancellable,
                             gpointer            user_data,
                             GError            **error);

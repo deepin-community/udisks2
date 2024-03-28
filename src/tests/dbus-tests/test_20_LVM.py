@@ -3,14 +3,13 @@ import os
 import re
 import time
 import unittest
+import six
+import sys
+import glob
 
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 import udiskstestcase
-
-import gi
-gi.require_version('BlockDev', '2.0')
-from gi.repository import BlockDev
 
 
 class UDisksLVMTestBase(udiskstestcase.UdisksTestCase):
@@ -28,7 +27,7 @@ class UDisksLVMTestBase(udiskstestcase.UdisksTestCase):
         m = re.search(r'LVM version:.* ([\d\.]+)', out)
         if not m or len(m.groups()) != 1:
             raise RuntimeError('Failed to determine LVM version from: %s' % out)
-        return LooseVersion(m.groups()[0])
+        return Version(m.groups()[0])
 
     def _create_vg(self, vgname, devices):
         manager = self.get_object('/Manager')
@@ -61,6 +60,19 @@ class UDisksLVMTestBase(udiskstestcase.UdisksTestCase):
 
 class UdisksLVMTest(UDisksLVMTestBase):
     '''This is a basic LVM test suite'''
+
+    def _rescan_lio_devices(self):
+        ''' Bring back all vdevs that have been deleted by the test '''
+        ret, out = self.run_command("for f in $(find /sys/devices -path '*tcm_loop*/scan'); do echo '- - -' >$f; done")
+        if ret != 0:
+            raise RuntimeError("Cannot rescan vdevs: %s", out)
+        self.udev_settle()
+        # device names might have changed, need to find our vdevs again
+        tcmdevs = glob.glob('/sys/devices/*tcm_loop*/tcm_loop_adapter_*/*/*/*/block/sd*')
+        udiskstestcase.test_devs = self.vdevs = ['/dev/%s' % os.path.basename(p) for p in tcmdevs]
+        for d in self.vdevs:
+            obj = self.get_object('/block_devices/' + os.path.basename(d))
+            self.assertHasIface(obj, self.iface_prefix + '.Block')
 
     def test_01_manager_interface(self):
         '''Test for module D-Bus Manager interface presence'''
@@ -123,6 +135,23 @@ class UdisksLVMTest(UDisksLVMTestBase):
         dbus_type = self.get_property(lv, '.LogicalVolume', 'Type')
         dbus_type.assertEqual('block')  # type is only 'block' or 'pool'
 
+        dbus_layout = self.get_property(lv, '.LogicalVolume', 'Layout')
+        dbus_layout.assertEqual('linear')
+
+        def assertSegs(pvs):
+            # Check that there is exactly one segment per PV
+            struct = self.get_property(lv, '.LogicalVolume', 'Structure').value
+            self.assertEqual(struct["type"], "linear")
+            self.assertNotIn("data", struct)
+            self.assertNotIn("metadata", struct)
+            segs = struct["segments"]
+            self.assertEqual(len(segs), len(pvs))
+            seg_pvs = list(map(lambda s: s[2], segs))
+            for p in pvs:
+                self.assertIn(p.object_path, seg_pvs)
+
+        assertSegs(devs)
+
         _ret, sys_uuid = self.run_command('lvs -o uuid --no-heading %s' % os.path.join(vgname, lvname))
         dbus_uuid = self.get_property(lv, '.LogicalVolume', 'UUID')
         dbus_uuid.assertEqual(sys_uuid)
@@ -132,30 +161,12 @@ class UdisksLVMTest(UDisksLVMTestBase):
         lv_prop_block.assertEqual(lv_block_path)
 
         # Shrink the LV
-        lv.Deactivate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
-
-        # check that the object is not on dbus and the 'BlockDevice' property is unset after Deactivate
-        udisks = self.get_object('')
-        objects = udisks.GetManagedObjects(dbus_interface='org.freedesktop.DBus.ObjectManager')
-        self.assertNotIn(lv_prop_block, objects.keys())
-
-        lv_prop_block = self.get_property(lv, '.LogicalVolume', 'BlockDevice')
-        lv_prop_block.assertEqual('/')
-
-        dbus_active = self.get_property(lv, '.LogicalVolume', 'Active')
-        dbus_active.assertFalse()
-
         lv.Resize(dbus.UInt64(lvsize.value/2), self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
-        lv_block_path = lv.Activate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
 
         lv_block = self.bus.get_object(self.iface_prefix, lv_block_path)
         self.assertIsNotNone(lv_block)
         new_lvsize = self.get_property(lv, '.LogicalVolume', 'Size')
         new_lvsize.assertLess(lvsize.value)
-
-        # check that the 'BlockDevice' property is set after Activate
-        lv_prop_block = self.get_property(lv, '.LogicalVolume', 'BlockDevice')
-        lv_prop_block.assertEqual(lv_block_path)
 
         # Add one more device to the VG
         new_dev_obj = self.get_object('/block_devices/' + os.path.basename(self.vdevs[-1]))
@@ -164,11 +175,20 @@ class UdisksLVMTest(UDisksLVMTestBase):
         new_vgsize = self.get_property(vg, '.VolumeGroup', 'Size')
         new_vgsize.assertGreater(vgsize.value)
 
-        # Resize the LV to the whole VG
-        lv.Deactivate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
+        # Attempt to resize the LV to the whole VG, but specify only
+        # the original PVS.  This is expected to fail.
+        msg = "Insufficient free space"
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            lv.Resize(dbus.UInt64(new_vgsize.value),
+                      dbus.Dictionary({'pvs': devs}, signature='sv'),
+                      dbus_interface=self.iface_prefix + '.LogicalVolume')
+
+        # Now resize the LV to the whole VG without contraints
         lv.Resize(dbus.UInt64(new_vgsize.value), self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
         new_lvsize = self.get_property(lv, '.LogicalVolume', 'Size')
         new_lvsize.assertEqual(new_vgsize.value)
+
+        assertSegs(devs + [ new_dev_obj ])
 
         # rename the LV
         lvname = 'udisks_test_lv2'
@@ -195,6 +215,109 @@ class UdisksLVMTest(UDisksLVMTestBase):
         udisks = self.get_object('')
         objects = udisks.GetManagedObjects(dbus_interface='org.freedesktop.DBus.ObjectManager')
         self.assertNotIn(new_lvpath, objects.keys())
+
+    @udiskstestcase.tag_test(udiskstestcase.TestTags.UNSTABLE)
+    def test_15_raid(self):
+        '''Test raid volumes functionality'''
+
+        vgname = 'udisks_test_vg'
+
+        # Use all the virtual devices
+        devs = dbus.Array()
+        for d in self.vdevs:
+            dev_obj = self.get_object('/block_devices/' + os.path.basename(d))
+            self.assertIsNotNone(dev_obj)
+            devs.append(dev_obj)
+            self.addCleanup(self.wipe_fs, d)
+        vg = self._create_vg(vgname, devs)
+        self.addCleanup(self._remove_vg, vg)
+
+        dbus_vgname = self.get_property(vg, '.VolumeGroup', 'Name')
+        dbus_vgname.assertEqual(vgname)
+
+        first_vdev_uuid = self.get_property(devs[0], '.Block', 'IdUUID').value
+
+        # Create raid1 LV on the VG
+        lvname = 'udisks_test_lv'
+        vg_freesize = self.get_property(vg, '.VolumeGroup', 'FreeSize')
+        vdev_size = vg_freesize.value / len(devs)
+        lv_size = int(vdev_size * 0.75)
+        lv_path = vg.CreatePlainVolumeWithLayout(lvname, dbus.UInt64(lv_size),
+                                                 "raid1", devs[0:3],
+                                                 self.no_options,
+                                                 dbus_interface=self.iface_prefix + '.VolumeGroup')
+        self.assertIsNotNone(lv_path)
+
+        lv = self.bus.get_object(self.iface_prefix, lv_path)
+        self.get_property(lv, '.LogicalVolume', 'SyncRatio').assertEqual(1.0, timeout=60, poll_vg=vg)
+
+        _ret, sys_type = self.run_command('lvs -o seg_type --noheadings --nosuffix %s/%s' % (vgname, lvname))
+        self.assertEqual(sys_type, "raid1")
+        self.get_property(lv, '.LogicalVolume', 'Layout').assertEqual("raid1")
+
+        def assertSegs(struct, size, pv):
+            self.assertEqual(struct["type"], "linear")
+            self.assertNotIn("data", struct)
+            self.assertNotIn("metadata", struct)
+            if pv is not None:
+                self.assertEqual(len(struct["segments"]), 1)
+                if size is not None:
+                    self.assertEqual(struct["segments"][0][1], size)
+                self.assertEqual(struct["segments"][0][2], pv.object_path)
+            else:
+                self.assertEqual(len(struct["segments"]), 0)
+
+        def assertRaid1Stripes(structs, size, pv1, pv2, pv3):
+            self.assertEqual(len(structs), 3)
+            assertSegs(structs[0], size, pv1)
+            assertSegs(structs[1], size, pv2)
+            assertSegs(structs[2], size, pv3)
+
+        def assertRaid1Structure(pv1, pv2, pv3):
+            struct = self.get_property(lv, '.LogicalVolume', 'Structure').value
+            self.assertEqual(struct["type"], "raid1")
+            self.assertEqual(struct["size"], lv_size)
+            self.assertNotIn("segments", struct)
+            assertRaid1Stripes(struct["data"], lv_size, pv1, pv2, pv3)
+            assertRaid1Stripes(struct["metadata"], None, pv1, pv2, pv3)
+
+        def waitRaid1Structure(pv1, pv2, pv3):
+            for _ in range(5):
+                try:
+                    assertRaid1Structure(pv1, pv2, pv3)
+                    return
+                except AssertionError:
+                    pass
+                time.sleep(1)
+            # Once again for the error message
+            assertRaid1Structure(pv1, pv2, pv3)
+
+        waitRaid1Structure(devs[0], devs[1], devs[2])
+
+        # Yank out the first vdev and repair the LV with the fourth
+        _ret, _output = self.run_command('echo yes >/sys/block/%s/device/delete' % os.path.basename(self.vdevs[0]))
+        self.addCleanup(self._rescan_lio_devices)
+        # give udisks some time to register the change
+        self.run_command('udevadm trigger %s' % self.vdevs[0])
+        self.udev_settle()
+        _ret, sys_health = self.run_command('lvs -o health_status --noheadings --nosuffix %s/%s' % (vgname, lvname))
+        self.assertEqual(sys_health, "partial")
+
+        waitRaid1Structure(None, devs[1], devs[2])
+        self.get_property(vg, '.VolumeGroup', 'MissingPhysicalVolumes').assertEqual([first_vdev_uuid])
+
+        lv.Repair(devs[3:4], self.no_options,
+                  dbus_interface=self.iface_prefix + '.LogicalVolume')
+        _ret, sys_health = self.run_command('lvs -o health_status --noheadings --nosuffix %s/%s' % (vgname, lvname))
+        self.assertEqual(sys_health, "")
+        self.get_property(lv, '.LogicalVolume', 'SyncRatio').assertEqual(1.0, timeout=60, poll_vg=vg)
+
+        waitRaid1Structure(devs[3], devs[1], devs[2])
+
+        # Tell the VG that everything is alright
+        vg.RemoveMissingPhysicalVolumes(self.no_options,
+                                        dbus_interface=self.iface_prefix + '.VolumeGroup')
+        self.get_property(vg, '.VolumeGroup', 'MissingPhysicalVolumes').assertEqual([])
 
     def test_20_thin(self):
         '''Test thin volumes functionality'''
@@ -425,7 +548,7 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
             raise unittest.SkipTest('VDO kernel module not available, skipping.')
 
         lvm_version = cls._get_lvm_version()
-        if lvm_version < LooseVersion('2.3.07'):
+        if lvm_version < Version('2.3.07'):
             udiskstestcase.UdisksTestCase.tearDownClass()
             raise unittest.SkipTest('LVM >= 2.3.07 is needed for LVM VDO, skipping.')
 
@@ -457,6 +580,7 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         self.addCleanup(self._remove_vg, vg)
 
         vg_free = self.get_property(vg, '.VolumeGroup', 'FreeSize')
+        vg_free.assertGreater(0)
         lv_name = 'udisks_test_vdovlv'
         pool_name = 'udisks_test_vdopool'
         psize = vg_free.value
@@ -493,6 +617,9 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         dbus_size = self.get_property(pool, '.LogicalVolume', 'Size')
         dbus_size.assertEqual(psize)
 
+        dbus_type = self.get_property(lv, '.LogicalVolume', 'Type')
+        dbus_type.assertNotEqual('vdopool')
+
         # VDO properties
         dbus_comp = self.get_property(lv, '.VDOVolume', 'Compression')
         dbus_comp.assertTrue()
@@ -507,7 +634,6 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         # get statistics and do some simple sanity check
         stats = lv.GetStatistics(self.no_options, dbus_interface=self.iface_prefix + '.VDOVolume')
         self.assertIn("writeAmplificationRatio", stats.keys())
-        self.assertGreater(float(stats["writeAmplificationRatio"]), 0)
 
     def test_enable_disable_compression_deduplication(self):
         vgname = 'udisks_test_vdo_vg'
@@ -517,6 +643,7 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         self.addCleanup(self._remove_vg, vg)
 
         vg_free = self.get_property(vg, '.VolumeGroup', 'FreeSize')
+        vg_free.assertGreater(0)
         lv_name = 'udisks_test_vdovlv'
         pool_name = 'udisks_test_vdopool'
         psize = vg_free.value
@@ -568,10 +695,11 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         self.addCleanup(self._remove_vg, vg)
 
         vg_free = self.get_property(vg, '.VolumeGroup', 'FreeSize')
+        vg_free.assertGreater(0)
         lv_name = 'udisks_test_vdovlv'
         pool_name = 'udisks_test_vdopool'
         psize = vg_free.value
-        vsize = psize
+        vsize = psize * 2
         lv_path = vg.CreateVDOVolume(lv_name, pool_name, dbus.UInt64(psize), dbus.UInt64(vsize),
                                      dbus.UInt64(0), True, True, "auto", self.no_options,
                                      dbus_interface=self.iface_prefix + '.VolumeGroup')
@@ -594,6 +722,7 @@ class UdisksLVMVDOTest(UDisksLVMTestBase):
         self.addCleanup(self._remove_vg, vg)
 
         vg_free = self.get_property(vg, '.VolumeGroup', 'FreeSize')
+        vg_free.assertGreater(2 * 1024**3)
         lv_name = 'udisks_test_vdovlv'
         pool_name = 'udisks_test_vdopool'
         psize = vg_free.value - 2 * 1024**3
@@ -637,7 +766,8 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
                 device.Lock(self.no_options, dbus_interface=self.iface_prefix + '.Encrypted')
             except dbus.exceptions.DBusException as e:
                 # ignore when luks is actually already locked
-                if not str(e).endswith('is not unlocked') and not 'No such interface' in str(e):
+                if not str(e).endswith('is not unlocked') and not 'No such interface' in str(e) and \
+                   not 'Object does not exist at path' in str(e):
                     raise e
 
         try:
@@ -645,7 +775,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
             d['erase'] = True
             device.Format('empty', d, dbus_interface=self.iface_prefix + '.Block')
         except dbus.exceptions.DBusException as e:
-            if not 'No such interface' in str(e):
+            if not 'No such interface' in str(e) and not 'Object does not exist at path' in str(e):
                 raise e
 
     def _init_stack(self, name):
@@ -663,18 +793,19 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.assertIsNotNone(self.pv)
 
         self.vg = self._create_vg(vgname, dbus.Array([self.pv]))
+        self.vg_path = self.vg.object_path
         self.addCleanup(self._remove_vg, self.vg, tear_down=True, ignore_removed=True)
 
         # create an LV on it
-        lv_path = self.vg.CreatePlainVolume(lvname, dbus.UInt64(200 * 1024**2), self.no_options,
-                                            dbus_interface=self.iface_prefix + '.VolumeGroup')
-        self.lv = self.bus.get_object(self.iface_prefix, lv_path)
+        self.lv_path = self.vg.CreatePlainVolume(lvname, dbus.UInt64(200 * 1024**2), self.no_options,
+                                                 dbus_interface=self.iface_prefix + '.VolumeGroup')
+        self.lv = self.bus.get_object(self.iface_prefix, self.lv_path)
         self.assertIsNotNone(self.lv)
 
-        lv_block_path = self.lv.Activate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
-        self.assertIsNotNone(lv_block_path)
+        self.lv_block_path = self.lv.Activate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
+        self.assertIsNotNone(self.lv_block_path)
 
-        self.lv_block = self.get_object(lv_block_path)
+        self.lv_block = self.get_object(self.lv_block_path)
         self.assertIsNotNone(self.lv_block)
 
         # create LUKS on the LV
@@ -702,10 +833,10 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.addCleanup(self._remove_luks, self.lv_block, vgname)
         self.luks_uuid = self.get_property_raw(self.lv_block, '.Block', 'IdUUID')
 
-        luks_block_path = self.get_property(self.lv_block, '.Encrypted', 'CleartextDevice')
-        self.luks_block = self.get_object(luks_block_path.value)
-        self.assertIsNotNone(self.luks_block)
-        self.fs_uuid = self.get_property_raw(self.luks_block, '.Block', 'IdUUID')
+        self.luks_block_path = self.get_property_raw(self.lv_block, '.Encrypted', 'CleartextDevice')
+        luks_block = self.get_object(self.luks_block_path)
+        self.assertIsNotNone(luks_block)
+        self.fs_uuid = self.get_property_raw(luks_block, '.Block', 'IdUUID')
 
         # check for present crypttab configuration item
         conf = self.get_property(self.lv_block, '.Block', 'Configuration')
@@ -713,7 +844,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.assertEqual(conf.value[0][0], 'crypttab')
 
         # check for present fstab configuration item on a cleartext block device
-        conf = self.get_property(self.luks_block, '.Block', 'Configuration')
+        conf = self.get_property(luks_block, '.Block', 'Configuration')
         conf.assertTrue()
         self.assertEqual(conf.value[0][0], 'fstab')
 
@@ -730,6 +861,32 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.assertIn(vgname, fstab)
         self.assertIn(self.fs_uuid, fstab)
 
+    def _check_torn_down_stack(self, name):
+        # check that all created objects don't exist anymore
+        msg = r'Object does not exist at path|No such interface'
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            luks_block = self.get_object(self.luks_block_path)
+            self.get_property_raw(luks_block, '.Block', 'DeviceNumber')
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            lv_block = self.get_object(self.lv_block_path)
+            self.get_property_raw(lv_block, '.Block', 'DeviceNumber')
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            # the lvm2 udisks module is not fully synchronous, see https://github.com/storaged-project/udisks/pull/814
+            time.sleep(2)
+            lv = self.get_object(self.lv_path)
+            self.get_property_raw(lv, '.LogicalVolume', 'Name')
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            vg = self.get_object(self.vg_path)
+            self.get_property_raw(vg, '.VolumeGroup', 'Name')
+
+        # check that fstab and crypttab records have been removed
+        crypttab = self.read_file('/etc/crypttab')
+        self.assertNotIn(name, crypttab)
+        self.assertNotIn(self.luks_uuid, crypttab)
+        fstab = self.read_file('/etc/fstab')
+        self.assertNotIn(name, fstab)
+        self.assertNotIn(self.fs_uuid, fstab)
+
 
     @udiskstestcase.tag_test(udiskstestcase.TestTags.UNSAFE)
     def test_teardown_active_vg_unlocked(self):
@@ -741,13 +898,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
 
         self._remove_vg(self.vg, tear_down=True, ignore_removed=False)
 
-        # check that fstab and crypttab records have been removed
-        crypttab = self.read_file('/etc/crypttab')
-        self.assertNotIn(name, crypttab)
-        self.assertNotIn(self.luks_uuid, crypttab)
-        fstab = self.read_file('/etc/fstab')
-        self.assertNotIn(name, fstab)
-        self.assertNotIn(self.fs_uuid, fstab)
+        self._check_torn_down_stack(name)
 
     @udiskstestcase.tag_test(udiskstestcase.TestTags.UNSAFE)
     def test_teardown_active_vg_locked(self):
@@ -760,13 +911,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.lv_block.Lock(self.no_options, dbus_interface=self.iface_prefix + '.Encrypted')
         self._remove_vg(self.vg, tear_down=True, ignore_removed=False)
 
-        # check that fstab and crypttab records have been removed
-        crypttab = self.read_file('/etc/crypttab')
-        self.assertNotIn(name, crypttab)
-        self.assertNotIn(self.luks_uuid, crypttab)
-        fstab = self.read_file('/etc/fstab')
-        self.assertNotIn(name, fstab)
-        self.assertNotIn(self.fs_uuid, fstab)
+        self._check_torn_down_stack(name)
 
     @udiskstestcase.tag_test(udiskstestcase.TestTags.UNSAFE)
     def test_teardown_inactive_vg_locked(self):
@@ -780,13 +925,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
         self.lv.Deactivate(self.no_options, dbus_interface=self.iface_prefix + '.LogicalVolume')
         self._remove_vg(self.vg, tear_down=True, ignore_removed=False)
 
-        # check that fstab and crypttab records have been removed
-        crypttab = self.read_file('/etc/crypttab')
-        self.assertNotIn(name, crypttab)
-        self.assertNotIn(self.luks_uuid, crypttab)
-        fstab = self.read_file('/etc/fstab')
-        self.assertNotIn(name, fstab)
-        self.assertNotIn(self.fs_uuid, fstab)
+        self._check_torn_down_stack(name)
 
     @udiskstestcase.tag_test(udiskstestcase.TestTags.UNSAFE)
     def test_reformat_inactive_vg_locked(self):
@@ -812,6 +951,7 @@ class UdisksLVMTeardownTest(UDisksLVMTestBase):
 
         # check that fstab and crypttab records have been removed
         # TODO: these checks are the opposite - record shouldn't be present, once this is fixed
+        # self._check_torn_down_stack(name)
         crypttab = self.read_file('/etc/crypttab')
         self.assertIn(name, crypttab)
         self.assertIn(self.luks_uuid, crypttab)

@@ -18,28 +18,17 @@ if HAVE_LVM2
 MODULES += lvm2
 endif
 
-if HAVE_ZRAM
-MODULES += zram
-endif
-
 if HAVE_LSM
 MODULES += lsm
 endif
 
-if HAVE_BCACHE
-MODULES += bcache
-endif
-
-if HAVE_VDO
-MODULES += vdo
-endif
-
 $(CONFIG_H_PY):
-	echo -n 'UDISKS_MODULES_ENABLED = { ' > $(CONFIG_H_PY)
+	echo -n 'UDISKS_MODULES_ENABLED = set([' > $(CONFIG_H_PY)
 	for i in $(MODULES); do \
 		echo -n "'$$i', " >> $(CONFIG_H_PY); \
 	done
-	echo '}' >> $(CONFIG_H_PY)
+	echo '])' >> $(CONFIG_H_PY)
+	echo "PACKAGE_SYSCONF_DIR = \""$(sysconfdir)"\"" >> $(CONFIG_H_PY)
 
 all:
 

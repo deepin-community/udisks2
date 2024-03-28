@@ -73,7 +73,6 @@
           Such objects implement the
           <link linkend="gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</link>
           D-Bus interface and may optionally implement other D-Bus interfaces such as
-          <link linkend="gdbus-interface-org-freedesktop-UDisks2-Block-ZRAM.top_of_page">org.freedesktop.UDisks2.Block.ZRAM</link>,
           <link linkend="gdbus-interface-org-freedesktop-UDisks2-Filesystem.top_of_page">org.freedesktop.UDisks2.Filesystem</link>,
           <link linkend="gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</link> or
           <link linkend="gdbus-interface-org-freedesktop-UDisks2-Loop.top_of_page">org.freedesktop.UDisks2.Loop</link> depending on the block device in question.
@@ -375,6 +374,10 @@
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Encrypted.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Loop.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Job.xml"/>
+      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.NVMe.Controller.xml"/>
+      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.NVMe.Namespace.xml"/>
+      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Manager.NVMe.xml"/>
+      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.NVMe.Fabrics.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Drive.LSM.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Drive.LsmLocal.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Block.LVM2.xml"/>
@@ -387,11 +390,6 @@
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Manager.ISCSI.Initiator.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Manager.BTRFS.xml"/>
       <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Filesystem.BTRFS.xml"/>
-      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Manager.ZRAM.xml"/>
-      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Block.ZRAM.xml"/>
-      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Manager.Bcache.xml"/>
-      <xi:include href="xml/udisks-generated-doc-org.freedesktop.UDisks2.Block.Bcache.xml"/>
-      <!-- VDO_DBUS_INTERFACE -->
     </chapter>
   </part>
 
@@ -416,7 +414,10 @@
       <xi:include href="xml/UDisksSwapspace.xml"/>
       <xi:include href="xml/UDisksEncrypted.xml"/>
       <xi:include href="xml/UDisksLoop.xml"/>
-      <xi:include href="../doc/xml/UDisksManagerLSM.xml"/>
+      <xi:include href="xml/UDisksNVMeController.xml"/>
+      <xi:include href="xml/UDisksNVMeNamespace.xml"/>
+      <xi:include href="xml/UDisksManagerNVMe.xml"/>
+      <xi:include href="xml/UDisksNVMeFabrics.xml"/>
       <xi:include href="../doc/xml/UDisksDriveLSM.xml"/>
       <xi:include href="../doc/xml/UDisksDriveLsmLocal.xml"/>
       <xi:include href="../doc/xml/UDisksManagerLVM2.xml"/>
@@ -429,11 +430,6 @@
       <xi:include href="../doc/xml/UDisksManagerISCSIInitiator.xml"/>
       <xi:include href="../doc/xml/UDisksManagerBTRFS.xml"/>
       <xi:include href="../doc/xml/UDisksFilesystemBTRFS.xml"/>
-      <xi:include href="../doc/xml/UDisksManagerZRAM.xml"/>
-      <xi:include href="../doc/xml/UDisksBlockZRAM.xml"/>
-      <xi:include href="../doc/xml/UDisksManagerBcache.xml"/>
-      <xi:include href="../doc/xml/UDisksBlockBcache.xml"/>
-      <!-- VDO_GENERATED_CODE -->
     </chapter>
   </part>
 
@@ -467,6 +463,7 @@
     <chapter id="ref-daemon-linux-types">
       <title>Linux-specific types</title>
       <xi:include href="xml/udiskslinuxmanager.xml"/>
+      <xi:include href="xml/udiskslinuxmanagernvme.xml"/>
       <xi:include href="xml/udiskslinuxprovider.xml"/>
       <xi:include href="xml/udiskslinuxdevice.xml"/>
     </chapter>
@@ -475,6 +472,8 @@
       <xi:include href="xml/udiskslinuxdrive.xml"/>
       <xi:include href="xml/udiskslinuxdriveata.xml"/>
       <xi:include href="xml/udiskslinuxdriveobject.xml"/>
+      <xi:include href="xml/udiskslinuxnvmecontroller.xml"/>
+      <xi:include href="xml/udiskslinuxnvmefabrics.xml"/>
     </chapter>
     <chapter id="ref-daemon-mdraid">
       <title>Linux RAID</title>
@@ -491,6 +490,7 @@
       <xi:include href="xml/udiskslinuxswapspace.xml"/>
       <xi:include href="xml/udiskslinuxloop.xml"/>
       <xi:include href="xml/udiskslinuxblockobject.xml"/>
+      <xi:include href="xml/udiskslinuxnvmenamespace.xml"/>
     </chapter>
   </part>
 
@@ -504,9 +504,9 @@
   </index>
 
   <!-- TODO: version -->
-  <index id="api-index-2.9.4" role="2.9.4">
-    <title>Index of new symbols in 2.9.4</title>
-    <xi:include href="xml/api-index-2.9.4.xml"><xi:fallback /></xi:include>
+  <index id="api-index-2.10.1" role="2.10.1">
+    <title>Index of new symbols in 2.10.1</title>
+    <xi:include href="xml/api-index-2.10.1.xml"><xi:fallback /></xi:include>
   </index>
 
   <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>

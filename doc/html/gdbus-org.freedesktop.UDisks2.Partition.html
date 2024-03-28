@@ -39,6 +39,8 @@
           IN  a{sv} options);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetName" title="The SetName() method">SetName</a>  (IN  s     name,
           IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetUUID" title="The SetUUID() method">SetUUID</a>  (IN  s     uuid,
+          IN  a{sv} options);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetFlags" title="The SetFlags() method">SetFlags</a> (IN  t     flags,
           IN  a{sv} options);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.Resize" title="The Resize() method">Resize</a>   (IN  t     size,
@@ -63,8 +65,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Partition"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that represent entries in a partition table.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that represent entries in a partition table.
 </p>
 </div>
 <div class="refsect1">
@@ -75,9 +78,10 @@
 SetType (IN  s     type,
          IN  a{sv} options);
 </pre>
-<p>         Sets the partition type. See the
-         <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property for a
-         description of known partition types.
+<p>
+Sets the partition type. See the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property for a
+description of known partition types.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -87,11 +91,15 @@ SetType (IN  s     type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>New type to set.</p></td>
+<td><p>
+New type to set.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -103,7 +111,8 @@ SetType (IN  s     type,
 SetName (IN  s     name,
          IN  a{sv} options);
 </pre>
-<p>         Sets the partition name.
+<p>
+Sets the partition name (label).
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -113,14 +122,50 @@ SetName (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>New name to set.</p></td>
+<td><p>
+New name to set.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-UDisks2-Partition.SetUUID"></a><h3>The SetUUID() method</h3>
+<pre class="programlisting">
+SetUUID (IN  s     uuid,
+         IN  a{sv} options);
+</pre>
+<p>
+Sets the partition UUID (GPT only).
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>uuid</code></em></code>:</span></p></td>
+<td><p>
+The UUID to set.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.10.0</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -129,9 +174,10 @@ SetName (IN  s     name,
 SetFlags (IN  t     flags,
           IN  a{sv} options);
 </pre>
-<p>         Sets the partition flags. See the
-         <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Flags" title='The "Flags" property'>"Flags"</a> property for a
-         description of known flags.
+<p>
+Sets the partition flags. See the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Flags" title='The "Flags" property'>"Flags"</a> property for a
+description of known flags.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -141,11 +187,15 @@ SetFlags (IN  t     flags,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>flags</code></em></code>:</span></p></td>
-<td><p>New flags to set.</p></td>
+<td><p>
+New flags to set.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -157,14 +207,14 @@ SetFlags (IN  t     flags,
 Resize (IN  t     size,
         IN  a{sv} options);
 </pre>
-<p>         <em class="parameter"><code>since</code></em> 2.7.2
+<p>
+Resizes the partition.
 </p>
-<p>         Resizes the partition.
-</p>
-<p>         The partition will not change its position but might be slightly bigger
-         than requested due to sector counts and alignment (e.g. 1MiB).
-         If the requested size can't be allocated it results in an error.
-         The maximal size can automatically be set by using 0 as size.
+<p>
+The partition will not change its position but might be slightly bigger
+than requested due to sector counts and alignment (e.g. 1MiB).
+If the requested size can't be allocated it results in an error.
+The maximal size can automatically be set by using 0 as size.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -174,14 +224,19 @@ Resize (IN  t     size,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>New partition size in bytes, 0 for maximal size.</p></td>
+<td><p>
+New partition size in bytes, 0 for maximal size.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options.</p></td>
+<td><p>
+Options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 2.7.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -189,16 +244,18 @@ Resize (IN  t     size,
 <pre class="programlisting">
 Delete (IN  a{sv} options);
 </pre>
-<p>         Deletes the partition.
+<p>
+Deletes the partition.
 </p>
-<p>         If the option <em class="parameter"><code>tear-down</code></em> is set to
-         <code class="constant">TRUE</code>, then the block device and all its children will be
-         cleaned up before formatting.  This cleanup consists of
-         removing entries from /etc/fstab and /etc/crypttab, and
-         locking of encrypted block devices.  Entries in /etc/fstab
-         and /etc/crypttab that have been created with the
-         'track-parents' options to AddConfigurationItem will be
-         removed even if their block device is currently unavailable.
+<p>
+If the option <em class="parameter"><code>tear-down</code></em> is set to
+<code class="constant">TRUE</code>, then the block device and all its children will be
+cleaned up before formatting.  This cleanup consists of
+removing entries from /etc/fstab and /etc/crypttab, and
+locking of encrypted block devices.  Entries in /etc/fstab
+and /etc/crypttab that have been created with the
+'track-parents' options to AddConfigurationItem will be
+removed even if their block device is currently unavailable.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -207,7 +264,9 @@ Delete (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options.</p></td>
+<td><p>
+Options.
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -219,7 +278,9 @@ Delete (IN  a{sv} options);
 <pre class="programlisting">
 Number  readable   u
 </pre>
-<p>The number of the partition in the partition table.</p>
+<p>
+The number of the partition in the partition table.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -227,12 +288,13 @@ Number  readable   u
 <pre class="programlisting">
 Type  readable   s
 </pre>
-<p>The type of the partition.</p>
-<p>         For <code class="literal">dos</code> partition tables, this string is a
-         hexadecimal number e.g. <code class="literal">0x83</code> or
-         <code class="literal">0xfd</code>. For <code class="literal">gpt</code> partition
-         tables this is the UUID
-         e.g. <code class="literal">ebd0a0a2-b9e5-4433-87c0-68b6b72699c7</code>.
+<p>
+The type of the partition.
+For <code class="literal">dos</code> partition tables, this string is a
+hexadecimal number e.g. <code class="literal">0x83</code> or
+<code class="literal">0xfd</code>. For <code class="literal">gpt</code> partition
+tables this is the UUID
+e.g. <code class="literal">ebd0a0a2-b9e5-4433-87c0-68b6b72699c7</code>.
 </p>
 </div>
 <hr>
@@ -241,9 +303,10 @@ Type  readable   s
 <pre class="programlisting">
 Flags  readable   t
 </pre>
-<p>Flags describing the partition.</p>
-<p>         Known flags for <code class="literal">dos</code> partitions include:
-         </p>
+<p>
+Flags describing the partition.
+Known flags for <code class="literal">dos</code> partitions include:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -255,8 +318,8 @@ Flags  readable   t
 </tr></tbody>
 </table></div>
 <p>
-         Known flags for <code class="literal">gpt</code> partitions include:
-         </p>
+Known flags for <code class="literal">gpt</code> partitions include:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -294,7 +357,9 @@ Flags  readable   t
 <pre class="programlisting">
 Offset  readable   t
 </pre>
-<p>Offset of partition, in bytes.</p>
+<p>
+Offset of partition, in bytes.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -302,7 +367,9 @@ Offset  readable   t
 <pre class="programlisting">
 Size  readable   t
 </pre>
-<p>Size of partition, in bytes.</p>
+<p>
+Size of partition, in bytes.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -310,7 +377,9 @@ Size  readable   t
 <pre class="programlisting">
 Name  readable   s
 </pre>
-<p>Label of partition or blank if not supported or unknown.</p>
+<p>
+Label of partition or blank if not supported or unknown.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -318,7 +387,9 @@ Name  readable   s
 <pre class="programlisting">
 UUID  readable   s
 </pre>
-<p>The UUID of the partition or blank if not supported or unknown.</p>
+<p>
+The UUID of the partition or blank if not supported or unknown.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -326,8 +397,9 @@ UUID  readable   s
 <pre class="programlisting">
 Table  readable   o
 </pre>
-<p>         The object path of the <a class="link" href="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-interface-org-freedesktop-UDisks2-PartitionTable.top_of_page">org.freedesktop.UDisks2.PartitionTable</a>
-         object that the partition entry belongs to.
+<p>
+The object path of the <a class="link" href="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-interface-org-freedesktop-UDisks2-PartitionTable.top_of_page">org.freedesktop.UDisks2.PartitionTable</a>
+object that the partition entry belongs to.
 </p>
 </div>
 <hr>
@@ -336,13 +408,15 @@ Table  readable   o
 <pre class="programlisting">
 IsContainer  readable   b
 </pre>
-<p>         Set to <code class="constant">TRUE</code> if the partition itself is a container for other
-         partitions.
+<p>
+Set to <code class="constant">TRUE</code> if the partition itself is a container for other
+partitions.
 </p>
-<p>         For example, for <code class="literal">dos</code> partition tables,
-         this applies to socalled <span class="emphasis"><em>extended partition</em></span> (partitions of type
-         <code class="constant">0x05</code>, <code class="constant">0x0f</code> or <code class="constant">0x85</code>)
-         containing socalled <span class="emphasis"><em>logical partitions</em></span>.
+<p>
+For example, for <code class="literal">dos</code> partition tables,
+this applies to socalled <span class="emphasis"><em>extended partition</em></span> (partitions of type
+<code class="constant">0x05</code>, <code class="constant">0x0f</code> or <code class="constant">0x85</code>)
+containing socalled <span class="emphasis"><em>logical partitions</em></span>.
 </p>
 </div>
 <hr>
@@ -351,8 +425,9 @@ IsContainer  readable   b
 <pre class="programlisting">
 IsContained  readable   b
 </pre>
-<p>         Set to <code class="constant">TRUE</code> of the partition is contained in another partition.
-         See the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.IsContainer" title='The "IsContainer" property'>"IsContainer"</a> property for more information.
+<p>
+Set to <code class="constant">TRUE</code> of the partition is contained in another partition.
+See the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.IsContainer" title='The "IsContainer" property'>"IsContainer"</a> property for more information.
 </p>
 </div>
 </div>

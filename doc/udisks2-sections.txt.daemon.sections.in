@@ -18,7 +18,7 @@ udisks_daemon_get_enable_tcrypt
 udisks_daemon_get_uninstalled
 udisks_daemon_get_utab_monitor
 udisks_daemon_get_parent_for_tracking
-UDisksDaemonWaitFunc
+UDisksDaemonWaitFuncGeneric
 udisks_daemon_wait_for_object_sync
 UDISKS_DEFAULT_WAIT_TIMEOUT
 udisks_daemon_get_objects
@@ -161,7 +161,6 @@ udisks_linux_drive_ata_smart_selftest_sync
 udisks_linux_drive_ata_apply_configuration
 udisks_linux_drive_ata_secure_erase_sync
 udisks_linux_drive_ata_get_pm_state
-UDISKS_LINUX_DRIVE_ATA_IS_AWAKE
 <SUBSECTION Standard>
 UDISKS_LINUX_DRIVE_ATA
 UDISKS_IS_LINUX_DRIVE_ATA
@@ -237,7 +236,6 @@ udisks_state_new
 udisks_state_start_cleanup
 udisks_state_stop_cleanup
 udisks_state_check
-udisks_state_check_sync
 udisks_state_check_block
 udisks_state_get_daemon
 <SUBSECTION>
@@ -270,6 +268,8 @@ UDisksAtaCommandProtocol
 UDisksAtaCommandInput
 UDisksAtaCommandOutput
 udisks_ata_send_command_sync
+udisks_ata_get_pm_state
+UDISKS_ATA_PM_STATE_AWAKE
 </SECTION>
 
 <SECTION>
@@ -278,6 +278,11 @@ udisks_ata_send_command_sync
 UDisksLinuxDevice
 udisks_linux_device_new_sync
 udisks_linux_device_reprobe_sync
+udisks_linux_device_read_sysfs_attr
+udisks_linux_device_read_sysfs_attr_as_int
+udisks_linux_device_read_sysfs_attr_as_uint64
+udisks_linux_device_subsystem_is_nvme
+udisks_linux_device_nvme_is_fabrics
 <SUBSECTION Standard>
 UDISKS_TYPE_LINUX_DEVICE
 UDISKS_LINUX_DEVICE
@@ -586,4 +591,57 @@ UDISKS_TYPE_MODULE_OBJECT
 <SUBSECTION Private>
 udisks_module_object_get_type
 udisks_module_get_type
+</SECTION>
+
+<SECTION>
+<FILE>udiskslinuxnvmecontroller</FILE>
+UDisksLinuxNVMeController
+udisks_linux_nvme_controller_new
+udisks_linux_nvme_controller_update
+udisks_linux_nvme_controller_refresh_smart_sync
+<SUBSECTION Standard>
+UDISKS_LINUX_NVME_CONTROLLER
+UDISKS_IS_LINUX_NVME_CONTROLLER
+UDISKS_TYPE_LINUX_NVME_CONTROLLER
+<SUBSECTION Private>
+udisks_linux_nvme_controller_get_type
+</SECTION>
+
+<SECTION>
+<FILE>udiskslinuxnvmenamespace</FILE>
+UDisksLinuxNVMeNamespace
+udisks_linux_nvme_namespace_new
+udisks_linux_nvme_namespace_update
+<SUBSECTION Standard>
+UDISKS_LINUX_NVME_NAMESPACE
+UDISKS_IS_LINUX_NVME_NAMESPACE
+UDISKS_TYPE_LINUX_NVME_NAMESPACE
+<SUBSECTION Private>
+udisks_linux_nvme_namespace_get_type
+</SECTION>
+
+<SECTION>
+<FILE>udiskslinuxmanagernvme</FILE>
+UDisksLinuxManagerNVMe
+udisks_linux_manager_nvme_new
+udisks_linux_manager_nvme_get_daemon
+<SUBSECTION Standard>
+UDISKS_LINUX_MANAGER_NVME
+UDISKS_IS_LINUX_MANAGER_NVME
+UDISKS_TYPE_LINUX_MANAGER_NVME
+<SUBSECTION Private>
+udisks_linux_manager_nvme_get_type
+</SECTION>
+
+<SECTION>
+<FILE>udiskslinuxnvmefabrics</FILE>
+UDisksLinuxNVMeFabrics
+udisks_linux_nvme_fabrics_new
+udisks_linux_nvme_fabrics_update
+<SUBSECTION Standard>
+UDISKS_LINUX_NVME_FABRICS
+UDISKS_IS_LINUX_NVME_FABRICS
+UDISKS_TYPE_LINUX_NVME_FABRICS
+<SUBSECTION Private>
+udisks_linux_nvme_fabrics_get_type
 </SECTION>

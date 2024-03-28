@@ -25,8 +25,8 @@
 
 G_BEGIN_DECLS
 
-GString* udisks_string_concat (GString*, GString*);
-void udisks_string_wipe_and_free (GString*);
+GString *udisks_string_concat (GString *a, GString *b);
+void udisks_string_wipe_and_free (GString *string);
 
 gboolean udisks_variant_lookup_binary (GVariant     *dict,
                                        const gchar  *name,
@@ -93,6 +93,12 @@ gboolean udisks_daemon_util_get_user_info (const uid_t   uid,
                                            gid_t        *out_gid,
                                            gchar       **out_user_name,
                                            GError      **error);
+
+gboolean
+udisks_daemon_util_get_user_info_by_name (const gchar  *user_name,
+                                          uid_t        *out_uid,
+                                          gid_t        *out_gid,
+                                          GError      **error);
 
 gboolean udisks_daemon_util_get_caller_uid_sync (UDisksDaemon            *daemon,
                                                  GDBusMethodInvocation   *invocation,

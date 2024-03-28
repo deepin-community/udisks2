@@ -81,13 +81,13 @@ DRIVERS=="rts_pstor", ENV{ID_DRIVE_FLASH_SD}="1"
 DRIVERS=="rts5229", ENV{ID_DRIVE_FLASH_SD}="1"
 
 # Lexar Dual Slot USB 3.0 Reader Professional
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="05dc",ENV{ID_MODEL_ID}=="b049", ENV{ID_INSTANCE}=="0:0", ENV{ID_DRIVE_FLASH_CF}="1"
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="05dc",ENV{ID_MODEL_ID}=="b049", ENV{ID_INSTANCE}=="0:1", ENV{ID_DRIVE_FLASH_SD}="1"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="05dc", ENV{ID_MODEL_ID}=="b049", ENV{ID_INSTANCE}=="0:0", ENV{ID_DRIVE_FLASH_CF}="1"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="05dc", ENV{ID_MODEL_ID}=="b049", ENV{ID_INSTANCE}=="0:1", ENV{ID_DRIVE_FLASH_SD}="1"
 
 # Transcend USB 3.0 Multi-Card Reader (TS-RDF8K)
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564",ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:0", ENV{ID_DRIVE_FLASH_CF}="1"
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564",ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:1", ENV{ID_DRIVE_FLASH_SD}="1"
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564",ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:2", ENV{ID_DRIVE_FLASH_MS}="1"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564", ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:0", ENV{ID_DRIVE_FLASH_CF}="1"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564", ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:1", ENV{ID_DRIVE_FLASH_SD}="1"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="8564", ENV{ID_MODEL_ID}=="4000", ENV{ID_INSTANCE}=="0:2", ENV{ID_DRIVE_FLASH_MS}="1"
 
 # Common theme
 #
@@ -126,7 +126,7 @@ ENV{ID_PART_ENTRY_SCHEME}=="gpt", ENV{ID_PART_ENTRY_TYPE}=="426f6f74-0000-11aa-a
 # special DOS partition types (EFI, hidden, etc.) and RAID/LVM
 # see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
 ENV{ID_PART_ENTRY_SCHEME}=="dos", \
-  ENV{ID_PART_ENTRY_TYPE}=="0x0|0x11|0x12|0x14|0x16|0x17|0x1b|0x1c|0x1e|0x27|0x3d|0x84|0x8d|0x8e|0x90|0x91|0x92|0x93|0x97|0x98|0x9a|0x9b|0xbb|0xc2|0xc3|0xdd|0xef|0xfd", \
+  ENV{ID_PART_ENTRY_TYPE}=="0x0|0x11|0x12|0x14|0x16|0x17|0x1b|0x1c|0x1e|0x27|0x3d|0x84|0x8d|0x8e|0x90|0x91|0x92|0x93|0x97|0x98|0x9a|0x9b|0xab|0xbb|0xc2|0xc3|0xdd|0xef|0xfd", \
   ENV{UDISKS_IGNORE}="1"
 
 # special GUID-identified partition types (EFI System Partition, BIOS Boot partition, RAID/LVM)
@@ -166,7 +166,7 @@ ENV{ID_VENDOR}=="Sony", ENV{ID_MODEL}=="PRS*Launcher", ENV{UDISKS_IGNORE}="1"
 KERNEL=="sr*", ENV{ID_VENDOR}=="SanDisk", ENV{ID_MODEL}=="Cruzer", ENV{ID_FS_LABEL}=="U3_System", ENV{UDISKS_IGNORE}="1"
 
 # Virtual Windows tools installation on Asus Zendisk (0b05:17b4)
-KERNEL=="sr*", ENV{ID_VENDOR}=="ASMT",ENV{ID_MODEL}=="VirtualCDROM", ENV{ID_FS_LABEL}=="ASUS_+Speed_ZENDISK*", ENV{UDISKS_IGNORE}="1"
+KERNEL=="sr*", ENV{ID_VENDOR}=="ASMT", ENV{ID_MODEL}=="VirtualCDROM", ENV{ID_FS_LABEL}=="ASUS_+Speed_ZENDISK*", ENV{UDISKS_IGNORE}="1"
 
 # Virtual Windows tools installation CD on Nokia 7 Plus (2e04:c025)
 KERNEL=="sr*", ENV{ID_VENDOR}=="Linux", ENV{ID_MODEL}=="File-CD_Gadget*", ENV{ID_FS_LABEL}=="CDROM*", ATTRS{manufacturer}=="HMD Global", ENV{UDISKS_IGNORE}="1"
@@ -185,3 +185,4 @@ ENV{ID_PART_TABLE_TYPE}=="dos", ENV{ID_PART_ENTRY_TYPE}=="0x0|0x17", ENV{ID_PART
 
 # Explicitly ignore ram block devices, they don't work with udev
 KERNEL=="ram*", ENV{UDISKS_IGNORE}="1"
+KERNEL=="zram*", ENV{UDISKS_IGNORE}="1"
