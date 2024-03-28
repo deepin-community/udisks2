@@ -30,8 +30,11 @@ class UdisksDriveTest(udiskstestcase.UdisksTestCase):
 
         self.cd_dev = os.listdir(dirs[0])
         self.assertEqual(len(self.cd_dev), 1)
+        obj = self.get_object('/block_devices/' + self.cd_dev[0])
         self.cd_dev = '/dev/' + self.cd_dev[0]
         self.assertTrue(os.path.exists(self.cd_dev))
+        # wait for the corresponding block object to appear
+        self.assertHasIface(obj, self.iface_prefix + '.Block')
 
         self.cd_device = self.get_device(self.cd_dev)
         self.cd_drive_name = self.get_drive_name(self.cd_device)
@@ -52,7 +55,7 @@ class UdisksDriveTest(udiskstestcase.UdisksTestCase):
         dev = self.get_device(self.vdevs[0])
         drive = self.get_drive(dev)
         with six.assertRaisesRegex(self, dbus.exceptions.DBusException,
-                                   'is not hot-pluggable device'):
+                                   r'is not hot-pluggable device|is not ejectable device'):
             drive.Eject(self.no_options)
 
         dev = self.get_device(self.cd_dev)

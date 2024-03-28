@@ -39,6 +39,8 @@
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.Stop" title="The Stop() method">Stop</a>     (IN  a{sv} options);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.SetLabel" title="The SetLabel() method">SetLabel</a> (IN  s     label,
           IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.SetUUID" title="The SetUUID() method">SetUUID</a>  (IN  s     uuid,
+          IN  a{sv} options);
 </pre>
 </div>
 <div class="refsect1">
@@ -49,8 +51,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Swapspace"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that contain swap space.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that contain swap space.
 </p>
 </div>
 <div class="refsect1">
@@ -60,7 +63,8 @@
 <pre class="programlisting">
 Start (IN  a{sv} options);
 </pre>
-<p>        Activates the swap device.
+<p>
+Activates the swap device.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -69,7 +73,9 @@ Start (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -79,7 +85,8 @@ Start (IN  a{sv} options);
 <pre class="programlisting">
 Stop (IN  a{sv} options);
 </pre>
-<p>        Deactivates the swap device.
+<p>
+Deactivates the swap device.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -88,7 +95,9 @@ Stop (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -99,7 +108,8 @@ Stop (IN  a{sv} options);
 SetLabel (IN  s     label,
           IN  a{sv} options);
 </pre>
-<p>        Set label for the swap device.
+<p>
+Set label for the swap device.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -109,14 +119,50 @@ SetLabel (IN  s     label,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>label</code></em></code>:</span></p></td>
-<td><p>The label to set.</p></td>
+<td><p>
+The label to set.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-UDisks2-Swapspace.SetUUID"></a><h3>The SetUUID() method</h3>
+<pre class="programlisting">
+SetUUID (IN  s     uuid,
+         IN  a{sv} options);
+</pre>
+<p>
+Set UUID for the swap device.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>uuid</code></em></code>:</span></p></td>
+<td><p>
+The UUID to set.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.10.0</p>
 </div>
 </div>
 <div class="refsect1">
@@ -126,7 +172,9 @@ SetLabel (IN  s     label,
 <pre class="programlisting">
 Active  readable   b
 </pre>
-<p>Set to <code class="constant">TRUE</code> if the device is currently in use by the OS.</p>
+<p>
+Set to <code class="constant">TRUE</code> if the device is currently in use by the OS.
+</p>
 </div>
 </div>
 </div>

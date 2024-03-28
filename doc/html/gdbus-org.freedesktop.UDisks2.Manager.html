@@ -73,8 +73,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Manager"></a><h2>Description</h2>
-<p>      Interface for top-level manager singleton object located at the
-      object path <code class="literal">/org/freedesktop/UDisks2/Manager</code>.
+<p>
+Interface for top-level manager singleton object located at the
+object path <code class="literal">/org/freedesktop/UDisks2/Manager</code>.
 </p>
 </div>
 <div class="refsect1">
@@ -85,9 +86,10 @@
 CanFormat (IN  s    type,
            OUT (bs) available);
 </pre>
-<p>        Tests for availability to create the given filesystem.
-        See the <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.html#gdbus-property-org-freedesktop-UDisks2-Manager.SupportedFilesystems" title='The "SupportedFilesystems" property'>"SupportedFilesystems"</a> property
-        for a list of known types. Unknown or unsupported filesystems result in an error.
+<p>
+Tests for availability to create the given filesystem.
+See the <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.html#gdbus-property-org-freedesktop-UDisks2-Manager.SupportedFilesystems" title='The "SupportedFilesystems" property'>"SupportedFilesystems"</a> property
+for a list of known types. Unknown or unsupported filesystems result in an error.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -97,11 +99,15 @@ CanFormat (IN  s    type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The filesystem type to be tested for formatting availability.</p></td>
+<td><p>
+The filesystem type to be tested for formatting availability.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT (bs) <em class="parameter"><code>available</code></em></code>:</span></p></td>
-<td><p>Formatting availability and the required binary name if missing (i.e. no error and returns FALSE).</p></td>
+<td><p>
+Formatting availability and the required binary name if missing (i.e. no error and returns FALSE).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -114,14 +120,15 @@ CanFormat (IN  s    type,
 CanResize (IN  s     type,
            OUT (bts) available);
 </pre>
-<p>        Tests for availability to resize the given filesystem.
-        The mode flags indicate if growing and/or shriking resize is available if mounted/unmounted.
-        The mode corresponds to bitwise-OR combined BDFsResizeFlags of the libblockdev FS plugin:
-        BD_FS_OFFLINE_SHRINK = 2, shrinking resize allowed when unmounted
-        BD_FS_OFFLINE_GROW = 4, growing resize allowed when unmounted
-        BD_FS_ONLINE_SHRINK = 8, shrinking resize allowed when mounted
-        BD_FS_ONLINE_GROW = 16, growing resize allowed when mounted
-        Unknown filesystems or filesystems which do not support resizing result in errors.
+<p>
+Tests for availability to resize the given filesystem.
+The mode flags indicate if growing and/or shriking resize is available if mounted/unmounted.
+The mode corresponds to bitwise-OR combined BDFSResizeFlags of the libblockdev FS plugin:
+BD_FS_OFFLINE_SHRINK = 2, shrinking resize allowed when unmounted
+BD_FS_OFFLINE_GROW = 4, growing resize allowed when unmounted
+BD_FS_ONLINE_SHRINK = 8, shrinking resize allowed when mounted
+BD_FS_ONLINE_GROW = 16, growing resize allowed when mounted
+Unknown filesystems or filesystems which do not support resizing result in errors.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -131,11 +138,15 @@ CanResize (IN  s     type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The filesystem type to be tested for resize availability.</p></td>
+<td><p>
+The filesystem type to be tested for resize availability.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT (bts) <em class="parameter"><code>available</code></em></code>:</span></p></td>
-<td><p>Resizing availability, flags for allowed resizing (i.e. growing/shrinking support for online/offline) and the required binary name if missing (i.e. no error and returns FALSE).</p></td>
+<td><p>
+Resizing availability, flags for allowed resizing (i.e. growing/shrinking support for online/offline) and the required binary name if missing (i.e. no error and returns FALSE).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -148,8 +159,9 @@ CanResize (IN  s     type,
 CanCheck (IN  s    type,
           OUT (bs) available);
 </pre>
-<p>        Tests for availability to check the given filesystem.
-        Unsupported filesystems or filesystems which do not support checking result in errors.
+<p>
+Tests for availability to check the given filesystem.
+Unsupported filesystems or filesystems which do not support checking result in errors.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -159,11 +171,15 @@ CanCheck (IN  s    type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The filesystem type to be tested for consistency check availability.</p></td>
+<td><p>
+The filesystem type to be tested for consistency check availability.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT (bs) <em class="parameter"><code>available</code></em></code>:</span></p></td>
-<td><p>Checking availability and the required binary name if missing (i.e. no error and returns FALSE).</p></td>
+<td><p>
+Checking availability and the required binary name if missing (i.e. no error and returns FALSE).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -176,8 +192,9 @@ CanCheck (IN  s    type,
 CanRepair (IN  s    type,
            OUT (bs) available);
 </pre>
-<p>        Tests for availability repair the given filesystem.
-        Unsupported filesystems or filesystems which do not support repairing result in errors.
+<p>
+Tests for availability repair the given filesystem.
+Unsupported filesystems or filesystems which do not support repairing result in errors.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -187,11 +204,15 @@ CanRepair (IN  s    type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The filesystem type to be tested for repair availability.</p></td>
+<td><p>
+The filesystem type to be tested for repair availability.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT (bs) <em class="parameter"><code>available</code></em></code>:</span></p></td>
-<td><p>Repair availability and the required binary name if missing (i.e. no error and returns FALSE).</p></td>
+<td><p>
+Repair availability and the required binary name if missing (i.e. no error and returns FALSE).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -205,7 +226,8 @@ LoopSetup (IN  h     fd,
            IN  a{sv} options,
            OUT o     resulting_device);
 </pre>
-<p>        Creates a block device for the file represented by <em class="parameter"><code>fd</code></em>.
+<p>
+Creates a block device for the file represented by <em class="parameter"><code>fd</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -215,15 +237,21 @@ LoopSetup (IN  h     fd,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN h <em class="parameter"><code>fd</code></em></code>:</span></p></td>
-<td><p>An index for the file descriptor to use.</p></td>
+<td><p>
+An index for the file descriptor to use.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>offset</code></em> (of type 't'), <em class="parameter"><code>size</code></em> (of type 't'), <em class="parameter"><code>read-only</code></em> (of type 'b') and <em class="parameter"><code>no-part-scan</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>offset</code></em> (of type 't'), <em class="parameter"><code>size</code></em> (of type 't'), <em class="parameter"><code>read-only</code></em> (of type 'b'), <em class="parameter"><code>no-part-scan</code></em> (of type 'b') and <em class="parameter"><code>sector-size</code></em> (of type 't').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>resulting_device</code></em></code>:</span></p></td>
-<td><p>An object path to the object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.</p></td>
+<td><p>
+An object path to the object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -239,19 +267,29 @@ MDRaidCreate (IN  ao    blocks,
               IN  a{sv} options,
               OUT o     resulting_array);
 </pre>
-<p>        Creates a new RAID array on the block devices specified by
-        <em class="parameter"><code>blocks</code></em>. Each element in this array must be an object path to
-        an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-        interface.
+<p>
+Creates a new RAID array on the block devices specified by
+<em class="parameter"><code>blocks</code></em>. Each element in this array must be an object path to
+an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+interface.
 </p>
-<p>        Known and supported values for <em class="parameter"><code>level</code></em> include
-        <span class="quote">“<span class="quote">raid0</span>”</span>, <span class="quote">“<span class="quote">raid1</span>”</span>,
-        <span class="quote">“<span class="quote">raid4</span>”</span>, <span class="quote">“<span class="quote">raid5</span>”</span>,
-        <span class="quote">“<span class="quote">raid6</span>”</span> and <span class="quote">“<span class="quote">raid10</span>”</span>.
+<p>
+Known and supported values for <em class="parameter"><code>level</code></em> include
+<span class="quote">“<span class="quote">raid0</span>”</span>, <span class="quote">“<span class="quote">raid1</span>”</span>,
+<span class="quote">“<span class="quote">raid4</span>”</span>, <span class="quote">“<span class="quote">raid5</span>”</span>,
+<span class="quote">“<span class="quote">raid6</span>”</span> and <span class="quote">“<span class="quote">raid10</span>”</span>.
 </p>
-<p>        Before the array is created, all devices in <em class="parameter"><code>blocks</code></em> are
-        erased. Once created (but before the method returns), the RAID
-        array will be erased.
+<p>
+Before the array is created, all devices in <em class="parameter"><code>blocks</code></em> are
+erased. Once created (but before the method returns), the RAID
+array will be erased.
+</p>
+<p>
+The <em class="parameter"><code>bitmap</code></em> option specifies the write-intent bitmap type, currently
+only 'none' and 'internal' values are supported. When this option
+is not present, it is up to <code class="literal">mdadm</code> to decide
+whether to create an internal bitmap (typically for arrays larger
+than 100 GB) or not.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -261,27 +299,39 @@ MDRaidCreate (IN  ao    blocks,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN ao <em class="parameter"><code>blocks</code></em></code>:</span></p></td>
-<td><p>An array of object paths to objects implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.</p></td>
+<td><p>
+An array of object paths to objects implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>level</code></em></code>:</span></p></td>
-<td><p>The RAID level for the array.</p></td>
+<td><p>
+The RAID level for the array.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name for the array.</p></td>
+<td><p>
+The name for the array.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>chunk</code></em></code>:</span></p></td>
-<td><p>The chunk size (in bytes) or 0 if <em class="parameter"><code>level</code></em> is <span class="quote">“<span class="quote">raid1</span>”</span>.</p></td>
+<td><p>
+The chunk size (in bytes) or 0 if <em class="parameter"><code>level</code></em> is <span class="quote">“<span class="quote">raid1</span>”</span>.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) include <em class="parameter"><code>bitmap</code></em> (of type 'ay').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>resulting_array</code></em></code>:</span></p></td>
-<td><p>An object path to the object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-interface-org-freedesktop-UDisks2-MDRaid.top_of_page">org.freedesktop.UDisks2.MDRaid</a> interface.</p></td>
+<td><p>
+An object path to the object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-interface-org-freedesktop-UDisks2-MDRaid.top_of_page">org.freedesktop.UDisks2.MDRaid</a> interface.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -293,21 +343,25 @@ MDRaidCreate (IN  ao    blocks,
 <pre class="programlisting">
 EnableModules (IN  b enable);
 </pre>
-<p>        Loads and activates modules. Modules that have been already loaded are not reinitialized on subsequent calls to this method and are skipped.
-        In case any new module is getting activated by this method call a <code class="literal">add</code> uevent is triggered on all exported objects.
+<p>
+Loads and activates modules. Modules that have been already loaded are not reinitialized on subsequent calls to this method and are skipped.
+In case any new module is getting activated by this method call a <code class="literal">add</code> uevent is triggered on all exported objects.
 </p>
-<p>        This takes in account an optional explicit list of modules to load as specified in the <code class="filename">/etc/udisks2/udisks2.conf</code>
-        config file. If unspecified all available modules will be loaded.
+<p>
+This takes in account an optional explicit list of modules to load as specified in the <code class="filename">/etc/udisks2/udisks2.conf</code>
+config file. If unspecified all available modules will be loaded.
 </p>
-<p>        Modules cannot be deactivated at the moment. This method call never fails even if no module has been activated
-        and by nature it cannot report any particular module initialization failures. Clients have no way of finding that
-        a particular module is available.
+<p>
+Modules cannot be deactivated at the moment. This method call never fails even if no module has been activated
+and by nature it cannot report any particular module initialization failures. Clients have no way of finding that
+a particular module is available.
 </p>
-<p>        </p>
+<p>
+</p>
 <div class="note">
 <span class="emphasis"><em>This method is deprecated since 2.9.0.</em></span>
-        Use <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.html#gdbus-method-org-freedesktop-UDisks2-Manager.EnableModule" title="The EnableModule() method">EnableModule()</a> instead.
-        </div>
+Use <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.html#gdbus-method-org-freedesktop-UDisks2-Manager.EnableModule" title="The EnableModule() method">EnableModule()</a> instead.
+</div>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
@@ -317,7 +371,9 @@ EnableModules (IN  b enable);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>enable</code></em></code>:</span></p></td>
-<td><p>A boolean value indicating whether modules should be enabled. Currently only the <code class="constant">TRUE</code> value is permitted.</p></td>
+<td><p>
+A boolean value indicating whether modules should be enabled. Currently only the <code class="constant">TRUE</code> value is permitted.
+</p></td>
 </tr></tbody>
 </table></div>
 <div class="warning"><p>The EnableModules() method is deprecated.</p></div>
@@ -329,13 +385,15 @@ EnableModules (IN  b enable);
 EnableModule (IN  s name,
               IN  b enable);
 </pre>
-<p>        Loads and activates single module identified by <em class="parameter"><code>name</code></em>. In case the module is already active no reinitialization
-        is done and this call has no effect. Clients are supposed to call this method before using any of the particular module API.
-        In case no such module is available or its initialization fails a proper error is returned. This action also causes
-        all objects to receive <code class="literal">add</code> uevent that allows the module to attach extra interfaces before
-        this method call returns.
+<p>
+Loads and activates single module identified by <em class="parameter"><code>name</code></em>. In case the module is already active no reinitialization
+is done and this call has no effect. Clients are supposed to call this method before using any of the particular module API.
+In case no such module is available or its initialization fails a proper error is returned. This action also causes
+all objects to receive <code class="literal">add</code> uevent that allows the module to attach extra interfaces before
+this method call returns.
 </p>
-<p>        Modules cannot be deactivated at the moment.
+<p>
+Modules cannot be deactivated at the moment.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -345,11 +403,15 @@ EnableModule (IN  s name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>Name of the module.</p></td>
+<td><p>
+Name of the module.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>enable</code></em></code>:</span></p></td>
-<td><p>A boolean value indicating whether modules should be enabled. Currently only the <code class="constant">TRUE</code> value is permitted.</p></td>
+<td><p>
+A boolean value indicating whether modules should be enabled. Currently only the <code class="constant">TRUE</code> value is permitted.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -362,7 +424,8 @@ EnableModule (IN  s name,
 GetBlockDevices (IN  a{sv} options,
                  OUT ao    block_objects);
 </pre>
-<p>        Get list of all block devices (object paths of objects implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface) known to UDisks.
+<p>
+Get list of all block devices (object paths of objects implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface) known to UDisks.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -372,11 +435,18 @@ GetBlockDevices (IN  a{sv} options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT ao <em class="parameter"><code>block_objects</code></em></code>:</span></p></td>
-<td><p></p></td>
+<td>
+<p>
+</p>
+<p>
+</p>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -390,10 +460,12 @@ ResolveDevice (IN  a{sv} devspec,
                IN  a{sv} options,
                OUT ao    devices);
 </pre>
-<p>        Get device(s) matching specification given in <em class="parameter"><code>devspec</code></em>.
+<p>
+Get device(s) matching specification given in <em class="parameter"><code>devspec</code></em>.
 </p>
-<p>        Currently supported keys for <em class="parameter"><code>devspec</code></em> include:
-        </p>
+<p>
+Currently supported keys for <em class="parameter"><code>devspec</code></em> include:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -403,27 +475,40 @@ ResolveDevice (IN  a{sv} devspec,
 <tr>
 <td><p><span class="term">path (type <code class="literal">'s'</code>)</span></p></td>
 <td><p>
-              Device path (e.g. <span class="quote">“<span class="quote">/dev/sda</span>”</span>). This also includes symlinks in <span class="quote">“<span class="quote">/dev</span>”</span>
-              (both <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.Device" title='The "Device" property'>"Device"</a> and <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.Symlinks" title='The "Symlinks" property'>"Symlinks"</a> are used).
-            </p></td>
+Device path (e.g. <span class="quote">“<span class="quote">/dev/sda</span>”</span>). This also includes symlinks in <span class="quote">“<span class="quote">/dev</span>”</span>
+(both <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.Device" title='The "Device" property'>"Device"</a> and <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.Symlinks" title='The "Symlinks" property'>"Symlinks"</a> are used).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term">label (type <code class="literal">'s'</code>)</span></p></td>
 <td><p>
-              Filesystem label. <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.IdLabel" title='The "IdLabel" property'>"IdLabel"</a> is used.
-            </p></td>
+Filesystem label. <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.IdLabel" title='The "IdLabel" property'>"IdLabel"</a> is used.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term">uuid (type <code class="literal">'s'</code>)</span></p></td>
 <td><p>
-              Filesystem UUID. <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.IdUUID" title='The "IdUUID" property'>"IdUUID"</a> is used.
-            </p></td>
+Filesystem UUID. <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.IdUUID" title='The "IdUUID" property'>"IdUUID"</a> is used.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term">partuuid (type <code class="literal">'s'</code>)</span></p></td>
+<td><p>
+Partition UUID. <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.UUID" title='The "UUID" property'>"UUID"</a> is used.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term">partlabel (type <code class="literal">'s'</code>)</span></p></td>
+<td><p>
+Partition Name. <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Name" title='The "Name" property'>"Name"</a> is used.
+</p></td>
 </tr>
 </tbody>
 </table></div>
 <p>
 </p>
-<p>        It is possbile to specify multiple keys. In this case, only devices matching all values will be returned.
+<p>
+It is possbile to specify multiple keys. In this case, only devices matching all values will be returned.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -433,15 +518,21 @@ ResolveDevice (IN  a{sv} devspec,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>devspec</code></em></code>:</span></p></td>
-<td><p>Dictionary with specification of a device.</p></td>
+<td><p>
+Dictionary with specification of a device.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT ao <em class="parameter"><code>devices</code></em></code>:</span></p></td>
-<td><p>List of object paths of all devices matching <em class="parameter"><code>devspec</code></em>.</p></td>
+<td><p>
+List of object paths of all devices matching <em class="parameter"><code>devspec</code></em>.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -455,7 +546,9 @@ ResolveDevice (IN  a{sv} devspec,
 <pre class="programlisting">
 Version  readable   s
 </pre>
-<p>The version of the daemon currently running</p>
+<p>
+The version of the daemon currently running
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -463,7 +556,15 @@ Version  readable   s
 <pre class="programlisting">
 SupportedFilesystems  readable   as
 </pre>
-<p>List of supported filesystem by UDisks2</p>
+<p>
+List of filesystems supported by UDisks2. For each such filesystem
+UDisks supports filesystem creation (<span class="quote">“<span class="quote">mkfs</span>”</span>) and
+changing labels.
+</p>
+<p>
+While UDisks2 can essentially mount any filesystem, only the listed
+types are fully supported for block operations.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -471,7 +572,10 @@ SupportedFilesystems  readable   as
 <pre class="programlisting">
 SupportedEncryptionTypes  readable   as
 </pre>
-<p>List of supported encryption types by UDisks2</p>
+<p>
+List of supported block encryption types by UDisks2.
+</p>
+<p class="since">Since 2.8.3</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -479,7 +583,10 @@ SupportedEncryptionTypes  readable   as
 <pre class="programlisting">
 DefaultEncryptionType  readable   s
 </pre>
-<p></p>
+<p>
+The default block encryption type.
+</p>
+<p class="since">Since 2.8.3</p>
 </div>
 </div>
 </div>

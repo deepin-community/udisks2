@@ -70,14 +70,16 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-MDRaid"></a><h2>Description</h2>
-<p>      Objects implementing this interface represent
-      <a class="ulink" href="https://raid.wiki.kernel.org/index.php/Linux_Raid" target="_top">Linux Software RAID arrays</a>
-      detected on the system. Both running and not-running arrays are represented.
+<p>
+Objects implementing this interface represent
+<a class="ulink" href="https://raid.wiki.kernel.org/index.php/Linux_Raid" target="_top">Linux Software RAID arrays</a>
+detected on the system. Both running and not-running arrays are represented.
 </p>
-<p>      Block devices point to objects implementing this interface, see
-      the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.MDRaid" title='The "MDRaid" property'>"MDRaid"</a> and
-      <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.MDRaidMember" title='The "MDRaidMember" property'>"MDRaidMember"</a> properties on the
-      <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> D-Bus interface.
+<p>
+Block devices point to objects implementing this interface, see
+the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.MDRaid" title='The "MDRaid" property'>"MDRaid"</a> and
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.MDRaidMember" title='The "MDRaidMember" property'>"MDRaidMember"</a> properties on the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> D-Bus interface.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -88,11 +90,13 @@
 <pre class="programlisting">
 Start (IN  a{sv} options);
 </pre>
-<p>        Starts the RAID array.
+<p>
+Starts the RAID array.
 </p>
-<p>        If the <em class="parameter"><code>option</code></em> parameter contains the key <em class="parameter"><code>start</code></em>-degraded with
-        the value <code class="constant">TRUE</code>, the array will be started even if some members
-        are missing.
+<p>
+If the <em class="parameter"><code>option</code></em> parameter contains the key <em class="parameter"><code>start</code></em>-degraded with
+the value <code class="constant">TRUE</code>, the array will be started even if some members
+are missing.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -101,7 +105,9 @@ Start (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>start-degraded</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>start-degraded</code></em> (of type 'b').
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.0.0</p>
@@ -112,7 +118,8 @@ Start (IN  a{sv} options);
 <pre class="programlisting">
 Stop (IN  a{sv} options);
 </pre>
-<p>        Stops the RAID array.
+<p>
+Stops the RAID array.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -121,7 +128,9 @@ Stop (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.0.0</p>
@@ -133,15 +142,18 @@ Stop (IN  a{sv} options);
 RemoveDevice (IN  o     device,
               IN  a{sv} options);
 </pre>
-<p>        Removes <em class="parameter"><code>device</code></em> from the array.
+<p>
+Removes <em class="parameter"><code>device</code></em> from the array.
 </p>
-<p>        For this to work <em class="parameter"><code>device</code></em> must already be associated with the
-        array, e.g. referenced in the
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-property-org-freedesktop-UDisks2-MDRaid.ActiveDevices" title='The "ActiveDevices" property'>"ActiveDevices"</a> property.
+<p>
+For this to work <em class="parameter"><code>device</code></em> must already be associated with the
+array, e.g. referenced in the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-property-org-freedesktop-UDisks2-MDRaid.ActiveDevices" title='The "ActiveDevices" property'>"ActiveDevices"</a> property.
 </p>
-<p>        If the <em class="parameter"><code>option</code></em> parameter contains the key <em class="parameter"><code>wipe</code></em> with the value
-        <code class="constant">TRUE</code>, all known filesystem signatures will be erased from the
-        <em class="parameter"><code>device</code></em> after removal.
+<p>
+If the <em class="parameter"><code>option</code></em> parameter contains the key <em class="parameter"><code>wipe</code></em> with the value
+<code class="constant">TRUE</code>, all known filesystem signatures will be erased from the
+<em class="parameter"><code>device</code></em> after removal.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -151,11 +163,15 @@ RemoveDevice (IN  o     device,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>device</code></em></code>:</span></p></td>
-<td><p>An object path to an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.</p></td>
+<td><p>
+An object path to an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>wipe</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>wipe</code></em> (of type 'b').
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -168,7 +184,8 @@ RemoveDevice (IN  o     device,
 AddDevice (IN  o     device,
            IN  a{sv} options);
 </pre>
-<p>        Adds <em class="parameter"><code>device</code></em> to the array.
+<p>
+Adds <em class="parameter"><code>device</code></em> to the array.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -178,11 +195,15 @@ AddDevice (IN  o     device,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>device</code></em></code>:</span></p></td>
-<td><p>An object path to an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.</p></td>
+<td><p>
+An object path to an object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -195,7 +216,8 @@ AddDevice (IN  o     device,
 SetBitmapLocation (IN  ay    value,
                    IN  a{sv} options);
 </pre>
-<p>        Sets whether the array has a write-intent bitmap.
+<p>
+Sets whether the array has a write-intent bitmap.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -205,11 +227,15 @@ SetBitmapLocation (IN  ay    value,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN ay <em class="parameter"><code>value</code></em></code>:</span></p></td>
-<td><p>The value for the bitmap, currently only the values 'none' and 'internal' are supported.</p></td>
+<td><p>
+The value for the bitmap, currently only the values 'none' and 'internal' are supported.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -222,17 +248,20 @@ SetBitmapLocation (IN  ay    value,
 RequestSyncAction (IN  s     sync_action,
                    IN  a{sv} options);
 </pre>
-<p>        This method call can be used to trigger and cancel data
-        redundancy checks and repairs. Currently only the values
-        <code class="literal">check</code>, <code class="literal">repair</code> and
-        <code class="literal">idle</code> can be used for <em class="parameter"><code>sync_action</code></em>.
+<p>
+This method call can be used to trigger and cancel data
+redundancy checks and repairs. Currently only the values
+<code class="literal">check</code>, <code class="literal">repair</code> and
+<code class="literal">idle</code> can be used for <em class="parameter"><code>sync_action</code></em>.
 </p>
-<p>        See also the property <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-property-org-freedesktop-UDisks2-MDRaid.SyncAction" title='The "SyncAction" property'>"SyncAction"</a>.
+<p>
+See also the property <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-property-org-freedesktop-UDisks2-MDRaid.SyncAction" title='The "SyncAction" property'>"SyncAction"</a>.
 </p>
-<p>        This method call is similar to writing to the
-        <code class="literal">sync_action</code> sysfs file, see the
-        <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-        file shipped with the kernel sources.
+<p>
+This method call is similar to writing to the
+<code class="literal">sync_action</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -242,11 +271,15 @@ RequestSyncAction (IN  s     sync_action,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>sync_action</code></em></code>:</span></p></td>
-<td><p>The action to request.</p></td>
+<td><p>
+The action to request.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -258,16 +291,18 @@ RequestSyncAction (IN  s     sync_action,
 <pre class="programlisting">
 Delete (IN  a{sv} options);
 </pre>
-<p>         Stops the RAID array and destroys all RAID metadata on member devices.
+<p>
+Stops the RAID array and destroys all RAID metadata on member devices.
 </p>
-<p>         If the option <em class="parameter"><code>tear-down</code></em> is set to
-         <code class="constant">TRUE</code>, then the RAID array block device and all its children
-         will be cleaned up before stopping.  This cleanup consists of
-         removing entries from /etc/fstab and /etc/crypttab, and
-         locking of encrypted block devices.  Entries in /etc/fstab
-         and /etc/crypttab that have been created with the
-         'track-parents' options to AddConfigurationItem will be
-         removed even if their block device is currently unavailable.
+<p>
+If the option <em class="parameter"><code>tear-down</code></em> is set to
+<code class="constant">TRUE</code>, then the RAID array block device and all its children
+will be cleaned up before stopping.  This cleanup consists of
+removing entries from /etc/fstab and /etc/crypttab, and
+locking of encrypted block devices.  Entries in /etc/fstab
+and /etc/crypttab that have been created with the
+'track-parents' options to AddConfigurationItem will be
+removed even if their block device is currently unavailable.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -276,7 +311,9 @@ Delete (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options.</p></td>
+<td><p>
+Options.
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.0.0</p>
@@ -289,7 +326,8 @@ Delete (IN  a{sv} options);
 <pre class="programlisting">
 UUID  readable   s
 </pre>
-<p>         The UUID of the array.
+<p>
+The UUID of the array.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -299,7 +337,8 @@ UUID  readable   s
 <pre class="programlisting">
 Name  readable   s
 </pre>
-<p>         The name of the array (TODO: homehost etc).
+<p>
+The name of the array (TODO: homehost etc).
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -309,9 +348,11 @@ Name  readable   s
 <pre class="programlisting">
 Level  readable   s
 </pre>
-<p>         The RAID level.
+<p>
+The RAID level.
 </p>
-<p>         Known values include <code class="literal">raid0</code>, <code class="literal">raid1</code>, <code class="literal">raid4</code>, <code class="literal">raid5</code>, <code class="literal">raid6</code> and <code class="literal">raid10</code>.
+<p>
+Known values include <code class="literal">raid0</code>, <code class="literal">raid1</code>, <code class="literal">raid4</code>, <code class="literal">raid5</code>, <code class="literal">raid6</code> and <code class="literal">raid10</code>.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -321,7 +362,8 @@ Level  readable   s
 <pre class="programlisting">
 NumDevices  readable   u
 </pre>
-<p>         Number of devices that are part of the array.
+<p>
+Number of devices that are part of the array.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -331,10 +373,12 @@ NumDevices  readable   u
 <pre class="programlisting">
 Size  readable   t
 </pre>
-<p>         The size of the array or 0 if unknown.
+<p>
+The size of the array or 0 if unknown.
 </p>
-<p>         This is the usable size, e.g. for a RAID-5 array backed by 4
-         1TB disks, this will be approximately 3 TB.
+<p>
+This is the usable size, e.g. for a RAID-5 array backed by 4
+1TB disks, this will be approximately 3 TB.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -344,17 +388,20 @@ Size  readable   t
 <pre class="programlisting">
 SyncAction  readable   s
 </pre>
-<p>         The current state of the array or empty if the array is not
-         running or if the array does not have any redundancy
-         (e.g. RAID-0 or linear).
+<p>
+The current state of the array or empty if the array is not
+running or if the array does not have any redundancy
+(e.g. RAID-0 or linear).
 </p>
-<p>         Use the <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-method-org-freedesktop-UDisks2-MDRaid.RequestSyncAction" title="The RequestSyncAction() method">RequestSyncAction()</a>
-         method to change this.
+<p>
+Use the <a class="link" href="gdbus-org.freedesktop.UDisks2.MDRaid.html#gdbus-method-org-freedesktop-UDisks2-MDRaid.RequestSyncAction" title="The RequestSyncAction() method">RequestSyncAction()</a>
+method to change this.
 </p>
-<p>         This property corresponds to the
-         <code class="literal">sync_action</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">sync_action</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -364,12 +411,14 @@ SyncAction  readable   s
 <pre class="programlisting">
 SyncCompleted  readable   d
 </pre>
-<p>         The fraction or sectors completed (always between <code class="constant">0.0</code> and <code class="constant">1.0</code>) in the sync operation or 0.0 if no operation is in progress.
+<p>
+The fraction or sectors completed (always between <code class="constant">0.0</code> and <code class="constant">1.0</code>) in the sync operation or 0.0 if no operation is in progress.
 </p>
-<p>         This property corresponds to the
-         <code class="literal">sync_completed</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">sync_completed</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -379,17 +428,20 @@ SyncCompleted  readable   d
 <pre class="programlisting">
 SyncRate  readable   t
 </pre>
-<p>         The rate (or speed) at which the sync operation takes
-         place. It is averaged over the last 30 seconds and measured
-         in bytes per second.
+<p>
+The rate (or speed) at which the sync operation takes
+place. It is averaged over the last 30 seconds and measured
+in bytes per second.
 </p>
-<p>         If the rate is unknown or no operation is in progress, the
-         value of this property is 0.
+<p>
+If the rate is unknown or no operation is in progress, the
+value of this property is 0.
 </p>
-<p>         This property corresponds to the
-         <code class="literal">sync_speed</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">sync_speed</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -399,16 +451,19 @@ SyncRate  readable   t
 <pre class="programlisting">
 SyncRemainingTime  readable   t
 </pre>
-<p>         The estimated number of micro-seconds until the operation is
-         finished
+<p>
+The estimated number of micro-seconds until the operation is
+finished
 </p>
-<p>         If the amount of remaining time is unknown or no operation is
-         in progress, the value of this property is 0.
+<p>
+If the amount of remaining time is unknown or no operation is
+in progress, the value of this property is 0.
 </p>
-<p>         This property is based on the value of the
-         <code class="literal">sync_speed</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property is based on the value of the
+<code class="literal">sync_speed</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -418,12 +473,14 @@ SyncRemainingTime  readable   t
 <pre class="programlisting">
 Degraded  readable   u
 </pre>
-<p>         Number of devices by which the array is degraded (0 if not degraded or not running).
+<p>
+Number of devices by which the array is degraded (0 if not degraded or not running).
 </p>
-<p>         This property corresponds to the
-         <code class="literal">degraded</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">degraded</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -433,15 +490,18 @@ Degraded  readable   u
 <pre class="programlisting">
 BitmapLocation  readable   ay
 </pre>
-<p>         The location of a write-intent bitmap (empty if the array is not running), if any.
+<p>
+The location of a write-intent bitmap (empty if the array is not running), if any.
 </p>
-<p>         If the RAID array does not support write-intent bitmaps (for
-         example RAID-0 arrays), this is empty.
+<p>
+If the RAID array does not support write-intent bitmaps (for
+example RAID-0 arrays), this is empty.
 </p>
-<p>         This property corresponds to the
-         <code class="literal">bitmap/location</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">bitmap/location</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -451,12 +511,14 @@ BitmapLocation  readable   ay
 <pre class="programlisting">
 ChunkSize  readable   t
 </pre>
-<p>         The chunk size (0 if the array is not running or not using striping).
+<p>
+The chunk size (0 if the array is not running or not using striping).
 </p>
-<p>         This property corresponds to the
-         <code class="literal">chunk_size</code> sysfs file, see the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+<p>
+This property corresponds to the
+<code class="literal">chunk_size</code> sysfs file, see the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -466,12 +528,14 @@ ChunkSize  readable   t
 <pre class="programlisting">
 ActiveDevices  readable   a(oiasta{sv})
 </pre>
-<p>         This property is an array with block devices that are
-         currently associated with the with the array. It is empty if
-         the array is not running.
+<p>
+This property is an array with block devices that are
+currently associated with the with the array. It is empty if
+the array is not running.
 </p>
-<p>         Each element of the array is a struct with the following members:
-         </p>
+<p>
+Each element of the array is a struct with the following members:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -501,11 +565,11 @@ ActiveDevices  readable   a(oiasta{sv})
 </tbody>
 </table></div>
 <p>
-         This property correspond to the
-         <code class="filename">/sys/block/mdN/md/dev-*</code> directories in sysfs and the sysfs files in each directory.
-         See the
-         <code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
-         file shipped with the kernel sources.
+This property correspond to the
+<code class="filename">/sys/block/mdN/md/dev-*</code> directories in sysfs and the sysfs files in each directory.
+See the
+<code class="filename"><a class="ulink" href="https://www.kernel.org/doc/Documentation/admin-guide/md.rst" target="_top">Documentation/admin-guide/md.rst</a></code>
+file shipped with the kernel sources.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -515,12 +579,15 @@ ActiveDevices  readable   a(oiasta{sv})
 <pre class="programlisting">
 ChildConfiguration  readable   a(sa{sv})
 </pre>
-<p>Configuration items belonging to the</p>
-<p>         block devices of this array (recursively).  This is also
-         valid when the array is stopped and there are no actual block
-         devices for it.  It works via the 'track-parents' options of
-         <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-method-org-freedesktop-UDisks2-Block.AddConfigurationItem" title="The AddConfigurationItem() method">AddConfigurationItem()</a>, which
-         see.
+<p>
+Configuration items belonging to the
+</p>
+<p>
+block devices of this array (recursively).  This is also
+valid when the array is stopped and there are no actual block
+devices for it.  It works via the 'track-parents' options of
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-method-org-freedesktop-UDisks2-Block.AddConfigurationItem" title="The AddConfigurationItem() method">AddConfigurationItem()</a>, which
+see.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -530,9 +597,10 @@ ChildConfiguration  readable   a(sa{sv})
 <pre class="programlisting">
 Running  readable   b
 </pre>
-<p>Whether or not the array is considered running.</p>
-<p>         It is an error to call Start on a running array, and Stop on
-         a non-running array, for example.
+<p>
+Whether or not the array is considered running.
+It is an error to call Start on a running array, and Stop on
+a non-running array, for example.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>

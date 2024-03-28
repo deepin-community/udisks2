@@ -42,8 +42,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Manager-LVM2"></a><h2>Description</h2>
-<p>      Additional interface with LVM2 specifics for top-level manager singleton object
-      located at the object path <code class="literal">/org/freedesktop/UDisks2/Manager</code>.
+<p>
+Additional interface with LVM2 specifics for top-level manager singleton object
+located at the object path <code class="literal">/org/freedesktop/UDisks2/Manager</code>.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -57,14 +58,17 @@ VolumeGroupCreate (IN  s     name,
                    IN  a{sv} options,
                    OUT o     result);
 </pre>
-<p>        Creates a new volume group, using <em class="parameter"><code>blocks</code></em> as the initial
-        physical volumes.  Each block device will be wiped and all
-        data on them will be lost.
+<p>
+Creates a new volume group, using <em class="parameter"><code>blocks</code></em> as the initial
+physical volumes.  Each block device will be wiped and all
+data on them will be lost.
 </p>
-<p>        You must specify at least one block device to be used as a
-        physical volume.
+<p>
+You must specify at least one block device to be used as a
+physical volume.
 </p>
-<p>        No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -74,19 +78,27 @@ VolumeGroupCreate (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name for the volume group.</p></td>
+<td><p>
+The name for the volume group.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN ao <em class="parameter"><code>blocks</code></em></code>:</span></p></td>
-<td><p>The block devices to use as physical volumes, as UDisks2 object paths.</p></td>
+<td><p>
+The block devices to use as physical volumes, as UDisks2 object paths.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The object path of the new volume group object.</p></td>
+<td><p>
+The object path of the new volume group object.
+</p></td>
 </tr>
 </tbody>
 </table></div>

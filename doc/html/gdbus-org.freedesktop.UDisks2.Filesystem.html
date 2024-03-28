@@ -37,6 +37,8 @@
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.SetLabel" title="The SetLabel() method">SetLabel</a>      (IN  s     label,
                IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.SetUUID" title="The SetUUID() method">SetUUID</a>       (IN  s     uuid,
+               IN  a{sv} options);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount</a>         (IN  a{sv} options,
                OUT s     mount_path);
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount" title="The Unmount() method">Unmount</a>       (IN  a{sv} options);
@@ -58,8 +60,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Filesystem"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that contain a mountable filesystem.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that contain a mountable filesystem.
 </p>
 </div>
 <div class="refsect1">
@@ -70,7 +73,8 @@
 SetLabel (IN  s     label,
           IN  a{sv} options);
 </pre>
-<p>        Sets the filesystem label.
+<p>
+Sets the filesystem label.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -80,14 +84,50 @@ SetLabel (IN  s     label,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>label</code></em></code>:</span></p></td>
-<td><p>The label to set.</p></td>
+<td><p>
+The label to set.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-UDisks2-Filesystem.SetUUID"></a><h3>The SetUUID() method</h3>
+<pre class="programlisting">
+SetUUID (IN  s     uuid,
+         IN  a{sv} options);
+</pre>
+<p>
+Sets the filesystem UUID value.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>uuid</code></em></code>:</span></p></td>
+<td><p>
+The UUID to set.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.10.0</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -96,51 +136,68 @@ SetLabel (IN  s     label,
 Mount (IN  a{sv} options,
        OUT s     mount_path);
 </pre>
-<p>        Mounts the filesystem.
+<p>
+Mounts the filesystem.
 </p>
-<p>        The directory the filesystem will be mounted in is determined
-        by looking at data related to the device or filesystem (such
-        the filesystem UUID and label) and will be created
-        automatically except if the device the filesystem resides on
-        is referenced in the <code class="filename">/etc/fstab</code> file, see
-        below. In either case, the directory the filesystem is mounted
-        in, is returned in <em class="parameter"><code>mount_path</code></em> on success - it is usually a
-        sub-directory of <code class="filename">/run/media/$USER</code> but note that
-        any directory may be returned.
+<p>
+The directory the filesystem will be mounted in is determined
+by looking at data related to the device or filesystem (such
+the filesystem UUID and label) and will be created
+automatically except if the device the filesystem resides on
+is referenced in the <code class="filename">/etc/fstab</code> file, see
+below. In either case, the directory the filesystem is mounted
+in, is returned in <em class="parameter"><code>mount_path</code></em> on success - it is usually a
+sub-directory of <code class="filename">/run/media/$USER</code> but note that
+any directory may be returned.
 </p>
-<p>        The filesystem type to use can be overridden with the <em class="parameter"><code>fstype</code></em>
-        option and mount options (a comma-separated string) can be
-        given in <em class="parameter"><code>options</code></em> option. Note that both the mount options and
-        filesystem types are validated against a (small) whitelist to
-        avoid unexpected privilege escalation
+<p>
+The filesystem type to use can be overridden with the <em class="parameter"><code>fstype</code></em>
+option and mount options (a comma-separated string) can be
+given in <em class="parameter"><code>options</code></em> option. Note that both the mount options and
+filesystem types are validated against a (small) whitelist to
+avoid unexpected privilege escalation. The filesystem type is
+by default determined by the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.IdType" title='The "IdType" property'>"IdType"</a>
+property. The <em class="parameter"><code>fstype</code></em> option doesn't typically need to be
+specified, primarily intended as an override in corner cases.
 </p>
-<p>        If the device in question is referenced in the
-        <code class="filename">/etc/fstab</code> file, the
-        <span class="command"><strong>mount</strong></span> command is called directly (as root)
-        and the given options or filesystem type given in <em class="parameter"><code>options</code></em> are
-        ignored.
+<p>
+If the <em class="parameter"><code>as-user</code></em> option is set, the
+filesystem is mounted on behalf of the specified user instead
+of the calling one. This has usually an effect on the returned
+<em class="parameter"><code>mount_path</code></em> and it also allows that user to unmount the
+filesystem later. This option expects a user name, not a UID.
 </p>
-<p>        If <code class="literal">x-udisks-auth</code> is specified as an option
-        for the device in the <code class="filename">/etc/fstab</code> file,
-        then the <span class="command"><strong>mount</strong></span> command is run as the
-        calling user, without performing any authorization check
-        mentioned above. If this fails because of insufficient
-        permissions, an authorization check is performed (which
-        typically results in the user having to authenticate as an
-        administrator). If authorized, the <span class="command"><strong>mount</strong></span>
-        command is then run as root.
+<p>
+If the device in question is referenced in the
+<code class="filename">/etc/fstab</code> file, the
+<span class="command"><strong>mount</strong></span> command is called directly (as root)
+and the given options or filesystem type given in <em class="parameter"><code>options</code></em> are
+ignored.
 </p>
-<p>        The filesystem should be unmounted using the
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount" title="The Unmount() method">Unmount()</a> method.
+<p>
+If <code class="literal">x-udisks-auth</code> is specified as an option
+for the device in the <code class="filename">/etc/fstab</code> file,
+then the <span class="command"><strong>mount</strong></span> command is run as the
+calling user, without performing any authorization check
+mentioned above. If this fails because of insufficient
+permissions, an authorization check is performed (which
+typically results in the user having to authenticate as an
+administrator). If authorized, the <span class="command"><strong>mount</strong></span>
+command is then run as root.
 </p>
-<p>        If the device is removed without being unmounted (e.g. the
-        user yanking the device or pulling the media out) or unmounted
-        in a way that bypasses the
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount" title="The Unmount() method">Unmount()</a> method
-        (e.g. unmounted by the super-user by using the
-        <span class="citerefentry"><span class="refentrytitle">umount</span>(8)</span>
-        command directly), the device will be unmounted (if needed)
-        and/or the mount point will be cleaned up.
+<p>
+The filesystem should be unmounted using the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount" title="The Unmount() method">Unmount()</a> method.
+</p>
+<p>
+If the device is removed without being unmounted (e.g. the
+user yanking the device or pulling the media out) or unmounted
+in a way that bypasses the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount" title="The Unmount() method">Unmount()</a> method
+(e.g. unmounted by the super-user by using the
+<span class="citerefentry"><span class="refentrytitle">umount</span>(8)</span>
+command directly), the device will be unmounted (if needed)
+and/or the mount point will be cleaned up.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -150,11 +207,15 @@ Mount (IN  a{sv} options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>fstype</code></em> (of type 's') and <em class="parameter"><code>options</code></em> (of type 's').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>fstype</code></em> (of type 's'), <em class="parameter"><code>as-user</code></em> (of type 's') and <em class="parameter"><code>options</code></em> (of type 's').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>mount_path</code></em></code>:</span></p></td>
-<td><p>The filesystem path where the device was mounted.</p></td>
+<td><p>
+The filesystem path where the device was mounted.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -165,22 +226,26 @@ Mount (IN  a{sv} options,
 <pre class="programlisting">
 Unmount (IN  a{sv} options);
 </pre>
-<p>        Unmount a mounted device.
+<p>
+Unmount a mounted device.
 </p>
-<p>        If the device in question was mounted by the calling user
-        via the <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount()</a> method the
-        filesystem is unmounted without any authorization checks.
-        Otherwise, an authorization check is performed (which
-        typically results in the user having to authenticate as an
-        administrator). If authorized, the filesystem is unmounted.
+<p>
+If the device in question was mounted by the calling user
+via the <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount()</a> method the
+filesystem is unmounted without any authorization checks.
+Otherwise, an authorization check is performed (which
+typically results in the user having to authenticate as an
+administrator). If authorized, the filesystem is unmounted.
 </p>
-<p>        If the mountpoint was previously created by udisks it is
-        guaranteed it will be removed upon returning from this method
-        call.
+<p>
+If the mountpoint was previously created by udisks it is
+guaranteed it will be removed upon returning from this method
+call.
 </p>
-<p>        If the filesystem is busy, this operation fails with the error
-        <a class="link" href="udisks2-UDisksError.html#UDISKS-ERROR-DEVICE-BUSY:CAPS"><code class="constant">org.freedesktop.UDisks2.Error.DeviceBusy</code></a>
-        unless the <em class="parameter"><code>force</code></em> option is used.
+<p>
+If the filesystem is busy, this operation fails with the error
+<a class="link" href="udisks2-UDisksError.html#UDISKS-ERROR-DEVICE-BUSY:CAPS"><code class="constant">org.freedesktop.UDisks2.Error.DeviceBusy</code></a>
+unless the <em class="parameter"><code>force</code></em> option is used.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -189,7 +254,9 @@ Unmount (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>force</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>force</code></em> (of type 'b').
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -200,10 +267,12 @@ Unmount (IN  a{sv} options);
 Resize (IN  t     size,
         IN  a{sv} options);
 </pre>
-<p>        Resizes the filesystem.
+<p>
+Resizes the filesystem.
 </p>
-<p>        Shrinking operations need to move data which causes this action to be
-        slow. The filesystem-resize job for the object might expose progress.
+<p>
+Shrinking operations need to move data which causes this action to be
+slow. The filesystem-resize job for the object might expose progress.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -213,11 +282,15 @@ Resize (IN  t     size,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The target size in bytes, 0 for maximum.</p></td>
+<td><p>
+The target size in bytes, 0 for maximum.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -230,9 +303,11 @@ Resize (IN  t     size,
 Check (IN  a{sv} options,
        OUT b     consistent);
 </pre>
-<p>         Checks the filesystem for consistency.
+<p>
+Checks the filesystem for consistency avoiding any modifications or repairs.
 </p>
-<p>         Unsupported filesystems result in an error.
+<p>
+Mounted or unsupported filesystems will result in an error.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -242,11 +317,15 @@ Check (IN  a{sv} options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT b <em class="parameter"><code>consistent</code></em></code>:</span></p></td>
-<td><p>Whether the filesystem is undamaged.</p></td>
+<td><p>
+Whether the filesystem is undamaged.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -259,9 +338,11 @@ Check (IN  a{sv} options,
 Repair (IN  a{sv} options,
         OUT b     repaired);
 </pre>
-<p>         Tries to repair the filesystem.
+<p>
+Tries to repair the filesystem.
 </p>
-<p>         Unsupported filesystems result in an error.
+<p>
+Mounted or unsupported filesystems will result in an error.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -271,11 +352,15 @@ Repair (IN  a{sv} options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT b <em class="parameter"><code>repaired</code></em></code>:</span></p></td>
-<td><p>Whether the filesystem could be successfully repaired.</p></td>
+<td><p>
+Whether the filesystem could be successfully repaired.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -287,10 +372,12 @@ Repair (IN  a{sv} options,
 <pre class="programlisting">
 TakeOwnership (IN  a{sv} options);
 </pre>
-<p>         Changes ownership of the filesystem to the UID and GID of the calling
-         user.
+<p>
+Changes ownership of the filesystem to the UID and GID of the calling
+user.
 </p>
-<p>         Filesystems that don't support ownership result in an error.
+<p>
+Filesystems that don't support ownership result in an error.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -299,7 +386,9 @@ TakeOwnership (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>recursive</code></em> (of type 'b').</p></td>
+<td><p>
+Options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>recursive</code></em> (of type 'b').
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.7.2</p>
@@ -312,9 +401,10 @@ TakeOwnership (IN  a{sv} options);
 <pre class="programlisting">
 MountPoints  readable   aay
 </pre>
-<p>         An array of filesystems paths for where the file system on
-         the device is mounted. If the device is not mounted, this
-         array is empty.
+<p>
+An array of filesystems paths for where the file system on
+the device is mounted. If the device is not mounted, this
+array is empty.
 </p>
 </div>
 <hr>
@@ -323,12 +413,23 @@ MountPoints  readable   aay
 <pre class="programlisting">
 Size  readable   t
 </pre>
-<p>The size of the filesystem.  This is the amount of</p>
-<p>         bytes used on the block device.  If this is smaller than
-         org.freedesktop.Udisks2.Block.Size, then the filesystem can
-         be made larger with Resize.
+<p>
+The size of the filesystem.  This is the amount of
 </p>
-<p>         If the size is unknown, the property is zero.
+<p>
+bytes used on the block device representing an outer filesystem
+boundary. If this is smaller than org.freedesktop.Udisks2.Block.Size,
+then the filesystem can be made larger with Resize.
+</p>
+<p>
+If the size is unknown, the property is zero. Currently limited
+to xfs and ext filesystems only.
+</p>
+<p>
+Please note that reading value of this property typically causes
+some I/O to read the filesystem superblock. Unlike the rest
+of the properties this one is set to be retrieved on-demand
+and is not proactively cached by the daemon.
 </p>
 </div>
 </div>

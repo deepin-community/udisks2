@@ -57,8 +57,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Encrypted"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that contain encrypted data.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that contain encrypted data.
 </p>
 </div>
 <div class="refsect1">
@@ -70,20 +71,24 @@ Unlock (IN  s     passphrase,
         IN  a{sv} options,
         OUT o     cleartext_device);
 </pre>
-<p>        Tries to unlock the encrypted device using <em class="parameter"><code>passphrase</code></em>.
+<p>
+Tries to unlock the encrypted device using <em class="parameter"><code>passphrase</code></em>.
 </p>
-<p>        If the device in question is referenced in a system-wide
-        configuration file (such as the <code class="filename">/etc/crypttab</code> file),
-        then name, options and passphrase (if available) is used from that
-        file after requesting additional authorization.
+<p>
+If the device in question is referenced in a system-wide
+configuration file (such as the <code class="filename">/etc/crypttab</code> file),
+then name, options and passphrase (if available) is used from that
+file after requesting additional authorization.
 </p>
-<p>        If an empty passphrase should be used to unlock the device, it has to be
-        passed using the <em class="parameter"><code>keyfile_contents</code></em> parameter. Empty string passed as
-        <em class="parameter"><code>passphrase</code></em> means "Use the passphrase from the configuration file".
+<p>
+If an empty passphrase should be used to unlock the device, it has to be
+passed using the <em class="parameter"><code>keyfile_contents</code></em> parameter. Empty string passed as
+<em class="parameter"><code>passphrase</code></em> means "Use the passphrase from the configuration file".
 </p>
-<p>        If the device is removed without being locked (e.g. the user
-        yanking the device or pulling the media out) the cleartext
-        device will be cleaned up.
+<p>
+If the device is removed without being locked (e.g. the user
+yanking the device or pulling the media out) the cleartext
+device will be cleaned up.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -93,15 +98,21 @@ Unlock (IN  s     passphrase,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>passphrase</code></em></code>:</span></p></td>
-<td><p>The passphrase to use.</p></td>
+<td><p>
+The passphrase to use.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>keyfile_contents</code></em> (of type 'ay') which is preferred over <em class="parameter"><code>passphrase</code></em> if specified and <em class="parameter"><code>read-only</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>keyfile_contents</code></em> (of type 'ay') which is preferred over <em class="parameter"><code>passphrase</code></em> if specified and <em class="parameter"><code>read-only</code></em> (of type 'b').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>cleartext_device</code></em></code>:</span></p></td>
-<td><p>An object path to the unlocked object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.</p></td>
+<td><p>
+An object path to the unlocked object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a> interface.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -112,7 +123,8 @@ Unlock (IN  s     passphrase,
 <pre class="programlisting">
 Lock (IN  a{sv} options);
 </pre>
-<p>        Locks the encrypted device.
+<p>
+Locks the encrypted device.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -121,7 +133,9 @@ Lock (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -133,17 +147,20 @@ ChangePassphrase (IN  s     passphrase,
                   IN  s     new_passphrase,
                   IN  a{sv} options);
 </pre>
-<p>        Changes the passphrase to <em class="parameter"><code>new_passphrase</code></em>. An existing passphrase is required.
+<p>
+Changes the passphrase to <em class="parameter"><code>new_passphrase</code></em>. An existing passphrase is required.
 </p>
-<p>        If <em class="parameter"><code>old_keyfile_contents</code></em> or
-        <em class="parameter"><code>new_keyfile_contents</code></em> are given, they take
-        precedence over the corresponding passphrase parameters individually.
+<p>
+If <em class="parameter"><code>old_keyfile_contents</code></em> or
+<em class="parameter"><code>new_keyfile_contents</code></em> are given, they take
+precedence over the corresponding passphrase parameters individually.
 </p>
-<p>        If the device in question is referenced in a system-wide
-        configuration file (such as the
-        <code class="filename">/etc/crypttab</code> file) and this
-        configuration references the passphrase, it is not
-        automatically updated.
+<p>
+If the device in question is referenced in a system-wide
+configuration file (such as the
+<code class="filename">/etc/crypttab</code> file) and this
+configuration references the passphrase, it is not
+automatically updated.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -153,15 +170,21 @@ ChangePassphrase (IN  s     passphrase,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>passphrase</code></em></code>:</span></p></td>
-<td><p>The existing passphrase.</p></td>
+<td><p>
+The existing passphrase.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>new_passphrase</code></em></code>:</span></p></td>
-<td><p>The new passphrase to use.</p></td>
+<td><p>
+The new passphrase to use.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>old_keyfile_contents</code></em> and <em class="parameter"><code>new_keyfile_contents</code></em> (of type 's' or 'ay').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>old_keyfile_contents</code></em> and <em class="parameter"><code>new_keyfile_contents</code></em> (of type 's' or 'ay').
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -173,11 +196,13 @@ ChangePassphrase (IN  s     passphrase,
 Resize (IN  t     size,
         IN  a{sv} options);
 </pre>
-<p>        Resizes the encrypted device.  The device must be unlocked.
-        The given size is the target size for the cleartext device.
+<p>
+Resizes the encrypted device.  The device must be unlocked.
+The given size is the target size for the cleartext device.
 </p>
-<p>        You need to specify either <em class="parameter"><code>passphrase</code></em> or <em class="parameter"><code>keyfile_contents</code></em> for LUKS 2
-        devices that don't have verified key loaded in kernel keyring.
+<p>
+You need to specify either <em class="parameter"><code>passphrase</code></em> or <em class="parameter"><code>keyfile_contents</code></em> for LUKS 2
+devices that don't have verified key loaded in kernel keyring.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -187,11 +212,15 @@ Resize (IN  t     size,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The target cleartext size in bytes, 0 for maximum.</p></td>
+<td><p>
+The target cleartext size in bytes, 0 for maximum.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>passphrase</code></em> (of type 's') and <em class="parameter"><code>keyfile_contents</code></em> (of type 'ay') which is preferred over <em class="parameter"><code>passphrase</code></em> if specified.</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>passphrase</code></em> (of type 's') and <em class="parameter"><code>keyfile_contents</code></em> (of type 'ay') which is preferred over <em class="parameter"><code>passphrase</code></em> if specified.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -205,13 +234,16 @@ Resize (IN  t     size,
 <pre class="programlisting">
 ChildConfiguration  readable   a(sa{sv})
 </pre>
-<p>Configuration items belonging to the</p>
-<p>         clear text device of this encrypted block device and its
-         children.  This is also valid when this block device is
-         currently locked and there is no clear text device for it.
-         It works via the 'track-parents' options of
-         <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-method-org-freedesktop-UDisks2-Block.AddConfigurationItem" title="The AddConfigurationItem() method">AddConfigurationItem()</a>, which
-         see.
+<p>
+Configuration items belonging to the
+</p>
+<p>
+clear text device of this encrypted block device and its
+children.  This is also valid when this block device is
+currently locked and there is no clear text device for it.
+It works via the 'track-parents' options of
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-method-org-freedesktop-UDisks2-Block.AddConfigurationItem" title="The AddConfigurationItem() method">AddConfigurationItem()</a>, which
+see.
 </p>
 </div>
 <hr>
@@ -220,12 +252,14 @@ ChildConfiguration  readable   a(sa{sv})
 <pre class="programlisting">
 HintEncryptionType  readable   s
 </pre>
-<p>         If not blank, the type of the encryption used to encrypt this device.
+<p>
+If not blank, the type of the encryption used to encrypt this device.
 </p>
-<p>         This is set during successful unlocking of an encrypted device.
-         It is required for encryption types which can only be determined
-         by decrypting the device (for example TCRYPT), but is used for all
-         encryption types for consistency reasons.
+<p>
+This is set during successful unlocking of an encrypted device.
+It is required for encryption types which can only be determined
+by decrypting the device (for example TCRYPT), but is used for all
+encryption types for consistency reasons.
 </p>
 </div>
 <hr>
@@ -234,7 +268,9 @@ HintEncryptionType  readable   s
 <pre class="programlisting">
 MetadataSize  readable   t
 </pre>
-<p>Size of the metadata on the encrypted device in bytes</p>
+<p>
+Size of the metadata on the encrypted device in bytes
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -242,7 +278,8 @@ MetadataSize  readable   t
 <pre class="programlisting">
 CleartextDevice  readable   o
 </pre>
-<p>         For an unlocked device, the object path of its cleartext device.
+<p>
+For an unlocked device, the object path of its cleartext device.
 </p>
 </div>
 </div>

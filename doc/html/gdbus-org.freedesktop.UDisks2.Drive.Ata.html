@@ -82,8 +82,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Drive-Ata"></a><h2>Description</h2>
-<p>    Objects implementing this interface also implement the
-    <a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.html#gdbus-interface-org-freedesktop-UDisks2-Drive.top_of_page">org.freedesktop.UDisks2.Drive</a> interface.
+<p>
+Objects implementing this interface also implement the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.html#gdbus-interface-org-freedesktop-UDisks2-Drive.top_of_page">org.freedesktop.UDisks2.Drive</a> interface.
 </p>
 </div>
 <div class="refsect1">
@@ -93,17 +94,20 @@
 <pre class="programlisting">
 SmartUpdate (IN  a{sv} options);
 </pre>
-<p>        Reads SMART data from the drive and update relevant properties.
+<p>
+Reads SMART data from the drive and update relevant properties.
 </p>
-<p>        If the option <em class="parameter"><code>nowakeup</code></em> is given and the disk is in a sleeping
-        state, the error
-        <code class="literal">org.freedesktop.UDisks2.Error.WouldWakeup</code> is
-        returned.
+<p>
+If the option <em class="parameter"><code>nowakeup</code></em> is given and the disk is in a sleeping
+state, the error
+<code class="literal">org.freedesktop.UDisks2.Error.WouldWakeup</code> is
+returned.
 </p>
-<p>        The option <em class="parameter"><code>atasmart_blob</code></em> can be used to inject libatasmart
-        compatible blobs for testing how clients react to different
-        kinds of SMART data. This option may be removed in the future
-        without it being considered an ABI break.
+<p>
+The option <em class="parameter"><code>atasmart_blob</code></em> can be used to inject libatasmart
+compatible blobs for testing how clients react to different
+kinds of SMART data. This option may be removed in the future
+without it being considered an ABI break.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -112,7 +116,9 @@ SmartUpdate (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>nowakeup</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>nowakeup</code></em> (of type 'b').
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -123,9 +129,10 @@ SmartUpdate (IN  a{sv} options);
 SmartGetAttributes (IN  a{sv}            options,
                     OUT a(ysqiiixia{sv}) attributes);
 </pre>
-<p>        Get the SMART attributes.
-        Each attribute is a struct with the following members:
-        </p>
+<p>
+Get the SMART attributes.
+Each attribute is a struct with the following members:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -171,7 +178,7 @@ SmartGetAttributes (IN  a{sv}            options,
 </tbody>
 </table></div>
 <p>
-        The <em class="parameter"><code>name</code></em> parameter should be used as the authoritative identifier for the attribute since it is derived from the numerical <em class="parameter"><code>id</code></em> and the disk's <code class="literal">IDENTIFY</code> data and thus handles ID collisions between drives of different make and model.
+The <em class="parameter"><code>name</code></em> parameter should be used as the authoritative identifier for the attribute since it is derived from the numerical <em class="parameter"><code>id</code></em> and the disk's <code class="literal">IDENTIFY</code> data and thus handles ID collisions between drives of different make and model.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -181,11 +188,15 @@ SmartGetAttributes (IN  a{sv}            options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>nowakeup</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>nowakeup</code></em> (of type 'b').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT a(ysqiiixia{sv}) <em class="parameter"><code>attributes</code></em></code>:</span></p></td>
-<td><p>The SMART attributes.</p></td>
+<td><p>
+The SMART attributes.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -197,12 +208,14 @@ SmartGetAttributes (IN  a{sv}            options,
 SmartSelftestStart (IN  s     type,
                     IN  a{sv} options);
 </pre>
-<p>        Starts a SMART selftest. The <em class="parameter"><code>type</code></em> parameter is for the type
-        of test to start - valid values are <code class="literal">short</code>,
-        <code class="literal">extended</code> and <code class="literal">conveyance</code>.
+<p>
+Starts a SMART selftest. The <em class="parameter"><code>type</code></em> parameter is for the type
+of test to start - valid values are <code class="literal">short</code>,
+<code class="literal">extended</code> and <code class="literal">conveyance</code>.
 </p>
-<p>        Note that the method returns immediately after the test has
-        been started successfully.
+<p>
+Note that the method returns immediately after the test has
+been started successfully.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -212,11 +225,15 @@ SmartSelftestStart (IN  s     type,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The type test to run.</p></td>
+<td><p>
+The type test to run.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -227,7 +244,8 @@ SmartSelftestStart (IN  s     type,
 <pre class="programlisting">
 SmartSelftestAbort (IN  a{sv} options);
 </pre>
-<p>        Aborts a running SMART selftest.
+<p>
+Aborts a running SMART selftest.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -236,7 +254,9 @@ SmartSelftestAbort (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -247,15 +267,17 @@ SmartSelftestAbort (IN  a{sv} options);
 SmartSetEnabled (IN  b     value,
                  IN  a{sv} options);
 </pre>
-<p>        Sets whether SMART is enabled for the drive. This setting is
-        stored in the non-volatile memory in the drive itself and does
-        not need to be refreshed every time the drive is powered on or
-        connected.
+<p>
+Sets whether SMART is enabled for the drive. This setting is
+stored in the non-volatile memory in the drive itself and does
+not need to be refreshed every time the drive is powered on or
+connected.
 </p>
-<p>        Since this may require authentication and thus may fail, it is
-        implemented this way instead of the
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SmartEnabled" title='The "SmartEnabled" property'>"SmartEnabled"</a> property being
-        writable.
+<p>
+Since this may require authentication and thus may fail, it is
+implemented this way instead of the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SmartEnabled" title='The "SmartEnabled" property'>"SmartEnabled"</a> property being
+writable.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -265,11 +287,15 @@ SmartSetEnabled (IN  b     value,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>value</code></em></code>:</span></p></td>
-<td><p><code class="constant">TRUE</code> to enable SMART, <code class="constant">FALSE</code> to disable SMART.</p></td>
+<td><p>
+<code class="constant">TRUE</code> to enable SMART, <code class="constant">FALSE</code> to disable SMART.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -282,14 +308,16 @@ SmartSetEnabled (IN  b     value,
 PmGetState (IN  a{sv} options,
             OUT y     state);
 </pre>
-<p>        Get the current power mode status. This is implemented as a
-        method call as it involves sending a command from the host to
-        the drive and no change notification is available.
+<p>
+Get the current power mode status. This is implemented as a
+method call as it involves sending a command from the host to
+the drive and no change notification is available.
 </p>
-<p>        The format of <em class="parameter"><code>state</code></em> is the result obtained from sending the
-        ATA command <span class="quote">“<span class="quote">CHECK POWER MODE</span>”</span> to the drive.
-        Known values include
-        </p>
+<p>
+The format of <em class="parameter"><code>state</code></em> is the result obtained from sending the
+ATA command <span class="quote">“<span class="quote">CHECK POWER MODE</span>”</span> to the drive.
+Known values include
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -311,8 +339,8 @@ PmGetState (IN  a{sv} options,
 </tbody>
 </table></div>
 <p>
-        Typically user interfaces will report "Drive is spun down" if <em class="parameter"><code>state</code></em> is
-        0x00 and "Drive is spun up" otherwise.
+Typically user interfaces will report "Drive is spun down" if <em class="parameter"><code>state</code></em> is
+0x00 and "Drive is spun up" otherwise.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -322,11 +350,15 @@ PmGetState (IN  a{sv} options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT y <em class="parameter"><code>state</code></em></code>:</span></p></td>
-<td><p>The current power state.</p></td>
+<td><p>
+The current power state.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -337,10 +369,11 @@ PmGetState (IN  a{sv} options,
 <pre class="programlisting">
 PmStandby (IN  a{sv} options);
 </pre>
-<p>        Force the drive to immediately enter the low power consumption
-        <span class="emphasis"><em>standby</em></span> mode, usually causing it to spin
-        down. This is done by sending the ATA command
-        <span class="quote">“<span class="quote">STANDBY IMMEDIATE</span>”</span> to the drive.
+<p>
+Force the drive to immediately enter the low power consumption
+<span class="emphasis"><em>standby</em></span> mode, usually causing it to spin
+down. This is done by sending the ATA command
+<span class="quote">“<span class="quote">STANDBY IMMEDIATE</span>”</span> to the drive.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -349,7 +382,9 @@ PmStandby (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -359,10 +394,11 @@ PmStandby (IN  a{sv} options);
 <pre class="programlisting">
 PmWakeup (IN  a{sv} options);
 </pre>
-<p>        Force the drive to immediately wake up (exiting the low power
-        consumption <span class="emphasis"><em>standby</em></span> mode), usually
-        causing it to spin up. This is done by reading data from the
-        disk.
+<p>
+Force the drive to immediately wake up (exiting the low power
+consumption <span class="emphasis"><em>standby</em></span> mode), usually
+causing it to spin up. This is done by reading data from the
+disk.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -371,7 +407,9 @@ PmWakeup (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -381,18 +419,21 @@ PmWakeup (IN  a{sv} options);
 <pre class="programlisting">
 SecurityEraseUnit (IN  a{sv} options);
 </pre>
-<p>        Does all the necessary checks and preparations and then sends
-        the <span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command to the
-        drive. If the option <em class="parameter"><code>enhanced</code></em> is set to <code class="constant">TRUE</code> an
-        <span class="emphasis"><em>enhanced secure erase</em></span> is requested.
+<p>
+Does all the necessary checks and preparations and then sends
+the <span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command to the
+drive. If the option <em class="parameter"><code>enhanced</code></em> is set to <code class="constant">TRUE</code> an
+<span class="emphasis"><em>enhanced secure erase</em></span> is requested.
 </p>
-<p>        All data on the drive will be irrevocably erased.
+<p>
+All data on the drive will be irrevocably erased.
 </p>
-<p>        This operation takes either
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SecurityEraseUnitMinutes" title='The "SecurityEraseUnitMinutes" property'>"SecurityEraseUnitMinutes"</a> or
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SecurityEnhancedEraseUnitMinutes" title='The "SecurityEnhancedEraseUnitMinutes" property'>"SecurityEnhancedEraseUnitMinutes"</a>
-        minutes to complete depending on whether the <em class="parameter"><code>enhanced</code></em> option
-        is <code class="constant">TRUE</code>.
+<p>
+This operation takes either
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SecurityEraseUnitMinutes" title='The "SecurityEraseUnitMinutes" property'>"SecurityEraseUnitMinutes"</a> or
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Drive.Ata.html#gdbus-property-org-freedesktop-UDisks2-Drive-Ata.SecurityEnhancedEraseUnitMinutes" title='The "SecurityEnhancedEraseUnitMinutes" property'>"SecurityEnhancedEraseUnitMinutes"</a>
+minutes to complete depending on whether the <em class="parameter"><code>enhanced</code></em> option
+is <code class="constant">TRUE</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -401,7 +442,9 @@ SecurityEraseUnit (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>enhanced</code></em> (of type 'b').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) includes <em class="parameter"><code>enhanced</code></em> (of type 'b').
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -413,7 +456,9 @@ SecurityEraseUnit (IN  a{sv} options);
 <pre class="programlisting">
 SmartSupported  readable   b
 </pre>
-<p>Whether the drive supports SMART.</p>
+<p>
+Whether the drive supports SMART.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -421,7 +466,9 @@ SmartSupported  readable   b
 <pre class="programlisting">
 SmartEnabled  readable   b
 </pre>
-<p>Whether SMART is enabled.</p>
+<p>
+Whether SMART is enabled.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -429,12 +476,14 @@ SmartEnabled  readable   b
 <pre class="programlisting">
 SmartUpdated  readable   t
 </pre>
-<p>         The point in time (seconds since the
-         <a class="ulink" href="http://en.wikipedia.org/wiki/Unix_epoch" target="_top">Unix Epoch</a>)
-         that the SMART status was updated or 0 if never updated.
+<p>
+The point in time (seconds since the
+<a class="ulink" href="http://en.wikipedia.org/wiki/Unix_epoch" target="_top">Unix Epoch</a>)
+that the SMART status was updated or 0 if never updated.
 </p>
-<p>         The value of the other properties related to SMART are not
-         meaningful if this property is 0.
+<p>
+The value of the other properties related to SMART are not
+meaningful if this property is 0.
 </p>
 </div>
 <hr>
@@ -443,10 +492,12 @@ SmartUpdated  readable   t
 <pre class="programlisting">
 SmartFailing  readable   b
 </pre>
-<p>         Set to <code class="constant">TRUE</code> if disk is about to fail.
+<p>
+Set to <code class="constant">TRUE</code> if disk is about to fail.
 </p>
-<p>         This value is read from the disk itself and does not include
-         any interpretation.
+<p>
+This value is read from the disk itself and does not include
+any interpretation.
 </p>
 </div>
 <hr>
@@ -455,7 +506,8 @@ SmartFailing  readable   b
 <pre class="programlisting">
 SmartPowerOnSeconds  readable   t
 </pre>
-<p>         The amount of time the disk has been powered on (according to SMART data) or 0 if unknown.
+<p>
+The amount of time the disk has been powered on (according to SMART data) or 0 if unknown.
 </p>
 </div>
 <hr>
@@ -464,7 +516,8 @@ SmartPowerOnSeconds  readable   t
 <pre class="programlisting">
 SmartTemperature  readable   d
 </pre>
-<p>         The temperature (in Kelvin) of the disk according to SMART data or 0 if unknown.
+<p>
+The temperature (in Kelvin) of the disk according to SMART data or 0 if unknown.
 </p>
 </div>
 <hr>
@@ -473,7 +526,8 @@ SmartTemperature  readable   d
 <pre class="programlisting">
 SmartNumAttributesFailing  readable   i
 </pre>
-<p>        The number of attributes failing right now or -1 if unknown.
+<p>
+The number of attributes failing right now or -1 if unknown.
 </p>
 </div>
 <hr>
@@ -482,7 +536,8 @@ SmartNumAttributesFailing  readable   i
 <pre class="programlisting">
 SmartNumAttributesFailedInThePast  readable   i
 </pre>
-<p>        The number of attributes that have failed in the past or -1 if unknown.
+<p>
+The number of attributes that have failed in the past or -1 if unknown.
 </p>
 </div>
 <hr>
@@ -491,7 +546,8 @@ SmartNumAttributesFailedInThePast  readable   i
 <pre class="programlisting">
 SmartNumBadSectors  readable   x
 </pre>
-<p>        The number of bad sectors (ie. pending and reallocated) or -1 if unknown.
+<p>
+The number of bad sectors (ie. pending and reallocated) or -1 if unknown.
 </p>
 </div>
 <hr>
@@ -500,8 +556,9 @@ SmartNumBadSectors  readable   x
 <pre class="programlisting">
 SmartSelftestStatus  readable   s
 </pre>
-<p>         The status of the last self-test. Known values include
-        </p>
+<p>
+The status of the last self-test. Known values include
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -559,7 +616,8 @@ SmartSelftestStatus  readable   s
 <pre class="programlisting">
 SmartSelftestPercentRemaining  readable   i
 </pre>
-<p>        The percent remaining or -1 if unknown.
+<p>
+The percent remaining or -1 if unknown.
 </p>
 </div>
 <hr>
@@ -568,7 +626,9 @@ SmartSelftestPercentRemaining  readable   i
 <pre class="programlisting">
 PmSupported  readable   b
 </pre>
-<p>Whether the drive supports power management.</p>
+<p>
+Whether the drive supports power management.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -576,7 +636,9 @@ PmSupported  readable   b
 <pre class="programlisting">
 PmEnabled  readable   b
 </pre>
-<p>Whether power management is enabled.</p>
+<p>
+Whether power management is enabled.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -584,7 +646,9 @@ PmEnabled  readable   b
 <pre class="programlisting">
 ApmSupported  readable   b
 </pre>
-<p>Whether the drive supports Advanced Power Management (APM).</p>
+<p>
+Whether the drive supports Advanced Power Management (APM).
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -592,7 +656,9 @@ ApmSupported  readable   b
 <pre class="programlisting">
 ApmEnabled  readable   b
 </pre>
-<p>Whether Advanced Power Management (APM) is enabled.</p>
+<p>
+Whether Advanced Power Management (APM) is enabled.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -600,7 +666,9 @@ ApmEnabled  readable   b
 <pre class="programlisting">
 AamSupported  readable   b
 </pre>
-<p>Whether the drive supports Automatic Acoustic Management (AAM).</p>
+<p>
+Whether the drive supports Automatic Acoustic Management (AAM).
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -608,7 +676,9 @@ AamSupported  readable   b
 <pre class="programlisting">
 AamEnabled  readable   b
 </pre>
-<p>Whether Automatic Acoustic Management (AAM) is enabled.</p>
+<p>
+Whether Automatic Acoustic Management (AAM) is enabled.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -616,7 +686,9 @@ AamEnabled  readable   b
 <pre class="programlisting">
 AamVendorRecommendedValue  readable   i
 </pre>
-<p>The vendor-recommended AAM value (or 0 if AAM is not supported).</p>
+<p>
+The vendor-recommended AAM value (or 0 if AAM is not supported).
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -624,7 +696,8 @@ AamVendorRecommendedValue  readable   i
 <pre class="programlisting">
 WriteCacheSupported  readable   b
 </pre>
-<p>         Whether the drive supports configuring the write cache.
+<p>
+Whether the drive supports configuring the write cache.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -634,7 +707,8 @@ WriteCacheSupported  readable   b
 <pre class="programlisting">
 WriteCacheEnabled  readable   b
 </pre>
-<p>         Whether the write-cache is enabled (or <code class="constant">FALSE</code> if not supported).
+<p>
+Whether the write-cache is enabled (or <code class="constant">FALSE</code> if not supported).
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -644,7 +718,8 @@ WriteCacheEnabled  readable   b
 <pre class="programlisting">
 ReadLookaheadSupported  readable   b
 </pre>
-<p>         Whether the drive supports configuring the read look-ahead.
+<p>
+Whether the drive supports configuring the read look-ahead.
 </p>
 <p class="since">Since 2.1.7</p>
 </div>
@@ -654,7 +729,8 @@ ReadLookaheadSupported  readable   b
 <pre class="programlisting">
 ReadLookaheadEnabled  readable   b
 </pre>
-<p>         Whether the read look-ahead is enabled (or <code class="constant">FALSE</code> if not supported).
+<p>
+Whether the read look-ahead is enabled (or <code class="constant">FALSE</code> if not supported).
 </p>
 <p class="since">Since 2.1.7</p>
 </div>
@@ -664,12 +740,14 @@ ReadLookaheadEnabled  readable   b
 <pre class="programlisting">
 SecurityEraseUnitMinutes  readable   i
 </pre>
-<p>         The estimated amount of minutes it takes to complete the
-         <span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command or 0 if this
-         command is not available.
+<p>
+The estimated amount of minutes it takes to complete the
+<span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command or 0 if this
+command is not available.
 </p>
-<p>         If set to 510 it means that it takes at least 508 minutes to
-         complete the operation.
+<p>
+If set to 510 it means that it takes at least 508 minutes to
+complete the operation.
 </p>
 </div>
 <hr>
@@ -678,12 +756,14 @@ SecurityEraseUnitMinutes  readable   i
 <pre class="programlisting">
 SecurityEnhancedEraseUnitMinutes  readable   i
 </pre>
-<p>         The estimated amount of minutes it takes to complete the
-         <span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command with enhanced mode
-         specified or 0 if enhanced erase is not available.
+<p>
+The estimated amount of minutes it takes to complete the
+<span class="quote">“<span class="quote">SECURITY ERASE UNIT</span>”</span> command with enhanced mode
+specified or 0 if enhanced erase is not available.
 </p>
-<p>         If set to 510 it means that it takes at least 508 minutes to
-         complete the operation.
+<p>
+If set to 510 it means that it takes at least 508 minutes to
+complete the operation.
 </p>
 </div>
 <hr>
@@ -692,7 +772,8 @@ SecurityEnhancedEraseUnitMinutes  readable   i
 <pre class="programlisting">
 SecurityFrozen  readable   b
 </pre>
-<p>         If set to <code class="constant">TRUE</code> the unit is frozen.
+<p>
+If set to <code class="constant">TRUE</code> the unit is frozen.
 </p>
 </div>
 </div>
