@@ -63,16 +63,17 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="id-1.3.3.23.4"></a><h2>Properties</h2>
+<a name="id-1.3.3.27.4"></a><h2>Properties</h2>
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.ISCSI.Initiator.html#gdbus-property-org-freedesktop-UDisks2-Manager-ISCSI-Initiator.SessionsSupported" title='The "SessionsSupported" property'>SessionsSupported</a>  readable   b
 </pre>
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Manager-ISCSI-Initiator"></a><h2>Description</h2>
-<p>       Additional interface with iSCSI specifics for top-level manager
-       singleton object located at the object path
-       <code class="literal">/org/freedesktop/UDisks2/Manager</code>.
+<p>
+Additional interface with iSCSI specifics for top-level manager
+singleton object located at the object path
+<code class="literal">/org/freedesktop/UDisks2/Manager</code>.
 </p>
 <p class="since">Since 2.0.1</p>
 </div>
@@ -83,7 +84,8 @@
 <pre class="programlisting">
 GetFirmwareInitiatorName (OUT s result);
 </pre>
-<p>        Returns the iSCSI firmware initiator name.
+<p>
+Returns the iSCSI firmware initiator name.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -92,7 +94,9 @@ GetFirmwareInitiatorName (OUT s result);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The iSCSI firmware initiator name.</p></td>
+<td><p>
+The iSCSI firmware initiator name.
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.4.0</p>
@@ -103,12 +107,14 @@ GetFirmwareInitiatorName (OUT s result);
 <pre class="programlisting">
 GetInitiatorName (OUT s result);
 </pre>
-<p>         Returns a iSCSI initiator name.
+<p>
+Returns a iSCSI initiator name.
 </p>
-<p>         Note: Initiator name can contain non UTF-8 characters. In this case
-         this function will return "Invalid UTF-8" string. Use
-         <a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.ISCSI.Initiator.html#gdbus-interface-org-freedesktop-UDisks2-Manager-ISCSI-Initiator.top_of_page">org.freedesktop.UDisks2.Manager.ISCSI.Initiator</a>:GetInitiatorNameRaw
-         to get raw, undecoded initiator name.
+<p>
+Note: Initiator name can contain non UTF-8 characters. In this case
+this function will return "Invalid UTF-8" string. Use
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Manager.ISCSI.Initiator.html#gdbus-interface-org-freedesktop-UDisks2-Manager-ISCSI-Initiator.top_of_page">org.freedesktop.UDisks2.Manager.ISCSI.Initiator</a>:GetInitiatorNameRaw
+to get raw, undecoded initiator name.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -117,7 +123,9 @@ GetInitiatorName (OUT s result);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The iSCSI initiator name.</p></td>
+<td><p>
+The iSCSI initiator name.
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.0.1</p>
@@ -128,7 +136,8 @@ GetInitiatorName (OUT s result);
 <pre class="programlisting">
 GetInitiatorNameRaw (OUT ay result);
 </pre>
-<p>         Returns an iSCSI initiator name as a raw NULL terminated byte array.
+<p>
+Returns an iSCSI initiator name as a raw NULL terminated byte array.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -137,7 +146,9 @@ GetInitiatorNameRaw (OUT ay result);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">OUT ay <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The iSCSI initiator name.</p></td>
+<td><p>
+The iSCSI initiator name.
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.8.3</p>
@@ -149,9 +160,17 @@ GetInitiatorNameRaw (OUT ay result);
 SetInitiatorName (IN  s     name,
                   IN  a{sv} options);
 </pre>
-<p>        Sets a new iSCSI initiator name.
+<p>
+Sets a new iSCSI initiator name. This is typically done by populating the
+<code class="filename">/etc/iscsi/initiatorname.iscsi</code> file.
 </p>
-<p>        No additional options are currently defined.
+<p>
+The iscsid service needs to be restarted afterwards to reflect the change
+(if running). This is however distribution-specific and not performed
+by UDisks at this moment.
+</p>
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -161,11 +180,15 @@ SetInitiatorName (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The new iSCSI initiator name.</p></td>
+<td><p>
+The new iSCSI initiator name.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -181,16 +204,19 @@ DiscoverSendTargets (IN  s        address,
                      OUT a(sisis) nodes,
                      OUT i        nodes_cnt);
 </pre>
-<p>        Performs targets' discovery with no authentication data.
+<p>
+Performs targets' discovery with no authentication data.
 </p>
-<p>        If the option <em class="parameter"><code>username</code></em> is provided, then
-        the <em class="parameter"><code>username</code></em> and <em class="parameter"><code>password</code></em>
-        will be used for CHAP authentication.
+<p>
+If the option <em class="parameter"><code>username</code></em> is provided, then
+the <em class="parameter"><code>username</code></em> and <em class="parameter"><code>password</code></em>
+will be used for CHAP authentication.
 </p>
-<p>        If the option <em class="parameter"><code>reverse-username</code></em> is provided,
-        the the <em class="parameter"><code>reverse-username</code></em> and
-        <em class="parameter"><code>reverse-password</code></em> will be used for CHAP
-        authentication.
+<p>
+If the option <em class="parameter"><code>reverse-username</code></em> is provided,
+the the <em class="parameter"><code>reverse-username</code></em> and
+<em class="parameter"><code>reverse-password</code></em> will be used for CHAP
+authentication.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -200,23 +226,33 @@ DiscoverSendTargets (IN  s        address,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>address</code></em></code>:</span></p></td>
-<td><p>Hostname or IP-address to connect to.</p></td>
+<td><p>
+Hostname or IP-address to connect to.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN q <em class="parameter"><code>port</code></em></code>:</span></p></td>
-<td><p>Port to connect to, or 0 for the default port.</p></td>
+<td><p>
+Port to connect to, or 0 for the default port.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT a(sisis) <em class="parameter"><code>nodes</code></em></code>:</span></p></td>
-<td><p>Discovered nodes.</p></td>
+<td><p>
+Discovered nodes.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT i <em class="parameter"><code>nodes_cnt</code></em></code>:</span></p></td>
-<td><p>The number of found nodes.</p></td>
+<td><p>
+The number of found nodes.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -230,9 +266,11 @@ DiscoverFirmware (IN  a{sv}    options,
                   OUT a(sisis) nodes,
                   OUT i        nodes_cnt);
 </pre>
-<p>        Performs targets' discovery  using firmware (ppc or ibft).
+<p>
+Performs targets' discovery  using firmware (ppc or ibft).
 </p>
-<p>        No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -242,15 +280,21 @@ DiscoverFirmware (IN  a{sv}    options,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT a(sisis) <em class="parameter"><code>nodes</code></em></code>:</span></p></td>
-<td><p>Structure containing discovered targets (name, tpgt, address, port, iface).</p></td>
+<td><p>
+Structure containing discovered targets (name, tpgt, address, port, iface).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT i <em class="parameter"><code>nodes_cnt</code></em></code>:</span></p></td>
-<td><p>The number of found nodes.</p></td>
+<td><p>
+The number of found nodes.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -267,22 +311,30 @@ Login (IN  s     name,
        IN  s     iface,
        IN  a{sv} options);
 </pre>
-<p>        Login to the iSCSI node described by the given node properties.
+<p>
+Login to the iSCSI node described by the given node properties.
 </p>
-<p>        If the option <em class="parameter"><code>username</code></em> is provided, then
-        the <em class="parameter"><code>username</code></em> and <em class="parameter"><code>password</code></em>
-        will be used for CHAP authentication.
+<p>
+If the option <em class="parameter"><code>username</code></em> is provided, then
+the <em class="parameter"><code>username</code></em> and <em class="parameter"><code>password</code></em>
+will be used for CHAP authentication.
 </p>
-<p>        If the option <em class="parameter"><code>reverse-username</code></em> is provided,
-        the the <em class="parameter"><code>reverse-username</code></em> and
-        <em class="parameter"><code>reverse-password</code></em> will be used for CHAP
-        authentication.
+<p>
+If the option <em class="parameter"><code>reverse-username</code></em> is provided,
+the the <em class="parameter"><code>reverse-username</code></em> and
+<em class="parameter"><code>reverse-password</code></em> will be used for CHAP
+authentication.
 </p>
-<p>        All the additional options are transformed into the interface
-        parameters.  For example, if an automatic node startup is desired, the
-        <em class="parameter"><code>node.startup</code></em> needs to be set to
-        '<span class="emphasis"><em>automatic</em></span>' (default value is
-        '<span class="emphasis"><em>manual</em></span>').
+<p>
+Firmware-discovered nodes retain their authentication info unless
+overriden with specified credentials (see above).
+</p>
+<p>
+All the additional options are transformed into the interface
+parameters.  For example, if an automatic node startup is desired, the
+<em class="parameter"><code>node.startup</code></em> needs to be set to
+'<span class="emphasis"><em>automatic</em></span>' (default value is
+'<span class="emphasis"><em>manual</em></span>').
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -292,27 +344,39 @@ Login (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>iSCSI iqn for the node.</p></td>
+<td><p>
+iSCSI iqn for the node.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN i <em class="parameter"><code>tpgt</code></em></code>:</span></p></td>
-<td><p>Portal group number.</p></td>
+<td><p>
+Portal group number.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>address</code></em></code>:</span></p></td>
-<td><p>Portal hostname or IP-address.</p></td>
+<td><p>
+Portal hostname or IP-address.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN i <em class="parameter"><code>port</code></em></code>:</span></p></td>
-<td><p>Portal port number.</p></td>
+<td><p>
+Portal port number.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>iface</code></em></code>:</span></p></td>
-<td><p>Interface to connect through.</p></td>
+<td><p>
+Interface to connect through.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -329,12 +393,14 @@ Logout (IN  s     name,
         IN  s     iface,
         IN  a{sv} options);
 </pre>
-<p>        Logout of the iSCSI node described by the given node properties.
+<p>
+Logout of the iSCSI node described by the given node properties.
 </p>
-<p>        All the additional options are transformed into the interface
-        parameters.  For example, if an automatic node startup is not desired,
-        the <em class="parameter"><code>node.startup</code></em> needs to be set to
-        '<span class="emphasis"><em>manual</em></span>'.
+<p>
+All the additional options are transformed into the interface
+parameters.  For example, if an automatic node startup is not desired,
+the <em class="parameter"><code>node.startup</code></em> needs to be set to
+'<span class="emphasis"><em>manual</em></span>'.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -344,27 +410,39 @@ Logout (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>iSCSI iqn for the node.</p></td>
+<td><p>
+iSCSI iqn for the node.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN i <em class="parameter"><code>tpgt</code></em></code>:</span></p></td>
-<td><p>Portal group number.</p></td>
+<td><p>
+Portal group number.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>address</code></em></code>:</span></p></td>
-<td><p>Portal hostname or IP-address.</p></td>
+<td><p>
+Portal hostname or IP-address.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN i <em class="parameter"><code>port</code></em></code>:</span></p></td>
-<td><p>Portal port number.</p></td>
+<td><p>
+Portal port number.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>iface</code></em></code>:</span></p></td>
-<td><p>Interface to logout.</p></td>
+<td><p>
+Interface to logout.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -378,8 +456,11 @@ Logout (IN  s     name,
 <pre class="programlisting">
 SessionsSupported  readable   b
 </pre>
-<p>Whether or not this version of Udisks</p>
-<p>        supports ISCSI.Session objects.
+<p>
+Whether or not this version of Udisks
+</p>
+<p>
+supports ISCSI.Session objects.
 </p>
 <p class="since">Since 2.0.1</p>
 </div>

@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="UDisks Reference Manual">
 <link rel="up" href="ref-library-generated.html" title="Generated Code">
 <link rel="prev" href="UDisksEncrypted.html" title="UDisksEncrypted">
-<link rel="next" href="udisks2-UDisksManagerLSM.html" title="UDisksManagerLSM">
+<link rel="next" href="UDisksNVMeController.html" title="UDisksNVMeController">
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -26,7 +26,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ref-library-generated.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="UDisksEncrypted.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="udisks2-UDisksManagerLSM.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="UDisksNVMeController.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="UDisksLoop"></a><div class="titlepage"></div>
@@ -1505,7 +1505,7 @@ user_function (<a class="link" href="UDisksLoop.html" title="UDisksLoop"><span c
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a class="link" href="gdbus-org.freedesktop.UDisks2.Loop.html#gdbus-method-org-freedesktop-UDisks2-Loop.Delete" title="The Delete() method"><code class="function">Delete()</code></a> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
- and eventually call <a class="link" href="UDisksLoop.html#udisks-loop-complete-delete" title="udisks_loop_complete_delete ()"><code class="function">udisks_loop_complete_delete()</code></a> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
+ and eventually call <a class="link" href="UDisksLoop.html#udisks-loop-complete-delete" title="udisks_loop_complete_delete ()"><code class="function">udisks_loop_complete_delete()</code></a> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no other signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
 <a name="UDisksLoop-handle-delete.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1555,7 +1555,7 @@ user_function (<a class="link" href="UDisksLoop.html" title="UDisksLoop"><span c
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a class="link" href="gdbus-org.freedesktop.UDisks2.Loop.html#gdbus-method-org-freedesktop-UDisks2-Loop.SetAutoclear" title="The SetAutoclear() method"><code class="function">SetAutoclear()</code></a> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
- and eventually call <a class="link" href="UDisksLoop.html#udisks-loop-complete-set-autoclear" title="udisks_loop_complete_set_autoclear ()"><code class="function">udisks_loop_complete_set_autoclear()</code></a> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
+ and eventually call <a class="link" href="UDisksLoop.html#udisks-loop-complete-set-autoclear" title="udisks_loop_complete_set_autoclear ()"><code class="function">udisks_loop_complete_set_autoclear()</code></a> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no other signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
 <a name="UDisksLoop-handle-set-autoclear.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

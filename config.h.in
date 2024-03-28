@@ -58,23 +58,17 @@
 /* libiscsi can retrieve session information */
 #undef HAVE_LIBISCSI_GET_SESSION_INFOS
 
-/* Define to 1 if libmount utab functionality is available */
-#undef HAVE_LIBMOUNT_UTAB
-
 /* Define to 1 if libsystemd-login is available */
 #undef HAVE_LIBSYSTEMD_LOGIN
 
 /* Define if liblibstoragemgmt is available */
 #undef HAVE_LSM
 
-/* Define if lvmcache is available */
-#undef HAVE_LVMCACHE
-
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
@@ -96,9 +90,6 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
-
-/* Define, if libblockdev-kbd and libblockdev-swap are available */
-#undef HAVE_ZRAM
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
@@ -133,7 +124,9 @@
 /* Project configuration directory */
 #undef PROJECT_SYSCONF_DIR
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #undef STDC_HEADERS
 
 /* compat UUID_STR_LEN define */

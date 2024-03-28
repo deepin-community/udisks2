@@ -171,11 +171,8 @@ iscsi_perform_login_action (UDisksLinuxModuleISCSI     *module,
   /* Get a libiscsi context. */
   ctx = udisks_linux_module_iscsi_get_libiscsi_context (module);
 
-  if (action == ACTION_LOGIN &&
-      auth_info && auth_info->method == libiscsi_auth_chap)
-    {
-      libiscsi_node_set_auth (ctx, node, auth_info);
-    }
+  if (action == ACTION_LOGIN && auth_info)
+    libiscsi_node_set_auth (ctx, node, auth_info);
 
   /* Login or Logout */
   err = action == ACTION_LOGIN ?
@@ -189,9 +186,10 @@ iscsi_perform_login_action (UDisksLinuxModuleISCSI     *module,
 }
 
 static gint
-iscsi_node_set_parameters (struct libiscsi_context *ctx,
-                           struct libiscsi_node    *node,
-                           GVariant                *params)
+iscsi_node_set_parameters (struct libiscsi_context  *ctx,
+                           struct libiscsi_node     *node,
+                           GVariant                 *params,
+                           gchar                   **errorstr)
 {
   GVariantIter  iter;
   GVariant     *value;
@@ -210,9 +208,11 @@ iscsi_node_set_parameters (struct libiscsi_context *ctx,
 
       /* Update the node parameter value. */
       err = libiscsi_node_set_parameter (ctx, node, key, param_value);
+      if (errorstr && err != 0)
+        *errorstr = g_strdup (libiscsi_get_error_string (ctx));
 
       g_variant_unref (value);
-      g_free ((gpointer) key);
+      g_free (key);
     }
 
   return 0;
@@ -264,6 +264,31 @@ iscsi_params_pop_chap_data (GVariant      *params,
   return g_variant_dict_end (&dict);
 }
 
+static gboolean
+is_auth_required (struct libiscsi_context   *ctx,
+                  struct libiscsi_node      *node,
+                  struct libiscsi_auth_info *auth_info)
+{
+  char val[LIBISCSI_VALUE_MAXLEN + 1] = {'\0',};
+  int ret;
+
+  /* TODO: No way to distinguish between the "no auth requested" and
+   *       "retain discovered auth info" scenarios from the D-Bus API.
+   */
+
+  /* In case CHAP auth is requested, let's use it unconditionally */
+  if (auth_info->method != libiscsi_auth_none)
+    return TRUE;
+
+  /* Avoid auth override on firmware-discovered nodes */
+  ret = libiscsi_node_get_parameter (ctx, node, "node.discovery_type", val);
+  if (ret == 0 && g_strcmp0 (val, "fw") == 0)
+    return FALSE;
+
+  /* Not a firmware-discovered node, maintain legacy rules */
+  return TRUE;
+}
+
 gint
 iscsi_login (UDisksLinuxModuleISCSI *module,
              const gchar            *name,
@@ -282,7 +307,7 @@ iscsi_login (UDisksLinuxModuleISCSI *module,
   const gchar *password = NULL;
   const gchar *reverse_username = NULL;
   const gchar *reverse_password = NULL;
-  gint err;
+  gint err = 0;
 
   g_return_val_if_fail (UDISKS_IS_LINUX_MODULE_ISCSI (module), 1);
 
@@ -307,17 +332,18 @@ iscsi_login (UDisksLinuxModuleISCSI *module,
   /* Get iscsi context. */
   ctx = udisks_linux_module_iscsi_get_libiscsi_context (module);
 
-  /* Login */
-  err = iscsi_perform_login_action (module,
-                                    ACTION_LOGIN,
-                                    &node,
-                                    &auth_info,
-                                    errorstr);
+  /* Update node parameters. */
+  if (params)
+    err = iscsi_node_set_parameters (ctx, &node, params_without_chap, errorstr);
 
-  if (err == 0 && params)
+  /* Login */
+  if (err == 0)
     {
-      /* Update node parameters. */
-      err = iscsi_node_set_parameters (ctx, &node, params_without_chap);
+      err = iscsi_perform_login_action (module,
+                                        ACTION_LOGIN,
+                                        &node,
+                                        is_auth_required (ctx, &node, &auth_info) ? &auth_info : NULL,
+                                        errorstr);
     }
 
   g_variant_unref (params_without_chap);
@@ -337,7 +363,7 @@ iscsi_logout (UDisksLinuxModuleISCSI *module,
 {
   struct libiscsi_context *ctx;
   struct libiscsi_node node = {0,};
-  gint err;
+  gint err = 0;
 
   g_return_val_if_fail (UDISKS_IS_LINUX_MODULE_ISCSI (module), 1);
 
@@ -347,18 +373,18 @@ iscsi_logout (UDisksLinuxModuleISCSI *module,
   /* Get iscsi context. */
   ctx = udisks_linux_module_iscsi_get_libiscsi_context (module);
 
+  /* Update node parameters. */
+  if (params)
+    err = iscsi_node_set_parameters (ctx, &node, params, errorstr);
+
   /* Logout */
-  err = iscsi_perform_login_action (module,
-                                    ACTION_LOGOUT,
-                                    &node,
-                                    NULL,
-                                    errorstr);
-
-  if (err == 0 && params)
+  if (err == 0)
     {
-      /* Update node parameters. */
-      err = iscsi_node_set_parameters (ctx, &node, params);
-
+      err = iscsi_perform_login_action (module,
+                                        ACTION_LOGOUT,
+                                        &node,
+                                        NULL,
+                                        errorstr);
     }
 
   return err;

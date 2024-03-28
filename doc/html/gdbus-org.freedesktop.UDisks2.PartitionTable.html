@@ -60,8 +60,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-PartitionTable"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that contain a partition table.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that contain a partition table.
 </p>
 </div>
 <div class="refsect1">
@@ -76,24 +77,33 @@ CreatePartition (IN  t     offset,
                  IN  a{sv} options,
                  OUT o     created_partition);
 </pre>
-<p>        Creates a new partition.
+<p>
+Creates a new partition.
 </p>
-<p>        Note that the created partition won't necessarily be created
-        at the exact <em class="parameter"><code>offset</code></em> but slightly behind due to disk geometry
-        and other alignment constraints (e.g. 1MiB alignment).
+<p>
+Note that the created partition won't necessarily be created
+at the exact <em class="parameter"><code>offset</code></em> but slightly behind due to disk geometry
+and other alignment constraints (e.g. 1MiB alignment).
 </p>
-<p>        The newly created partition may also end up being slightly
-        larger than the requested <em class="parameter"><code>size</code></em> bytes for the same reasons.
-        The maximal size can be automatically set by using 0 as size.
+<p>
+The newly created partition may also end up being slightly
+larger than the requested <em class="parameter"><code>size</code></em> bytes for the same reasons.
+The maximal size can be automatically set by using 0 as size.
 </p>
-<p>        For <code class="literal">dos</code> partition tables, the partition type can be
-        set with the <em class="parameter"><code>partition</code></em>-type option. Possible values are: "primary",
-        "extended" or "logical".
+<p>
+For <code class="literal">dos</code> partition tables, the partition type can be
+set with the <em class="parameter"><code>partition</code></em>-type option. Possible values are: "primary",
+"extended" or "logical".
 </p>
-<p>        The newly created partition will be wiped of known filesystem
-        signatures using the
-        <span class="citerefentry"><span class="refentrytitle">wipefs</span>(8)</span>
-        command.
+<p>
+An optional parameter <em class="parameter"><code>partition-uuid</code></em> denotes
+the partition UUID to set for the newly created partition (GPT only).
+</p>
+<p>
+The newly created partition will be wiped of known filesystem
+signatures using the
+<span class="citerefentry"><span class="refentrytitle">wipefs</span>(8)</span>
+command.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -103,27 +113,39 @@ CreatePartition (IN  t     offset,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>offset</code></em></code>:</span></p></td>
-<td><p>The desired offset where the partition should be created, in bytes.</p></td>
+<td><p>
+The desired offset where the partition should be created, in bytes.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The desired size of the partition, in bytes (0 for maximal size).</p></td>
+<td><p>
+The desired size of the partition, in bytes (0 for maximal size).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The type of partition to create (cf. the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property) or blank to use the default for the partition table type and OS.</p></td>
+<td><p>
+The type of partition to create (cf. the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property) or blank to use the default for the partition table type and OS.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name for the new partition or blank if the partition table do not support names.</p></td>
+<td><p>
+The name for the new partition or blank if the partition table do not support names.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) include <em class="parameter"><code>partition-type</code></em> (of type 's').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) include <em class="parameter"><code>partition-type</code></em> (of type 's') and <em class="parameter"><code>partition-uuid</code></em> (of type 's').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>created_partition</code></em></code>:</span></p></td>
-<td><p>An object path to the created block device object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a> interface.</p></td>
+<td><p>
+An object path to the created block device object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a> interface.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -141,10 +163,11 @@ CreatePartitionAndFormat (IN  t     offset,
                           IN  a{sv} format_options,
                           OUT o     created_partition);
 </pre>
-<p>        This is a combination of
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-interface-org-freedesktop-UDisks2-PartitionTable.top_of_page">org.freedesktop.UDisks2.PartitionTable</a>:CreatePartition and
-        <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>:Format.  After creating the
-        partition, the resulting block device is formatted.
+<p>
+This is a combination of
+<a class="link" href="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-interface-org-freedesktop-UDisks2-PartitionTable.top_of_page">org.freedesktop.UDisks2.PartitionTable</a>:CreatePartition and
+<a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>:Format.  After creating the
+partition, the resulting block device is formatted.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -154,35 +177,51 @@ CreatePartitionAndFormat (IN  t     offset,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>offset</code></em></code>:</span></p></td>
-<td><p>The desired offset where the partition should be created, in bytes.</p></td>
+<td><p>
+The desired offset where the partition should be created, in bytes.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The desired size of the partition, in bytes (0 for maximal size).</p></td>
+<td><p>
+The desired size of the partition, in bytes (0 for maximal size).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>type</code></em></code>:</span></p></td>
-<td><p>The type of partition to create (cf. the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property) or blank to use the default for the partition table type and OS.</p></td>
+<td><p>
+The type of partition to create (cf. the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-property-org-freedesktop-UDisks2-Partition.Type" title='The "Type" property'>"Type"</a> property) or blank to use the default for the partition table type and OS.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name for the new partition or blank if the partition table do not support names.</p></td>
+<td><p>
+The name for the new partition or blank if the partition table do not support names.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) include <em class="parameter"><code>partition-type</code></em> (of type 's').</p></td>
+<td><p>
+Options - known options (in addition to <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>) include <em class="parameter"><code>partition-type</code></em> (of type 's') and <em class="parameter"><code>partition-uuid</code></em> (of type 's').
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>format_type</code></em></code>:</span></p></td>
-<td><p>The type to use for Format.</p></td>
+<td><p>
+The type to use for Format.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>format_options</code></em></code>:</span></p></td>
-<td><p>Options for Format.</p></td>
+<td><p>
+Options for Format.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>created_partition</code></em></code>:</span></p></td>
-<td><p>An object path to the created block device object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a> interface.</p></td>
+<td><p>
+An object path to the created block device object implementing the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a> interface.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -195,9 +234,12 @@ CreatePartitionAndFormat (IN  t     offset,
 <pre class="programlisting">
 Partitions  readable   ao
 </pre>
-<p>List of object paths of the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a></p>
-<p>         objects that belongs to this partition table.
-         <em class="parameter"><code>since</code></em>: 2.7.2
+<p>
+List of object paths of the <a class="link" href="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-interface-org-freedesktop-UDisks2-Partition.top_of_page">org.freedesktop.UDisks2.Partition</a>
+</p>
+<p>
+objects that belongs to this partition table.
+<em class="parameter"><code>since</code></em>: 2.7.2
 </p>
 </div>
 <hr>
@@ -206,9 +248,12 @@ Partitions  readable   ao
 <pre class="programlisting">
 Type  readable   s
 </pre>
-<p>The type of partition table detected.</p>
-<p>         Known values include:
-         </p>
+<p>
+The type of partition table detected.
+</p>
+<p>
+Known values include:
+</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -226,8 +271,8 @@ Type  readable   s
 </tbody>
 </table></div>
 <p>
-         If blank it means that a partition table was detected but its
-         scheme is unknown.
+If blank it means that a partition table was detected but its
+scheme is unknown.
 </p>
 </div>
 </div>

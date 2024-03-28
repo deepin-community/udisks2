@@ -8,10 +8,4 @@ if [ "$1" = "configure" ]; then
 
 fi
 
-if [ -e "/etc/udev/rules.d/80-udisks2.rules" ]; then
-    # Rename the old rules file
-    mv /etc/udev/rules.d/80-udisks2.rules /etc/udev/rules.d/80-udisks-installer.rules
-
-fi
-
 #DEBHELPER#

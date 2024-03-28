@@ -269,7 +269,7 @@ Warning: THIS ALSO TERMINATES THE PROCESS with the <code class="function">abort(
 <a name="udisks2-Logging.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="UDisksLogLevel"></a><h3>enum UDisksLogLevel</h3>
-<p>Logging levels. The level <em class="parameter"><code>UDISKS_LOG_LEVEL_NOTICE</code></em>
+<p>Logging levels. The level <em class="parameter"><code>UDISKS_LOG_LEVEL_MESSAGE</code></em>
  and above goes to syslog.</p>
 <p>Unlike <a href="https://developer.gnome.org/glib/unstable/glib-Message-Logging.html#g-warning"><code class="function">g_warning()</code></a> and <a href="https://developer.gnome.org/glib/unstable/glib-Message-Logging.html#g-error"><code class="function">g_error()</code></a>, none of these logging levels causes the program to ever terminate.</p>
 <div class="refsect3">
@@ -297,8 +297,10 @@ Warning: THIS ALSO TERMINATES THE PROCESS with the <code class="function">abort(
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="UDISKS-LOG-LEVEL-MESSAGE:CAPS"></a>UDISKS_LOG_LEVEL_MESSAGE</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Messages that the administrator should take notice of.</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="UDISKS-LOG-LEVEL-WARNING:CAPS"></a>UDISKS_LOG_LEVEL_WARNING</p></td>
@@ -309,8 +311,10 @@ Warning: THIS ALSO TERMINATES THE PROCESS with the <code class="function">abort(
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="UDISKS-LOG-LEVEL-CRITICAL:CAPS"></a>UDISKS_LOG_LEVEL_CRITICAL</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Critical warning messages.</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="UDISKS-LOG-LEVEL-ERROR:CAPS"></a>UDISKS_LOG_LEVEL_ERROR</p></td>

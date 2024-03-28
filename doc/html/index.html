@@ -15,7 +15,7 @@
 <div>
 <div><table class="navigation" id="top" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">UDisks Reference Manual</p></th></tr></table></div>
 <div><p class="releaseinfo">
-      For version 2.9.4
+      For version 2.10.1
  — the latest version of this
       documentation can be found at <a class="ulink" href="http://storaged.org/doc/udisks2-api/latest/" target="_top">http://storaged.org/doc/udisks2-api/latest/</a>.
     </p></div>
@@ -99,6 +99,18 @@
 <span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Job.html">org.freedesktop.UDisks2.Job</a></span><span class="refpurpose"> — Long-running tasks</span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html">org.freedesktop.UDisks2.NVMe.Controller</a></span><span class="refpurpose"> — NVMe controller device</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html">org.freedesktop.UDisks2.NVMe.Namespace</a></span><span class="refpurpose"> — NVMe namespace device</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html">org.freedesktop.UDisks2.Manager.NVMe</a></span><span class="refpurpose"> — NVMe host management</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html">org.freedesktop.UDisks2.NVMe.Fabrics</a></span><span class="refpurpose"> — NVMe over Fabrics control interface</span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Drive.LSM.html">org.freedesktop.UDisks2.Drive.LSM</a></span><span class="refpurpose"> — LSM interface exported on disk objects</span>
 </dt>
 <dt>
@@ -133,18 +145,6 @@
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Filesystem.BTRFS.html">org.freedesktop.UDisks2.Filesystem.BTRFS</a></span><span class="refpurpose"> — BTRFS filesystem interface exported on block objects</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Manager.ZRAM.html">org.freedesktop.UDisks2.Manager.ZRAM</a></span><span class="refpurpose"> — ZRAM add-on to the manager singleton</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html">org.freedesktop.UDisks2.Block.ZRAM</a></span><span class="refpurpose"> — ZRAM block device</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Manager.Bcache.html">org.freedesktop.UDisks2.Manager.Bcache</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gdbus-org.freedesktop.UDisks2.Block.Bcache.html">org.freedesktop.UDisks2.Block.Bcache</a></span><span class="refpurpose"> — A bcache block device</span>
 </dt>
 </dl></dd>
 </dl></dd>
@@ -204,7 +204,16 @@
 <span class="refentrytitle"><a href="UDisksLoop.html">UDisksLoop</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Loop D-Bus interface</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="udisks2-UDisksManagerLSM.html">UDisksManagerLSM</a></span><span class="refpurpose"></span>
+<span class="refentrytitle"><a href="UDisksNVMeController.html">UDisksNVMeController</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.NVMe.Controller D-Bus interface</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="UDisksNVMeNamespace.html">UDisksNVMeNamespace</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.NVMe.Namespace D-Bus interface</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="UDisksManagerNVMe.html">UDisksManagerNVMe</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.NVMe D-Bus interface</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="UDisksNVMeFabrics.html">UDisksNVMeFabrics</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.NVMe.Fabrics D-Bus interface</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="UDisksDriveLSM.html">UDisksDriveLSM</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Drive.LSM D-Bus interface</span>
@@ -237,22 +246,10 @@
 <span class="refentrytitle"><a href="UDisksManagerISCSIInitiator.html">UDisksManagerISCSIInitiator</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.ISCSI.Initiator D-Bus interface</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="UDisksManagerBTRFS.html">UDisksManagerBTRFS</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.BTRFS D-Bus interface</span>
+<span class="refentrytitle"><a href="udisks2-UDisksManagerBTRFS.html">UDisksManagerBTRFS</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.BTRFS D-Bus interface</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="UDisksFilesystemBTRFS.html">UDisksFilesystemBTRFS</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Filesystem.BTRFS D-Bus interface</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="UDisksManagerZRAM.html">UDisksManagerZRAM</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.ZRAM D-Bus interface</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="UDisksBlockZRAM.html">UDisksBlockZRAM</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Block.ZRAM D-Bus interface</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="UDisksManagerBcache.html">UDisksManagerBcache</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Manager.Bcache D-Bus interface</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="UDisksBlockBcache.html">UDisksBlockBcache</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Block.Bcache D-Bus interface</span>
+<span class="refentrytitle"><a href="udisks2-UDisksFilesystemBTRFS.html">UDisksFilesystemBTRFS</a></span><span class="refpurpose"> — Generated C code for the org.freedesktop.UDisks2.Filesystem.BTRFS D-Bus interface</span>
 </dt>
 </dl></dd>
 </dl></dd>
@@ -321,6 +318,9 @@
 <span class="refentrytitle"><a href="UDisksLinuxManager.html">UDisksLinuxManager</a></span><span class="refpurpose"> — Linux implementation of <span class="type">UDisksManager</span></span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="udisks2-UDisksLinuxManagerNVMe.html">UDisksLinuxManagerNVMe</a></span><span class="refpurpose"> — Linux implementation of <span class="type">UDisksManagerNVMe</span></span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="UDisksLinuxProvider.html">UDisksLinuxProvider</a></span><span class="refpurpose"> — Provides Linux-specific objects</span>
 </dt>
 <dt>
@@ -337,6 +337,12 @@
 </dt>
 <dt>
 <span class="refentrytitle"><a href="UDisksLinuxDriveObject.html">UDisksLinuxDriveObject</a></span><span class="refpurpose"> — Object representing a drive on Linux</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="UDisksLinuxNVMeController.html">UDisksLinuxNVMeController</a></span><span class="refpurpose"> — Linux implementation of <span class="type">UDisksNVMeController</span></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="udisks2-UDisksLinuxNVMeFabrics.html">UDisksLinuxNVMeFabrics</a></span><span class="refpurpose"> — Linux implementation of <span class="type">UDisksNVMeFabrics</span></span>
 </dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ref-daemon-mdraid.html">Linux RAID</a></span></dt>
@@ -373,6 +379,9 @@
 </dt>
 <dt>
 <span class="refentrytitle"><a href="UDisksLinuxBlockObject.html">UDisksLinuxBlockObject</a></span><span class="refpurpose"> — Object representing a block device on Linux.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="UDisksLinuxNVMeNamespace.html">UDisksLinuxNVMeNamespace</a></span><span class="refpurpose"> — Linux implementation of <span class="type">UDisksNVMeNamespace</span></span>
 </dt>
 </dl></dd>
 </dl></dd>

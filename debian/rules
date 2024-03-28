@@ -1,48 +1,30 @@
 #!/usr/bin/make -f
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-export DEB_CFLAGS_MAINT_APPEND = -pie -fPIC
-export DEB_CPPFLAGS_MAINT_APPEND = -pie -fPIC
-
-ifneq ($(filter udisks2-doc,$(shell dh_listpackages)),)
-	BUILD_DOC=--enable-gtk-doc
-else
-	BUILD_DOC=--disable-gtk-doc
-endif
+# Ubuntu enables this by default, but it breaks module loading; https://launchpad.net/bugs/2040488
+export DEB_LDFLAGS_MAINT_STRIP=-Wl,-Bsymbolic-functions
 
 %:
-	dh $@ --with gir
+	dh $@
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		--enable-bcache \
 		--enable-btrfs \
 		--enable-lvm2 \
-		--enable-lvmcache \
-		--disable-vdo \
-		--enable-zram \
-		$(BUILD_DOC) \
+		--enable-gtk-doc=$(if $(filter nodoc,$(DEB_BUILD_PROFILES)),no,yes) \
 		--enable-fhs-media \
-		--with-systemdsystemunitdir=/lib/systemd/system
+		--with-udevdir=/usr/lib/udev \
+		--with-systemdsystemunitdir=/usr/lib/systemd/system
 
-override_dh_auto_build:
-	dh_auto_build
-	# make -C po udisks.pot
-
-override_dh_auto_install:
-	dh_auto_install
+execute_after_dh_auto_install:
 	# install Apport hook on Ubuntu
 	if dpkg-vendor --is ubuntu; then \
 	    install -m 644 -D debian/local/apport-hook.py debian/udisks2/usr/share/apport/package-hooks/udisks2.py; \
 	fi
 
-override_dh_install:
+execute_before_dh_install:
 	find debian/tmp -name '*.la' -print -delete
 	find debian/tmp -name 'libudisks2_*.a' -print -delete
-	dh_install
-
-override_dh_missing:
-	dh_missing --fail-missing
 
 # Ubuntu is hesitant about exfatprogs in default install
 # https://launchpad.net/bugs/1649537

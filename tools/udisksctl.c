@@ -575,6 +575,20 @@ static const GOptionEntry command_unmount_entries[] =
   }
 };
 
+static void
+list_options (const GOptionEntry *entries)
+{
+  const GOptionEntry* current;
+  for (current = entries; current->long_name; current++)
+    {
+      if ((current->arg != G_OPTION_ARG_STRING && current->arg != G_OPTION_ARG_FILENAME) ||
+          (current->arg_data != NULL && !*(gchar**)current->arg_data))
+      {
+        g_print ("--%s \n", current->long_name);
+      }
+    }
+}
+
 static gint
 handle_command_mount_unmount (gint        *argc,
                               gchar      **argv[],
@@ -651,12 +665,9 @@ handle_command_mount_unmount (gint        *argc,
         }
     }
 
-  if (request_completion &&
-      (opt_mount_unmount_object_path == NULL && !complete_objects) &&
-      (opt_mount_unmount_device == NULL && !complete_devices))
+  if (request_completion && !complete_objects && !complete_devices)
     {
-      g_print ("--object-path \n"
-               "--block-device \n");
+      list_options (is_mount ? command_mount_entries : command_unmount_entries);
     }
 
   if (complete_objects)
@@ -1162,12 +1173,9 @@ handle_command_unlock_lock (gint        *argc,
         }
     }
 
-  if (request_completion &&
-      (opt_unlock_lock_object_path == NULL && !complete_objects) &&
-      (opt_unlock_lock_device == NULL && !complete_devices))
+  if (request_completion && !complete_objects && !complete_devices)
     {
-      g_print ("--object-path \n"
-               "--block-device \n");
+        list_options (is_unlock ? command_unlock_entries : command_lock_entries);
     }
 
   if (complete_objects)
@@ -1394,6 +1402,7 @@ static gboolean opt_loop_no_user_interaction = FALSE;
 static gboolean opt_loop_read_only = FALSE;
 static gint64   opt_loop_offset = 0;
 static gint64   opt_loop_size = 0;
+static gboolean opt_loop_no_partition_scan = FALSE;
 
 static const GOptionEntry command_loop_setup_entries[] =
 {
@@ -1440,6 +1449,15 @@ static const GOptionEntry command_loop_setup_entries[] =
     G_OPTION_ARG_NONE,
     &opt_loop_no_user_interaction,
     "Do not authenticate the user if needed",
+    NULL
+  },
+  {
+    "no-partition-scan",
+    0, /* no short option */
+    0,
+    G_OPTION_ARG_NONE,
+    &opt_loop_no_partition_scan,
+    "Do not scan the loop device for partitions",
     NULL
   },
   {
@@ -1564,24 +1582,15 @@ handle_command_loop (gint        *argc,
 
   if (request_completion)
     {
-      if (is_setup)
+      if (!complete_files && !complete_devices && !complete_objects)
         {
-          if (opt_loop_file == NULL && !complete_files)
-            {
-              g_print ("--file \n");
-            }
-          if (complete_files)
-            {
-              g_print ("@FILES@");
-            }
+          list_options (is_setup ? command_loop_setup_entries : command_loop_delete_entries);
         }
       else
         {
-          if ((opt_loop_object_path == NULL && !complete_objects) &&
-              (opt_loop_device == NULL && !complete_devices))
+          if (complete_files)
             {
-              g_print ("--object-path \n"
-                       "--block-device \n");
+              g_print ("@FILES@");
             }
 
           if (complete_objects)
@@ -1599,8 +1608,8 @@ handle_command_loop (gint        *argc,
                     }
                 }
               g_list_free_full (objects, g_object_unref);
-              goto out;
             }
+
           if (complete_devices)
             {
               objects = g_dbus_object_manager_get_objects (udisks_client_get_object_manager (client));
@@ -1608,7 +1617,7 @@ handle_command_loop (gint        *argc,
                 {
                   object = UDISKS_OBJECT (l->data);
                   block = udisks_object_peek_block (object);
-                  if (udisks_object_peek_loop (object) != NULL)
+                  if (block != NULL && udisks_object_peek_loop (object) != NULL)
                     {
                       const gchar * const *symlinks;
                       g_print ("%s \n", udisks_block_get_device (block));
@@ -1618,13 +1627,11 @@ handle_command_loop (gint        *argc,
                     }
                 }
               g_list_free_full (objects, g_object_unref);
-              goto out;
             }
         }
 
       /* done with completion */
-      if (request_completion)
-        goto out;
+      goto out;
     }
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
@@ -1648,6 +1655,10 @@ handle_command_loop (gint        *argc,
         g_variant_builder_add (&builder,
                                "{sv}",
                                "size", g_variant_new_uint64 (opt_loop_size));
+      if (opt_loop_no_partition_scan)
+        g_variant_builder_add (&builder,
+                               "{sv}",
+                               "no-part-scan", g_variant_new_boolean (TRUE));
     }
   options = g_variant_builder_end (&builder);
   g_variant_ref_sink (options);
@@ -1910,22 +1921,15 @@ handle_command_smart_simulate (gint        *argc,
 
   if (request_completion)
     {
-      if (opt_smart_simulate_file == NULL && !complete_files && !complete_objects && !complete_devices)
-        {
-          g_print ("--file \n");
-        }
-
       if (complete_files)
         {
           g_print ("@FILES@");
           goto out;
         }
 
-      if ((opt_smart_simulate_object_path == NULL && !complete_objects) &&
-          (opt_smart_simulate_device == NULL && !complete_devices))
+      if (!complete_objects && !complete_devices)
         {
-          g_print ("--object-path \n"
-                   "--block-device \n");
+          list_options (command_smart_simulate_entries);
         }
 
       if (complete_objects)
@@ -1955,13 +1959,19 @@ handle_command_smart_simulate (gint        *argc,
               ata = udisks_object_peek_drive_ata (object);
               if (ata != NULL)
                 {
-                  const gchar * const *symlinks;
                   UDisksBlock *block;
+
                   block = udisks_client_get_block_for_drive (client, udisks_object_peek_drive (object), TRUE);
-                  g_print ("%s \n", udisks_block_get_device (block));
-                  symlinks = udisks_block_get_symlinks (block);
-                  for (n = 0; symlinks != NULL && symlinks[n] != NULL; n++)
-                    g_print ("%s \n", symlinks[n]);
+                  if (block != NULL)
+                    {
+                      const gchar * const *symlinks;
+
+                      g_print ("%s \n", udisks_block_get_device (block));
+                      symlinks = udisks_block_get_symlinks (block);
+                      for (n = 0; symlinks != NULL && symlinks[n] != NULL; n++)
+                        g_print ("%s \n", symlinks[n]);
+                      g_object_unref (block);
+                    }
                 }
             }
           g_list_free_full (objects, g_object_unref);
@@ -2003,6 +2013,7 @@ handle_command_smart_simulate (gint        *argc,
     {
       UDisksObject *block_object;
       UDisksDrive *drive;
+
       block_object = lookup_object_by_device (opt_smart_simulate_device);
       if (block_object == NULL)
         {
@@ -2010,7 +2021,19 @@ handle_command_smart_simulate (gint        *argc,
           goto out;
         }
       drive = udisks_client_get_drive_for_block (client, udisks_object_peek_block (block_object));
+      if (drive == NULL)
+        {
+          g_printerr ("Error looking up drive for device %s\n", opt_smart_simulate_device);
+          g_object_unref (block_object);
+          goto out;
+        }
       object = (UDisksObject *) g_dbus_interface_dup_object (G_DBUS_INTERFACE (drive));
+      if (object == NULL)
+        {
+          g_printerr ("Error looking up object for device %s\n", opt_smart_simulate_device);
+          g_object_unref (block_object);
+          goto out;
+        }
       g_object_unref (block_object);
     }
   else
@@ -2023,8 +2046,11 @@ handle_command_smart_simulate (gint        *argc,
 
   if (udisks_object_peek_drive_ata (object) == NULL)
     {
+      UDisksBlock *block;
+
+      block = udisks_object_peek_block (object);
       g_printerr ("Device %s is not an ATA device\n",
-                  udisks_block_get_device (udisks_object_peek_block (object)));
+                  block ? udisks_block_get_device (block) : "(not a block device)");
       g_object_unref (object);
       goto out;
     }
@@ -2121,11 +2147,12 @@ handle_command_power_off (gint        *argc,
   GList *l;
   GList *objects;
   UDisksObject *object;
-  UDisksDriveAta *ata;
+  UDisksDrive *drv;
   guint n;
   GVariant *options;
   GVariantBuilder builder;
   GError *error;
+  UDisksDrive *proxy;
 
   ret = 1;
   opt_power_off_object_path = NULL;
@@ -2173,11 +2200,9 @@ handle_command_power_off (gint        *argc,
 
   if (request_completion)
     {
-      if ((opt_power_off_object_path == NULL && !complete_objects) &&
-          (opt_power_off_device == NULL && !complete_devices))
+      if (!complete_objects && !complete_devices)
         {
-          g_print ("--object-path \n"
-                   "--block-device \n");
+          list_options (command_power_off_entries);
         }
 
       if (complete_objects)
@@ -2187,12 +2212,15 @@ handle_command_power_off (gint        *argc,
           for (l = objects; l != NULL; l = l->next)
             {
               object = UDISKS_OBJECT (l->data);
-              ata = udisks_object_peek_drive_ata (object);
-              if (ata != NULL)
+              drv = udisks_object_peek_drive (object);
+              if (drv != NULL)
                 {
-                  object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (object));
-                  g_assert (g_str_has_prefix (object_path, "/org/freedesktop/UDisks2/"));
-                  g_print ("%s \n", object_path + sizeof ("/org/freedesktop/UDisks2/") - 1);
+                  if (udisks_drive_get_can_power_off (drv))
+                    {
+                      object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (object));
+                      g_assert (g_str_has_prefix (object_path, "/org/freedesktop/UDisks2/"));
+                      g_print ("%s \n", object_path + sizeof ("/org/freedesktop/UDisks2/") - 1);
+                    }
                 }
             }
           g_list_free_full (objects, g_object_unref);
@@ -2204,16 +2232,25 @@ handle_command_power_off (gint        *argc,
           for (l = objects; l != NULL; l = l->next)
             {
               object = UDISKS_OBJECT (l->data);
-              ata = udisks_object_peek_drive_ata (object);
-              if (ata != NULL)
+              drv = udisks_object_peek_drive (object);
+              if (drv != NULL)
                 {
-                  const gchar * const *symlinks;
-                  UDisksBlock *block;
-                  block = udisks_client_get_block_for_drive (client, udisks_object_peek_drive (object), TRUE);
-                  g_print ("%s \n", udisks_block_get_device (block));
-                  symlinks = udisks_block_get_symlinks (block);
-                  for (n = 0; symlinks != NULL && symlinks[n] != NULL; n++)
-                    g_print ("%s \n", symlinks[n]);
+                  if (udisks_drive_get_can_power_off (drv))
+                    {
+                      UDisksBlock *block;
+
+                      block = udisks_client_get_block_for_drive (client, drv, TRUE);
+                      if (block != NULL)
+                        {
+                          const gchar * const *symlinks;
+
+                          g_print ("%s \n", udisks_block_get_device (block));
+                          symlinks = udisks_block_get_symlinks (block);
+                          for (n = 0; symlinks != NULL && symlinks[n] != NULL; n++)
+                            g_print ("%s \n", symlinks[n]);
+                          g_object_unref (block);
+                        }
+                    }
                 }
             }
           g_list_free_full (objects, g_object_unref);
@@ -2244,6 +2281,7 @@ handle_command_power_off (gint        *argc,
     {
       UDisksObject *block_object;
       UDisksDrive *drive;
+
       block_object = lookup_object_by_device (opt_power_off_device);
       if (block_object == NULL)
         {
@@ -2251,7 +2289,19 @@ handle_command_power_off (gint        *argc,
           goto out;
         }
       drive = udisks_client_get_drive_for_block (client, udisks_object_peek_block (block_object));
+      if (drive == NULL)
+        {
+          g_printerr ("Error looking up drive for device %s\n", opt_power_off_device);
+          g_object_unref (block_object);
+          goto out;
+        }
       object = (UDisksObject *) g_dbus_interface_dup_object (G_DBUS_INTERFACE (drive));
+      if (object == NULL)
+        {
+          g_printerr ("Error looking up object for device %s\n", opt_power_off_device);
+          g_object_unref (block_object);
+          goto out;
+        }
       g_object_unref (block_object);
     }
   else
@@ -2264,7 +2314,16 @@ handle_command_power_off (gint        *argc,
 
  try_again:
   error = NULL;
-  if (!udisks_drive_call_power_off_sync (udisks_object_peek_drive (object),
+
+  proxy = udisks_object_peek_drive (object);
+  if (!proxy)
+    {
+      g_printerr ("Error powering off drive: dbus interface not supported");
+      g_object_unref (object);
+      goto out;
+    }
+
+  if (!udisks_drive_call_power_off_sync (proxy,
                                          options,
                                          NULL,                       /* GCancellable */
                                          &error))
@@ -2382,13 +2441,11 @@ handle_command_info (gint        *argc,
     }
 
   if (request_completion &&
-      (opt_info_object == NULL && !complete_objects) &&
-      (opt_info_device == NULL && !complete_devices) &&
-      (opt_info_drive == NULL && !complete_drives))
+      !complete_objects &&
+      !complete_devices &&
+      !complete_drives)
     {
-      g_print ("--object-path \n"
-               "--block-device \n"
-               "--drive \n");
+      list_options (command_info_entries);
     }
 
   if (complete_objects)

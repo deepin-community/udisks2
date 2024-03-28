@@ -75,6 +75,8 @@ udisks_linux_device_finalize (GObject *object)
   g_clear_object (&device->udev_device);
   g_free (device->ata_identify_device_data);
   g_free (device->ata_identify_packet_device_data);
+  bd_nvme_controller_info_free (device->nvme_ctrl_info);
+  bd_nvme_namespace_info_free (device->nvme_ns_info);
 
   G_OBJECT_CLASS (udisks_linux_device_parent_class)->finalize (object);
 }
@@ -155,6 +157,9 @@ udisks_linux_device_reprobe_sync (UDisksLinuxDevice  *device,
                                   GError            **error)
 {
   gboolean ret = FALSE;
+  const gchar *device_file;
+
+  device_file = g_udev_device_get_device_file (device->udev_device);
 
   /* Get IDENTIFY DEVICE / IDENTIFY PACKET DEVICE data for ATA devices */
   if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "block") == 0 &&
@@ -162,6 +167,52 @@ udisks_linux_device_reprobe_sync (UDisksLinuxDevice  *device,
       g_udev_device_get_property_as_boolean (device->udev_device, "ID_ATA"))
     {
       if (!probe_ata (device, cancellable, error))
+        goto out;
+    }
+  else
+  /* NVMe controller device */
+  if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "nvme") == 0 &&
+      g_udev_device_has_sysfs_attr (device->udev_device, "subsysnqn") &&
+      g_udev_device_has_property (device->udev_device, "NVME_TRTYPE") &&
+      device_file != NULL)
+    {
+      /* Even though the device node exists and udev has finished probing,
+       * the device might not be fully usable at this point. The sysfs
+       * attr 'state' indicates actual state with 'live' being the healthy state.
+       *
+       * Kernel 5.18 will trigger extra uevent once the controller state reaches
+       * 'live' with a 'NVME_EVENT=connected' attribute attached:
+       *
+       *    commit 20d64911e7580f7e29c0086d67860c18307377d7
+       *    Author: Martin Belanger <martin.belanger@dell.com>
+       *    Date:   Tue Feb 8 14:33:45 2022 -0500
+       *
+       *    nvme: send uevent on connection up
+       *
+       * See also kernel drivers/nvme/host/core.c: nvme_sysfs_show_state()
+       */
+
+      /* TODO: shall we trigger uevent on all namespaces once NVME_EVENT=connected is received? */
+      device->nvme_ctrl_info = bd_nvme_get_controller_info (device_file, error);
+      if (!device->nvme_ctrl_info)
+        {
+          if (error && g_error_matches (*error, BD_NVME_ERROR, BD_NVME_ERROR_BUSY))
+            {
+              g_clear_error (error);
+            }
+          else
+            goto out;
+        }
+    }
+  else
+  /* NVMe namespace block device */
+  if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "block") == 0 &&
+      g_strcmp0 (g_udev_device_get_devtype (device->udev_device), "disk") == 0 &&
+      udisks_linux_device_subsystem_is_nvme (device) &&
+      device_file != NULL)
+    {
+      device->nvme_ns_info = bd_nvme_get_namespace_info (device_file, error);
+      if (!device->nvme_ns_info)
         goto out;
     }
 
@@ -254,4 +305,158 @@ probe_ata (UDisksLinuxDevice  *device,
         }
     }
   return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/**
+ * udisks_linux_device_read_sysfs_attr:
+ * @device: A #UDisksLinuxDevice.
+ * @attr: Attribute name (a path).
+ * @error: Return location for error or %NULL.
+ *
+ * Read a sysfs attribute within the device sysfs hierarchy.
+ * The @attr can be a path relative to the @device base sysfs path.
+ *
+ * Returns: (transfer full): Attribute contents or %NULL if unavailable. Free with g_free().
+ */
+gchar *
+udisks_linux_device_read_sysfs_attr (UDisksLinuxDevice  *device,
+                                     const gchar        *attr,
+                                     GError            **error)
+{
+  gchar *ret = NULL;
+  gchar *path;
+
+  g_return_val_if_fail (UDISKS_IS_LINUX_DEVICE (device), NULL);
+  g_return_val_if_fail (G_UDEV_IS_DEVICE (device->udev_device), NULL);
+  g_return_val_if_fail (attr != NULL, NULL);
+
+  path = g_strdup_printf ("%s/%s", g_udev_device_get_sysfs_path (device->udev_device), attr);
+  if (!g_file_get_contents (path, &ret, NULL /* size */, error))
+    {
+      g_prefix_error (error, "Error reading sysfs attr `%s': ", path);
+    }
+  else
+    {
+      /* remove newline from the attribute */
+      g_strstrip (ret);
+    }
+  g_free (path);
+
+  return ret;
+}
+
+/**
+ * udisks_linux_device_read_sysfs_attr_as_int:
+ * @device: A #UDisksLinuxDevice.
+ * @attr: Attribute name (a path).
+ * @error: Return location for error or %NULL.
+ *
+ * Read a sysfs attribute within the device sysfs hierarchy.
+ * The @attr can be a path relative to the @device base sysfs path.
+ *
+ * Returns: Numerical attribute value or 0 on error.
+ */
+gint
+udisks_linux_device_read_sysfs_attr_as_int (UDisksLinuxDevice  *device,
+                                            const gchar        *attr,
+                                            GError            **error)
+{
+  gint ret = 0;
+  gchar *str;
+
+  if ((str = udisks_linux_device_read_sysfs_attr (device, attr, error)))
+    ret = atoi (str);
+  g_free (str);
+
+  return ret;
+}
+
+/**
+ * udisks_linux_device_read_sysfs_attr_as_uint64:
+ * @device: A #UDisksLinuxDevice.
+ * @attr: Attribute name (a path).
+ * @error: Return location for error or %NULL.
+ *
+ * Read a sysfs attribute within the device sysfs hierarchy.
+ * The @attr can be a path relative to the @device base sysfs path.
+ *
+ * Returns: Numerical attribute value or 0 on error.
+ */
+guint64
+udisks_linux_device_read_sysfs_attr_as_uint64 (UDisksLinuxDevice  *device,
+                                               const gchar        *attr,
+                                               GError            **error)
+{
+  guint64 ret = 0;
+  gchar *str;
+
+  if ((str = udisks_linux_device_read_sysfs_attr (device, attr, error)))
+    ret = g_ascii_strtoull (str, NULL, 0);
+  g_free (str);
+
+  return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/**
+ * udisks_linux_device_subsystem_is_nvme:
+ * @device: A #UDisksLinuxDevice.
+ *
+ * Walks up the device hierarchy and checks if @device is part of a NVMe topology.
+ *
+ * Returns: %TRUE in case of a NVMe device, %FALSE otherwise.
+ */
+gboolean
+udisks_linux_device_subsystem_is_nvme (UDisksLinuxDevice *device)
+{
+  GUdevDevice *parent;
+
+  parent = g_object_ref (device->udev_device);
+  while (parent)
+    {
+      const gchar *subsystem;
+      GUdevDevice *d;
+
+      subsystem = g_udev_device_get_subsystem (parent);
+      if (subsystem && g_str_has_prefix (subsystem, "nvme"))
+        {
+          g_object_unref (parent);
+          return TRUE;
+        }
+      d = parent;
+      parent = g_udev_device_get_parent (d);
+      g_object_unref (d);
+    }
+
+  return FALSE;
+}
+
+/**
+ * udisks_linux_device_nvme_is_fabrics:
+ * @device: A #UDisksLinuxDevice.
+ *
+ * Determines whether @device is a NVMe over Fabrics device.
+ *
+ * Returns: %TRUE in case of a NVMeoF device, %FALSE otherwise.
+ */
+gboolean
+udisks_linux_device_nvme_is_fabrics (UDisksLinuxDevice *device)
+{
+  const gchar *transport;
+
+  if (!udisks_linux_device_subsystem_is_nvme (device))
+    return FALSE;
+
+  transport = g_udev_device_get_sysfs_attr (device->udev_device, "transport");
+  /* Consider only 'pcie' local */
+  if (g_strcmp0 (transport, "rdma") == 0 ||
+      g_strcmp0 (transport, "fc") == 0 ||
+      g_strcmp0 (transport, "tcp") == 0 ||
+      g_strcmp0 (transport, "loop") == 0)
+    return TRUE;
+
+  return FALSE;
 }

@@ -41,7 +41,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="id-1.3.3.22.4"></a><h2>Properties</h2>
+<a name="id-1.3.3.26.4"></a><h2>Properties</h2>
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.UDisks2.ISCSI.Session.html#gdbus-property-org-freedesktop-UDisks2-ISCSI-Session.target_name" title='The "target_name" property'>target_name</a>         readable   s
 <a class="link" href="gdbus-org.freedesktop.UDisks2.ISCSI.Session.html#gdbus-property-org-freedesktop-UDisks2-ISCSI-Session.tpgt" title='The "tpgt" property'>tpgt</a>                readable   i
@@ -57,8 +57,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-ISCSI-Session"></a><h2>Description</h2>
-<p>      This interface should appear on a separate object exported on the master
-      Udisks root.
+<p>
+This interface should appear on a separate object exported on the master
+Udisks root.
 </p>
 </div>
 <div class="refsect1">
@@ -68,12 +69,14 @@
 <pre class="programlisting">
 Logout (IN  a{sv} options);
 </pre>
-<p>        Logout iSCSI node in this session; default interface is used.
+<p>
+Logout iSCSI node in this session; default interface is used.
 </p>
-<p>        All the additional options are transformed into the interface
-        parameters.  For example, if an automatic node startup is not desired,
-        the <em class="parameter"><code>node.startup</code></em> needs to be set to
-        '<span class="emphasis"><em>manual</em></span>'.
+<p>
+All the additional options are transformed into the interface
+parameters.  For example, if an automatic node startup is not desired,
+the <em class="parameter"><code>node.startup</code></em> needs to be set to
+'<span class="emphasis"><em>manual</em></span>'.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -82,7 +85,9 @@ Logout (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 2.1.3</p>
@@ -94,12 +99,14 @@ Logout (IN  a{sv} options);
 LogoutInterface (IN  s     iface,
                  IN  a{sv} options);
 </pre>
-<p>        Logout iSCSI node in this session; <em class="parameter"><code>iface</code></em> is used.
+<p>
+Logout iSCSI node in this session; <em class="parameter"><code>iface</code></em> is used.
 </p>
-<p>        All the additional options are transformed into the interface
-        parameters.  For example, if an automatic node startup is not desired,
-        the <em class="parameter"><code>node.startup</code></em> needs to be set to
-        '<span class="emphasis"><em>manual</em></span>'.
+<p>
+All the additional options are transformed into the interface
+parameters.  For example, if an automatic node startup is not desired,
+the <em class="parameter"><code>node.startup</code></em> needs to be set to
+'<span class="emphasis"><em>manual</em></span>'.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -109,11 +116,15 @@ LogoutInterface (IN  s     iface,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>iface</code></em></code>:</span></p></td>
-<td><p>Interface to logout.</p></td>
+<td><p>
+Interface to logout.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -127,7 +138,10 @@ LogoutInterface (IN  s     iface,
 <pre class="programlisting">
 target_name  readable   s
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -135,7 +149,10 @@ target_name  readable   s
 <pre class="programlisting">
 tpgt  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -143,7 +160,10 @@ tpgt  readable   i
 <pre class="programlisting">
 address  readable   s
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -151,7 +171,10 @@ address  readable   s
 <pre class="programlisting">
 port  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -159,7 +182,10 @@ port  readable   i
 <pre class="programlisting">
 persistent_address  readable   s
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -167,7 +193,10 @@ persistent_address  readable   s
 <pre class="programlisting">
 persistent_port  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -175,7 +204,10 @@ persistent_port  readable   i
 <pre class="programlisting">
 abort_timeout  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -183,7 +215,10 @@ abort_timeout  readable   i
 <pre class="programlisting">
 lu_reset_timeout  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -191,7 +226,10 @@ lu_reset_timeout  readable   i
 <pre class="programlisting">
 recovery_timeout  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -199,7 +237,10 @@ recovery_timeout  readable   i
 <pre class="programlisting">
 tgt_reset_timeout  readable   i
 </pre>
-<p></p>
+<p>
+</p>
+<p>
+</p>
 </div>
 </div>
 </div>

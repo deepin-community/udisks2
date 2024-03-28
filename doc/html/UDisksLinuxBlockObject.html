@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="UDisks Reference Manual">
 <link rel="up" href="ref-daemon-block-devices.html" title="Block devices on Linux">
 <link rel="prev" href="UDisksLinuxLoop.html" title="UDisksLinuxLoop">
-<link rel="next" href="api-index.html" title="Index">
+<link rel="next" href="UDisksLinuxNVMeNamespace.html" title="UDisksLinuxNVMeNamespace">
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -23,7 +23,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ref-daemon-block-devices.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="UDisksLinuxLoop.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="api-index.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="UDisksLinuxNVMeNamespace.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="UDisksLinuxBlockObject"></a><div class="titlepage"></div>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">void</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="UDisksLinuxBlockObject.html#udisks-linux-block-object-reread-partition-table" title="udisks_linux_block_object_reread_partition_table ()">udisks_linux_block_object_reread_partition_table</a> <span class="c_punctuation">()</span>
@@ -453,9 +453,10 @@ or when the kernel version is too old.</p>
 <hr>
 <div class="refsect2">
 <a name="udisks-linux-block-object-reread-partition-table"></a><h3>udisks_linux_block_object_reread_partition_table ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 udisks_linux_block_object_reread_partition_table
-                               (<em class="parameter"><code><a class="link" href="UDisksLinuxBlockObject.html" title="UDisksLinuxBlockObject"><span class="type">UDisksLinuxBlockObject</span></a> *object</code></em>);</pre>
+                               (<em class="parameter"><code><a class="link" href="UDisksLinuxBlockObject.html" title="UDisksLinuxBlockObject"><span class="type">UDisksLinuxBlockObject</span></a> *object</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Requests the kernel to re-read the partition table for <em class="parameter"><code>object</code></em>
 .</p>
 <p>The events from any change this may cause will bubble up from the
@@ -470,12 +471,25 @@ event to be received.</p>
 <col class="parameters_description">
 <col width="200px" class="parameters_annotations">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="parameter_name"><p>object</p></td>
 <td class="parameter_description"><p>A <a class="link" href="UDisksLinuxBlockObject.html" title="UDisksLinuxBlockObject"><span class="type">UDisksLinuxBlockObject</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
 </table></div>
+</div>
+<div class="refsect3">
+<a name="udisks-linux-block-object-reread-partition-table.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the partition reread request was issued successfully
+or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> when error occurred with <em class="parameter"><code>error</code></em>
+set.</p>
 </div>
 </div>
 <hr>

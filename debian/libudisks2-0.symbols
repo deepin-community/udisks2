@@ -1,45 +1,5 @@
 libudisks2.so.0 libudisks2-0 #MINVER#
 * Build-Depends-Package: libudisks2-dev
- udisks_block_bcache_call_bcache_destroy@Base 2.9.0
- udisks_block_bcache_call_bcache_destroy_finish@Base 2.9.0
- udisks_block_bcache_call_bcache_destroy_sync@Base 2.9.0
- udisks_block_bcache_call_set_mode@Base 2.9.0
- udisks_block_bcache_call_set_mode_finish@Base 2.9.0
- udisks_block_bcache_call_set_mode_sync@Base 2.9.0
- udisks_block_bcache_complete_bcache_destroy@Base 2.9.0
- udisks_block_bcache_complete_set_mode@Base 2.9.0
- udisks_block_bcache_dup_mode@Base 2.9.0
- udisks_block_bcache_dup_state@Base 2.9.0
- udisks_block_bcache_get_block_size@Base 2.9.0
- udisks_block_bcache_get_bypass_hits@Base 2.9.0
- udisks_block_bcache_get_bypass_misses@Base 2.9.0
- udisks_block_bcache_get_cache_size@Base 2.9.0
- udisks_block_bcache_get_cache_used@Base 2.9.0
- udisks_block_bcache_get_hits@Base 2.9.0
- udisks_block_bcache_get_misses@Base 2.9.0
- udisks_block_bcache_get_mode@Base 2.9.0
- udisks_block_bcache_get_state@Base 2.9.0
- udisks_block_bcache_get_type@Base 2.9.0
- udisks_block_bcache_interface_info@Base 2.9.0
- udisks_block_bcache_override_properties@Base 2.9.0
- udisks_block_bcache_proxy_get_type@Base 2.9.0
- udisks_block_bcache_proxy_new@Base 2.9.0
- udisks_block_bcache_proxy_new_finish@Base 2.9.0
- udisks_block_bcache_proxy_new_for_bus@Base 2.9.0
- udisks_block_bcache_proxy_new_for_bus_finish@Base 2.9.0
- udisks_block_bcache_proxy_new_for_bus_sync@Base 2.9.0
- udisks_block_bcache_proxy_new_sync@Base 2.9.0
- udisks_block_bcache_set_block_size@Base 2.9.0
- udisks_block_bcache_set_bypass_hits@Base 2.9.0
- udisks_block_bcache_set_bypass_misses@Base 2.9.0
- udisks_block_bcache_set_cache_size@Base 2.9.0
- udisks_block_bcache_set_cache_used@Base 2.9.0
- udisks_block_bcache_set_hits@Base 2.9.0
- udisks_block_bcache_set_misses@Base 2.9.0
- udisks_block_bcache_set_mode@Base 2.9.0
- udisks_block_bcache_set_state@Base 2.9.0
- udisks_block_bcache_skeleton_get_type@Base 2.9.0
- udisks_block_bcache_skeleton_new@Base 2.9.0
  udisks_block_call_add_configuration_item@Base 2.0.0
  udisks_block_call_add_configuration_item_finish@Base 2.0.0
  udisks_block_call_add_configuration_item_sync@Base 2.0.0
@@ -175,57 +135,6 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_block_set_userspace_mount_options@Base 2.7.6
  udisks_block_skeleton_get_type@Base 2.0.0
  udisks_block_skeleton_new@Base 2.0.0
- udisks_block_zram_call_activate@Base 2.9.0
- udisks_block_zram_call_activate_finish@Base 2.9.0
- udisks_block_zram_call_activate_labeled@Base 2.9.0
- udisks_block_zram_call_activate_labeled_finish@Base 2.9.0
- udisks_block_zram_call_activate_labeled_sync@Base 2.9.0
- udisks_block_zram_call_activate_sync@Base 2.9.0
- udisks_block_zram_call_deactivate@Base 2.9.0
- udisks_block_zram_call_deactivate_finish@Base 2.9.0
- udisks_block_zram_call_deactivate_sync@Base 2.9.0
- udisks_block_zram_call_refresh@Base 2.9.0
- udisks_block_zram_call_refresh_finish@Base 2.9.0
- udisks_block_zram_call_refresh_sync@Base 2.9.0
- udisks_block_zram_complete_activate@Base 2.9.0
- udisks_block_zram_complete_activate_labeled@Base 2.9.0
- udisks_block_zram_complete_deactivate@Base 2.9.0
- udisks_block_zram_complete_refresh@Base 2.9.0
- udisks_block_zram_dup_comp_algorithm@Base 2.9.0
- udisks_block_zram_get_active@Base 2.9.0
- udisks_block_zram_get_comp_algorithm@Base 2.9.0
- udisks_block_zram_get_compr_data_size@Base 2.9.0
- udisks_block_zram_get_disksize@Base 2.9.0
- udisks_block_zram_get_invalid_io@Base 2.9.0
- udisks_block_zram_get_max_comp_streams@Base 2.9.0
- udisks_block_zram_get_mem_used_total@Base 2.9.0
- udisks_block_zram_get_num_reads@Base 2.9.0
- udisks_block_zram_get_num_writes@Base 2.9.0
- udisks_block_zram_get_orig_data_size@Base 2.9.0
- udisks_block_zram_get_type@Base 2.9.0
- udisks_block_zram_get_zero_pages@Base 2.9.0
- udisks_block_zram_interface_info@Base 2.9.0
- udisks_block_zram_override_properties@Base 2.9.0
- udisks_block_zram_proxy_get_type@Base 2.9.0
- udisks_block_zram_proxy_new@Base 2.9.0
- udisks_block_zram_proxy_new_finish@Base 2.9.0
- udisks_block_zram_proxy_new_for_bus@Base 2.9.0
- udisks_block_zram_proxy_new_for_bus_finish@Base 2.9.0
- udisks_block_zram_proxy_new_for_bus_sync@Base 2.9.0
- udisks_block_zram_proxy_new_sync@Base 2.9.0
- udisks_block_zram_set_active@Base 2.9.0
- udisks_block_zram_set_comp_algorithm@Base 2.9.0
- udisks_block_zram_set_compr_data_size@Base 2.9.0
- udisks_block_zram_set_disksize@Base 2.9.0
- udisks_block_zram_set_invalid_io@Base 2.9.0
- udisks_block_zram_set_max_comp_streams@Base 2.9.0
- udisks_block_zram_set_mem_used_total@Base 2.9.0
- udisks_block_zram_set_num_reads@Base 2.9.0
- udisks_block_zram_set_num_writes@Base 2.9.0
- udisks_block_zram_set_orig_data_size@Base 2.9.0
- udisks_block_zram_set_zero_pages@Base 2.9.0
- udisks_block_zram_skeleton_get_type@Base 2.9.0
- udisks_block_zram_skeleton_new@Base 2.9.0
  udisks_client_get_all_blocks_for_mdraid@Base 2.0.91
  udisks_client_get_block_for_dev@Base 2.0.0
  udisks_client_get_block_for_drive@Base 2.0.0
@@ -575,6 +484,9 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_filesystem_call_set_label@Base 2.0.0
  udisks_filesystem_call_set_label_finish@Base 2.0.0
  udisks_filesystem_call_set_label_sync@Base 2.0.0
+ udisks_filesystem_call_set_uuid@Base 2.10.0
+ udisks_filesystem_call_set_uuid_finish@Base 2.10.0
+ udisks_filesystem_call_set_uuid_sync@Base 2.10.0
  udisks_filesystem_call_take_ownership@Base 2.7.2
  udisks_filesystem_call_take_ownership_finish@Base 2.7.2
  udisks_filesystem_call_take_ownership_sync@Base 2.7.2
@@ -586,6 +498,7 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_filesystem_complete_repair@Base 2.7.2
  udisks_filesystem_complete_resize@Base 2.7.2
  udisks_filesystem_complete_set_label@Base 2.0.0
+ udisks_filesystem_complete_set_uuid@Base 2.10.0
  udisks_filesystem_complete_take_ownership@Base 2.7.2
  udisks_filesystem_complete_unmount@Base 2.0.0
  udisks_filesystem_dup_mount_points@Base 2.0.0
@@ -668,6 +581,9 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_logical_volume_call_rename@Base 2.9.0
  udisks_logical_volume_call_rename_finish@Base 2.9.0
  udisks_logical_volume_call_rename_sync@Base 2.9.0
+ udisks_logical_volume_call_repair@Base 2.10.0
+ udisks_logical_volume_call_repair_finish@Base 2.10.0
+ udisks_logical_volume_call_repair_sync@Base 2.10.0
  udisks_logical_volume_call_resize@Base 2.9.0
  udisks_logical_volume_call_resize_finish@Base 2.9.0
  udisks_logical_volume_call_resize_sync@Base 2.9.0
@@ -679,11 +595,14 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_logical_volume_complete_deactivate@Base 2.9.0
  udisks_logical_volume_complete_delete@Base 2.9.0
  udisks_logical_volume_complete_rename@Base 2.9.0
+ udisks_logical_volume_complete_repair@Base 2.10.0
  udisks_logical_volume_complete_resize@Base 2.9.0
  udisks_logical_volume_dup_block_device@Base 2.9.0
  udisks_logical_volume_dup_child_configuration@Base 2.9.0
+ udisks_logical_volume_dup_layout@Base 2.10.0
  udisks_logical_volume_dup_name@Base 2.9.0
  udisks_logical_volume_dup_origin@Base 2.9.0
+ udisks_logical_volume_dup_structure@Base 2.10.0
  udisks_logical_volume_dup_thin_pool@Base 2.9.0
  udisks_logical_volume_dup_type_@Base 2.9.0
  udisks_logical_volume_dup_uuid@Base 2.9.0
@@ -692,10 +611,13 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_logical_volume_get_block_device@Base 2.9.0
  udisks_logical_volume_get_child_configuration@Base 2.9.0
  udisks_logical_volume_get_data_allocated_ratio@Base 2.9.0
+ udisks_logical_volume_get_layout@Base 2.10.0
  udisks_logical_volume_get_metadata_allocated_ratio@Base 2.9.0
  udisks_logical_volume_get_name@Base 2.9.0
  udisks_logical_volume_get_origin@Base 2.9.0
  udisks_logical_volume_get_size@Base 2.9.0
+ udisks_logical_volume_get_structure@Base 2.10.0
+ udisks_logical_volume_get_sync_ratio@Base 2.10.0
  udisks_logical_volume_get_thin_pool@Base 2.9.0
  udisks_logical_volume_get_type@Base 2.9.0
  udisks_logical_volume_get_type_@Base 2.9.0
@@ -714,10 +636,13 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_logical_volume_set_block_device@Base 2.9.0
  udisks_logical_volume_set_child_configuration@Base 2.9.0
  udisks_logical_volume_set_data_allocated_ratio@Base 2.9.0
+ udisks_logical_volume_set_layout@Base 2.10.0
  udisks_logical_volume_set_metadata_allocated_ratio@Base 2.9.0
  udisks_logical_volume_set_name@Base 2.9.0
  udisks_logical_volume_set_origin@Base 2.9.0
  udisks_logical_volume_set_size@Base 2.9.0
+ udisks_logical_volume_set_structure@Base 2.10.0
+ udisks_logical_volume_set_sync_ratio@Base 2.10.0
  udisks_logical_volume_set_thin_pool@Base 2.9.0
  udisks_logical_volume_set_type_@Base 2.9.0
  udisks_logical_volume_set_uuid@Base 2.9.0
@@ -751,22 +676,6 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_loop_set_setup_by_uid@Base 2.0.0
  udisks_loop_skeleton_get_type@Base 2.0.0
  udisks_loop_skeleton_new@Base 2.0.0
- udisks_manager_bcache_call_bcache_create@Base 2.9.0
- udisks_manager_bcache_call_bcache_create_finish@Base 2.9.0
- udisks_manager_bcache_call_bcache_create_sync@Base 2.9.0
- udisks_manager_bcache_complete_bcache_create@Base 2.9.0
- udisks_manager_bcache_get_type@Base 2.9.0
- udisks_manager_bcache_interface_info@Base 2.9.0
- udisks_manager_bcache_override_properties@Base 2.9.0
- udisks_manager_bcache_proxy_get_type@Base 2.9.0
- udisks_manager_bcache_proxy_new@Base 2.9.0
- udisks_manager_bcache_proxy_new_finish@Base 2.9.0
- udisks_manager_bcache_proxy_new_for_bus@Base 2.9.0
- udisks_manager_bcache_proxy_new_for_bus_finish@Base 2.9.0
- udisks_manager_bcache_proxy_new_for_bus_sync@Base 2.9.0
- udisks_manager_bcache_proxy_new_sync@Base 2.9.0
- udisks_manager_bcache_skeleton_get_type@Base 2.9.0
- udisks_manager_bcache_skeleton_new@Base 2.9.0
  udisks_manager_btrfs_call_create_volume@Base 2.9.0
  udisks_manager_btrfs_call_create_volume_finish@Base 2.9.0
  udisks_manager_btrfs_call_create_volume_sync@Base 2.9.0
@@ -849,6 +758,36 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_manager_lvm2_proxy_new_sync@Base 2.9.0
  udisks_manager_lvm2_skeleton_get_type@Base 2.9.0
  udisks_manager_lvm2_skeleton_new@Base 2.9.0
+ udisks_manager_nvme_call_connect@Base 2.10.0
+ udisks_manager_nvme_call_connect_finish@Base 2.10.0
+ udisks_manager_nvme_call_connect_sync@Base 2.10.0
+ udisks_manager_nvme_call_set_host_id@Base 2.10.0
+ udisks_manager_nvme_call_set_host_id_finish@Base 2.10.0
+ udisks_manager_nvme_call_set_host_id_sync@Base 2.10.0
+ udisks_manager_nvme_call_set_host_nqn@Base 2.10.0
+ udisks_manager_nvme_call_set_host_nqn_finish@Base 2.10.0
+ udisks_manager_nvme_call_set_host_nqn_sync@Base 2.10.0
+ udisks_manager_nvme_complete_connect@Base 2.10.0
+ udisks_manager_nvme_complete_set_host_id@Base 2.10.0
+ udisks_manager_nvme_complete_set_host_nqn@Base 2.10.0
+ udisks_manager_nvme_dup_host_id@Base 2.10.0
+ udisks_manager_nvme_dup_host_nqn@Base 2.10.0
+ udisks_manager_nvme_get_host_id@Base 2.10.0
+ udisks_manager_nvme_get_host_nqn@Base 2.10.0
+ udisks_manager_nvme_get_type@Base 2.10.0
+ udisks_manager_nvme_interface_info@Base 2.10.0
+ udisks_manager_nvme_override_properties@Base 2.10.0
+ udisks_manager_nvme_proxy_get_type@Base 2.10.0
+ udisks_manager_nvme_proxy_new@Base 2.10.0
+ udisks_manager_nvme_proxy_new_finish@Base 2.10.0
+ udisks_manager_nvme_proxy_new_for_bus@Base 2.10.0
+ udisks_manager_nvme_proxy_new_for_bus_finish@Base 2.10.0
+ udisks_manager_nvme_proxy_new_for_bus_sync@Base 2.10.0
+ udisks_manager_nvme_proxy_new_sync@Base 2.10.0
+ udisks_manager_nvme_set_host_id@Base 2.10.0
+ udisks_manager_nvme_set_host_nqn@Base 2.10.0
+ udisks_manager_nvme_skeleton_get_type@Base 2.10.0
+ udisks_manager_nvme_skeleton_new@Base 2.10.0
  udisks_manager_override_properties@Base 2.0.0
  udisks_manager_proxy_get_type@Base 2.0.0
  udisks_manager_proxy_new@Base 2.0.0
@@ -863,26 +802,6 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_manager_set_version@Base 2.0.0
  udisks_manager_skeleton_get_type@Base 2.0.0
  udisks_manager_skeleton_new@Base 2.0.0
- udisks_manager_zram_call_create_devices@Base 2.9.0
- udisks_manager_zram_call_create_devices_finish@Base 2.9.0
- udisks_manager_zram_call_create_devices_sync@Base 2.9.0
- udisks_manager_zram_call_destroy_devices@Base 2.9.0
- udisks_manager_zram_call_destroy_devices_finish@Base 2.9.0
- udisks_manager_zram_call_destroy_devices_sync@Base 2.9.0
- udisks_manager_zram_complete_create_devices@Base 2.9.0
- udisks_manager_zram_complete_destroy_devices@Base 2.9.0
- udisks_manager_zram_get_type@Base 2.9.0
- udisks_manager_zram_interface_info@Base 2.9.0
- udisks_manager_zram_override_properties@Base 2.9.0
- udisks_manager_zram_proxy_get_type@Base 2.9.0
- udisks_manager_zram_proxy_new@Base 2.9.0
- udisks_manager_zram_proxy_new_finish@Base 2.9.0
- udisks_manager_zram_proxy_new_for_bus@Base 2.9.0
- udisks_manager_zram_proxy_new_for_bus_finish@Base 2.9.0
- udisks_manager_zram_proxy_new_for_bus_sync@Base 2.9.0
- udisks_manager_zram_proxy_new_sync@Base 2.9.0
- udisks_manager_zram_skeleton_get_type@Base 2.9.0
- udisks_manager_zram_skeleton_new@Base 2.9.0
  udisks_mdraid_call_add_device@Base 2.0.91
  udisks_mdraid_call_add_device_finish@Base 2.0.91
  udisks_mdraid_call_add_device_sync@Base 2.0.91
@@ -960,10 +879,147 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_mdraid_set_uuid@Base 2.0.91
  udisks_mdraid_skeleton_get_type@Base 2.0.91
  udisks_mdraid_skeleton_new@Base 2.0.91
+ udisks_nvme_controller_call_sanitize_start@Base 2.10.0
+ udisks_nvme_controller_call_sanitize_start_finish@Base 2.10.0
+ udisks_nvme_controller_call_sanitize_start_sync@Base 2.10.0
+ udisks_nvme_controller_call_smart_get_attributes@Base 2.10.0
+ udisks_nvme_controller_call_smart_get_attributes_finish@Base 2.10.0
+ udisks_nvme_controller_call_smart_get_attributes_sync@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_abort@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_abort_finish@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_abort_sync@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_start@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_start_finish@Base 2.10.0
+ udisks_nvme_controller_call_smart_selftest_start_sync@Base 2.10.0
+ udisks_nvme_controller_call_smart_update@Base 2.10.0
+ udisks_nvme_controller_call_smart_update_finish@Base 2.10.0
+ udisks_nvme_controller_call_smart_update_sync@Base 2.10.0
+ udisks_nvme_controller_complete_sanitize_start@Base 2.10.0
+ udisks_nvme_controller_complete_smart_get_attributes@Base 2.10.0
+ udisks_nvme_controller_complete_smart_selftest_abort@Base 2.10.0
+ udisks_nvme_controller_complete_smart_selftest_start@Base 2.10.0
+ udisks_nvme_controller_complete_smart_update@Base 2.10.0
+ udisks_nvme_controller_dup_fguid@Base 2.10.0
+ udisks_nvme_controller_dup_nvme_revision@Base 2.10.0
+ udisks_nvme_controller_dup_sanitize_status@Base 2.10.0
+ udisks_nvme_controller_dup_smart_critical_warning@Base 2.10.0
+ udisks_nvme_controller_dup_smart_selftest_status@Base 2.10.0
+ udisks_nvme_controller_dup_state@Base 2.10.0
+ udisks_nvme_controller_dup_subsystem_nqn@Base 2.10.0
+ udisks_nvme_controller_get_controller_id@Base 2.10.0
+ udisks_nvme_controller_get_fguid@Base 2.10.0
+ udisks_nvme_controller_get_nvme_revision@Base 2.10.0
+ udisks_nvme_controller_get_sanitize_percent_remaining@Base 2.10.0
+ udisks_nvme_controller_get_sanitize_status@Base 2.10.0
+ udisks_nvme_controller_get_smart_critical_warning@Base 2.10.0
+ udisks_nvme_controller_get_smart_power_on_hours@Base 2.10.0
+ udisks_nvme_controller_get_smart_selftest_percent_remaining@Base 2.10.0
+ udisks_nvme_controller_get_smart_selftest_status@Base 2.10.0
+ udisks_nvme_controller_get_smart_temperature@Base 2.10.0
+ udisks_nvme_controller_get_smart_updated@Base 2.10.0
+ udisks_nvme_controller_get_state@Base 2.10.0
+ udisks_nvme_controller_get_subsystem_nqn@Base 2.10.0
+ udisks_nvme_controller_get_type@Base 2.10.0
+ udisks_nvme_controller_get_unallocated_capacity@Base 2.10.0
+ udisks_nvme_controller_interface_info@Base 2.10.0
+ udisks_nvme_controller_override_properties@Base 2.10.0
+ udisks_nvme_controller_proxy_get_type@Base 2.10.0
+ udisks_nvme_controller_proxy_new@Base 2.10.0
+ udisks_nvme_controller_proxy_new_finish@Base 2.10.0
+ udisks_nvme_controller_proxy_new_for_bus@Base 2.10.0
+ udisks_nvme_controller_proxy_new_for_bus_finish@Base 2.10.0
+ udisks_nvme_controller_proxy_new_for_bus_sync@Base 2.10.0
+ udisks_nvme_controller_proxy_new_sync@Base 2.10.0
+ udisks_nvme_controller_set_controller_id@Base 2.10.0
+ udisks_nvme_controller_set_fguid@Base 2.10.0
+ udisks_nvme_controller_set_nvme_revision@Base 2.10.0
+ udisks_nvme_controller_set_sanitize_percent_remaining@Base 2.10.0
+ udisks_nvme_controller_set_sanitize_status@Base 2.10.0
+ udisks_nvme_controller_set_smart_critical_warning@Base 2.10.0
+ udisks_nvme_controller_set_smart_power_on_hours@Base 2.10.0
+ udisks_nvme_controller_set_smart_selftest_percent_remaining@Base 2.10.0
+ udisks_nvme_controller_set_smart_selftest_status@Base 2.10.0
+ udisks_nvme_controller_set_smart_temperature@Base 2.10.0
+ udisks_nvme_controller_set_smart_updated@Base 2.10.0
+ udisks_nvme_controller_set_state@Base 2.10.0
+ udisks_nvme_controller_set_subsystem_nqn@Base 2.10.0
+ udisks_nvme_controller_set_unallocated_capacity@Base 2.10.0
+ udisks_nvme_controller_skeleton_get_type@Base 2.10.0
+ udisks_nvme_controller_skeleton_new@Base 2.10.0
+ udisks_nvme_fabrics_call_disconnect@Base 2.10.0
+ udisks_nvme_fabrics_call_disconnect_finish@Base 2.10.0
+ udisks_nvme_fabrics_call_disconnect_sync@Base 2.10.0
+ udisks_nvme_fabrics_complete_disconnect@Base 2.10.0
+ udisks_nvme_fabrics_dup_host_id@Base 2.10.0
+ udisks_nvme_fabrics_dup_host_nqn@Base 2.10.0
+ udisks_nvme_fabrics_dup_transport@Base 2.10.0
+ udisks_nvme_fabrics_dup_transport_address@Base 2.10.0
+ udisks_nvme_fabrics_get_host_id@Base 2.10.0
+ udisks_nvme_fabrics_get_host_nqn@Base 2.10.0
+ udisks_nvme_fabrics_get_transport@Base 2.10.0
+ udisks_nvme_fabrics_get_transport_address@Base 2.10.0
+ udisks_nvme_fabrics_get_type@Base 2.10.0
+ udisks_nvme_fabrics_interface_info@Base 2.10.0
+ udisks_nvme_fabrics_override_properties@Base 2.10.0
+ udisks_nvme_fabrics_proxy_get_type@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new_finish@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new_for_bus@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new_for_bus_finish@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new_for_bus_sync@Base 2.10.0
+ udisks_nvme_fabrics_proxy_new_sync@Base 2.10.0
+ udisks_nvme_fabrics_set_host_id@Base 2.10.0
+ udisks_nvme_fabrics_set_host_nqn@Base 2.10.0
+ udisks_nvme_fabrics_set_transport@Base 2.10.0
+ udisks_nvme_fabrics_set_transport_address@Base 2.10.0
+ udisks_nvme_fabrics_skeleton_get_type@Base 2.10.0
+ udisks_nvme_fabrics_skeleton_new@Base 2.10.0
+ udisks_nvme_namespace_call_format_namespace@Base 2.10.0
+ udisks_nvme_namespace_call_format_namespace_finish@Base 2.10.0
+ udisks_nvme_namespace_call_format_namespace_sync@Base 2.10.0
+ udisks_nvme_namespace_complete_format_namespace@Base 2.10.0
+ udisks_nvme_namespace_dup_eui64@Base 2.10.0
+ udisks_nvme_namespace_dup_formatted_lbasize@Base 2.10.0
+ udisks_nvme_namespace_dup_lbaformats@Base 2.10.0
+ udisks_nvme_namespace_dup_nguid@Base 2.10.0
+ udisks_nvme_namespace_dup_uuid@Base 2.10.0
+ udisks_nvme_namespace_dup_wwn@Base 2.10.0
+ udisks_nvme_namespace_get_eui64@Base 2.10.0
+ udisks_nvme_namespace_get_format_percent_remaining@Base 2.10.0
+ udisks_nvme_namespace_get_formatted_lbasize@Base 2.10.0
+ udisks_nvme_namespace_get_lbaformats@Base 2.10.0
+ udisks_nvme_namespace_get_namespace_capacity@Base 2.10.0
+ udisks_nvme_namespace_get_namespace_size@Base 2.10.0
+ udisks_nvme_namespace_get_namespace_utilization@Base 2.10.0
+ udisks_nvme_namespace_get_nguid@Base 2.10.0
+ udisks_nvme_namespace_get_nsid@Base 2.10.0
+ udisks_nvme_namespace_get_type@Base 2.10.0
+ udisks_nvme_namespace_get_uuid@Base 2.10.0
+ udisks_nvme_namespace_get_wwn@Base 2.10.0
+ udisks_nvme_namespace_interface_info@Base 2.10.0
+ udisks_nvme_namespace_override_properties@Base 2.10.0
+ udisks_nvme_namespace_proxy_get_type@Base 2.10.0
+ udisks_nvme_namespace_proxy_new@Base 2.10.0
+ udisks_nvme_namespace_proxy_new_finish@Base 2.10.0
+ udisks_nvme_namespace_proxy_new_for_bus@Base 2.10.0
+ udisks_nvme_namespace_proxy_new_for_bus_finish@Base 2.10.0
+ udisks_nvme_namespace_proxy_new_for_bus_sync@Base 2.10.0
+ udisks_nvme_namespace_proxy_new_sync@Base 2.10.0
+ udisks_nvme_namespace_set_eui64@Base 2.10.0
+ udisks_nvme_namespace_set_format_percent_remaining@Base 2.10.0
+ udisks_nvme_namespace_set_formatted_lbasize@Base 2.10.0
+ udisks_nvme_namespace_set_lbaformats@Base 2.10.0
+ udisks_nvme_namespace_set_namespace_capacity@Base 2.10.0
+ udisks_nvme_namespace_set_namespace_size@Base 2.10.0
+ udisks_nvme_namespace_set_namespace_utilization@Base 2.10.0
+ udisks_nvme_namespace_set_nguid@Base 2.10.0
+ udisks_nvme_namespace_set_nsid@Base 2.10.0
+ udisks_nvme_namespace_set_uuid@Base 2.10.0
+ udisks_nvme_namespace_set_wwn@Base 2.10.0
+ udisks_nvme_namespace_skeleton_get_type@Base 2.10.0
+ udisks_nvme_namespace_skeleton_new@Base 2.10.0
  udisks_object_get_block@Base 2.0.0
- udisks_object_get_block_bcache@Base 2.9.0
  udisks_object_get_block_lvm2@Base 2.9.0
- udisks_object_get_block_zram@Base 2.9.0
  udisks_object_get_drive@Base 2.0.0
  udisks_object_get_drive_ata@Base 2.0.0
  udisks_object_get_encrypted@Base 2.0.0
@@ -973,11 +1029,13 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_object_get_logical_volume@Base 2.9.0
  udisks_object_get_loop@Base 2.0.0
  udisks_object_get_manager@Base 2.0.0
- udisks_object_get_manager_bcache@Base 2.9.0
  udisks_object_get_manager_btrfs@Base 2.9.0
  udisks_object_get_manager_lvm2@Base 2.9.0
- udisks_object_get_manager_zram@Base 2.9.0
+ udisks_object_get_manager_nvme@Base 2.10.0
  udisks_object_get_mdraid@Base 2.0.91
+ udisks_object_get_nvme_controller@Base 2.10.0
+ udisks_object_get_nvme_fabrics@Base 2.10.0
+ udisks_object_get_nvme_namespace@Base 2.10.0
  udisks_object_get_partition@Base 2.0.0
  udisks_object_get_partition_table@Base 2.0.0
  udisks_object_get_physical_volume@Base 2.9.0
@@ -1005,9 +1063,7 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_object_manager_client_new_for_bus_sync@Base 2.0.0
  udisks_object_manager_client_new_sync@Base 2.0.0
  udisks_object_peek_block@Base 2.0.0
- udisks_object_peek_block_bcache@Base 2.9.0
  udisks_object_peek_block_lvm2@Base 2.9.0
- udisks_object_peek_block_zram@Base 2.9.0
  udisks_object_peek_drive@Base 2.0.0
  udisks_object_peek_drive_ata@Base 2.0.0
  udisks_object_peek_encrypted@Base 2.0.0
@@ -1017,11 +1073,13 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_object_peek_logical_volume@Base 2.9.0
  udisks_object_peek_loop@Base 2.0.0
  udisks_object_peek_manager@Base 2.0.0
- udisks_object_peek_manager_bcache@Base 2.9.0
  udisks_object_peek_manager_btrfs@Base 2.9.0
  udisks_object_peek_manager_lvm2@Base 2.9.0
- udisks_object_peek_manager_zram@Base 2.9.0
+ udisks_object_peek_manager_nvme@Base 2.10.0
  udisks_object_peek_mdraid@Base 2.0.91
+ udisks_object_peek_nvme_controller@Base 2.10.0
+ udisks_object_peek_nvme_fabrics@Base 2.10.0
+ udisks_object_peek_nvme_namespace@Base 2.10.0
  udisks_object_peek_partition@Base 2.0.0
  udisks_object_peek_partition_table@Base 2.0.0
  udisks_object_peek_physical_volume@Base 2.9.0
@@ -1033,9 +1091,7 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_object_skeleton_get_type@Base 2.0.0
  udisks_object_skeleton_new@Base 2.0.0
  udisks_object_skeleton_set_block@Base 2.0.0
- udisks_object_skeleton_set_block_bcache@Base 2.9.0
  udisks_object_skeleton_set_block_lvm2@Base 2.9.0
- udisks_object_skeleton_set_block_zram@Base 2.9.0
  udisks_object_skeleton_set_drive@Base 2.0.0
  udisks_object_skeleton_set_drive_ata@Base 2.0.0
  udisks_object_skeleton_set_encrypted@Base 2.0.0
@@ -1045,11 +1101,13 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_object_skeleton_set_logical_volume@Base 2.9.0
  udisks_object_skeleton_set_loop@Base 2.0.0
  udisks_object_skeleton_set_manager@Base 2.0.0
- udisks_object_skeleton_set_manager_bcache@Base 2.9.0
  udisks_object_skeleton_set_manager_btrfs@Base 2.9.0
  udisks_object_skeleton_set_manager_lvm2@Base 2.9.0
- udisks_object_skeleton_set_manager_zram@Base 2.9.0
+ udisks_object_skeleton_set_manager_nvme@Base 2.10.0
  udisks_object_skeleton_set_mdraid@Base 2.0.91
+ udisks_object_skeleton_set_nvme_controller@Base 2.10.0
+ udisks_object_skeleton_set_nvme_fabrics@Base 2.10.0
+ udisks_object_skeleton_set_nvme_namespace@Base 2.10.0
  udisks_object_skeleton_set_partition@Base 2.0.0
  udisks_object_skeleton_set_partition_table@Base 2.0.0
  udisks_object_skeleton_set_physical_volume@Base 2.9.0
@@ -1071,11 +1129,15 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_partition_call_set_type@Base 2.0.0
  udisks_partition_call_set_type_finish@Base 2.0.0
  udisks_partition_call_set_type_sync@Base 2.0.0
+ udisks_partition_call_set_uuid@Base 2.10.0
+ udisks_partition_call_set_uuid_finish@Base 2.10.0
+ udisks_partition_call_set_uuid_sync@Base 2.10.0
  udisks_partition_complete_delete@Base 2.0.0
  udisks_partition_complete_resize@Base 2.7.2
  udisks_partition_complete_set_flags@Base 2.0.0
  udisks_partition_complete_set_name@Base 2.0.0
  udisks_partition_complete_set_type@Base 2.0.0
+ udisks_partition_complete_set_uuid@Base 2.10.0
  udisks_partition_dup_name@Base 2.0.0
  udisks_partition_dup_table@Base 2.0.0
  udisks_partition_dup_type_@Base 2.0.0
@@ -1163,6 +1225,9 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_swapspace_call_set_label@Base 2.7.4
  udisks_swapspace_call_set_label_finish@Base 2.7.4
  udisks_swapspace_call_set_label_sync@Base 2.7.4
+ udisks_swapspace_call_set_uuid@Base 2.10.0
+ udisks_swapspace_call_set_uuid_finish@Base 2.10.0
+ udisks_swapspace_call_set_uuid_sync@Base 2.10.0
  udisks_swapspace_call_start@Base 2.0.0
  udisks_swapspace_call_start_finish@Base 2.0.0
  udisks_swapspace_call_start_sync@Base 2.0.0
@@ -1170,6 +1235,7 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_swapspace_call_stop_finish@Base 2.0.0
  udisks_swapspace_call_stop_sync@Base 2.0.0
  udisks_swapspace_complete_set_label@Base 2.7.4
+ udisks_swapspace_complete_set_uuid@Base 2.10.0
  udisks_swapspace_complete_start@Base 2.0.0
  udisks_swapspace_complete_stop@Base 2.0.0
  udisks_swapspace_get_active@Base 2.0.0
@@ -1242,6 +1308,9 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_volume_group_call_create_plain_volume@Base 2.9.0
  udisks_volume_group_call_create_plain_volume_finish@Base 2.9.0
  udisks_volume_group_call_create_plain_volume_sync@Base 2.9.0
+ udisks_volume_group_call_create_plain_volume_with_layout@Base 2.10.0
+ udisks_volume_group_call_create_plain_volume_with_layout_finish@Base 2.10.0
+ udisks_volume_group_call_create_plain_volume_with_layout_sync@Base 2.10.0
  udisks_volume_group_call_create_thin_pool_volume@Base 2.9.0
  udisks_volume_group_call_create_thin_pool_volume_finish@Base 2.9.0
  udisks_volume_group_call_create_thin_pool_volume_sync@Base 2.9.0
@@ -1263,11 +1332,15 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_volume_group_call_remove_device@Base 2.9.0
  udisks_volume_group_call_remove_device_finish@Base 2.9.0
  udisks_volume_group_call_remove_device_sync@Base 2.9.0
+ udisks_volume_group_call_remove_missing_physical_volumes@Base 2.10.0
+ udisks_volume_group_call_remove_missing_physical_volumes_finish@Base 2.10.0
+ udisks_volume_group_call_remove_missing_physical_volumes_sync@Base 2.10.0
  udisks_volume_group_call_rename@Base 2.9.0
  udisks_volume_group_call_rename_finish@Base 2.9.0
  udisks_volume_group_call_rename_sync@Base 2.9.0
  udisks_volume_group_complete_add_device@Base 2.9.0
  udisks_volume_group_complete_create_plain_volume@Base 2.9.0
+ udisks_volume_group_complete_create_plain_volume_with_layout@Base 2.10.0
  udisks_volume_group_complete_create_thin_pool_volume@Base 2.9.0
  udisks_volume_group_complete_create_thin_volume@Base 2.9.0
  udisks_volume_group_complete_create_vdo_volume@Base 2.9.0
@@ -1275,11 +1348,14 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_volume_group_complete_empty_device@Base 2.9.0
  udisks_volume_group_complete_poll@Base 2.9.0
  udisks_volume_group_complete_remove_device@Base 2.9.0
+ udisks_volume_group_complete_remove_missing_physical_volumes@Base 2.10.0
  udisks_volume_group_complete_rename@Base 2.9.0
+ udisks_volume_group_dup_missing_physical_volumes@Base 2.10.0
  udisks_volume_group_dup_name@Base 2.9.0
  udisks_volume_group_dup_uuid@Base 2.9.0
  udisks_volume_group_get_extent_size@Base 2.9.0
  udisks_volume_group_get_free_size@Base 2.9.0
+ udisks_volume_group_get_missing_physical_volumes@Base 2.10.0
  udisks_volume_group_get_name@Base 2.9.0
  udisks_volume_group_get_needs_polling@Base 2.9.0
  udisks_volume_group_get_size@Base 2.9.0
@@ -1296,6 +1372,7 @@ libudisks2.so.0 libudisks2-0 #MINVER#
  udisks_volume_group_proxy_new_sync@Base 2.9.0
  udisks_volume_group_set_extent_size@Base 2.9.0
  udisks_volume_group_set_free_size@Base 2.9.0
+ udisks_volume_group_set_missing_physical_volumes@Base 2.10.0
  udisks_volume_group_set_name@Base 2.9.0
  udisks_volume_group_set_needs_polling@Base 2.9.0
  udisks_volume_group_set_size@Base 2.9.0

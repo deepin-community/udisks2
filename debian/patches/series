@@ -1,5 +1,1 @@
-hide-swap-partition-and-extended-partition.patch
-udiskslinuxprovider-Filter-out-spurious-uevents.patch
-fix-Modify-the-solution-to-the-rules-file-conflict.patch
-allow-user-umount-permissionmanagers-mount-point.patch
-filesystem-mount-system-enable.patch
+tests-Fix-targetcli_config.json.patch

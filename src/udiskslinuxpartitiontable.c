@@ -117,21 +117,17 @@ void
 udisks_linux_partition_table_update (UDisksLinuxPartitionTable  *table,
                                      UDisksLinuxBlockObject     *object)
 {
-  const gchar *type = NULL;
   UDisksLinuxDevice *device = NULL;
   UDisksDaemon *daemon = NULL;
   guint num_parts = 0;
   const gchar **partition_object_paths = NULL;
+  const gchar *part_type = NULL;
   GList *partition_objects = NULL;
   GList *object_p = NULL;
   guint i = 0;
-
-  /* update partition table type */
-  device = udisks_linux_block_object_get_device (object);
-  if (device != NULL)
-    type = g_udev_device_get_property (device->udev_device, "ID_PART_TABLE_TYPE");
-
-  udisks_partition_table_set_type_ (UDISKS_PARTITION_TABLE (table), type);
+  const gchar *device_file;
+  BDPartDiskSpec *spec;
+  GError *error = NULL;
 
   /* update list of partitions */
   daemon = udisks_linux_block_object_get_daemon (UDISKS_LINUX_BLOCK_OBJECT (object));
@@ -146,8 +142,36 @@ udisks_linux_partition_table_update (UDisksLinuxPartitionTable  *table,
 
   udisks_partition_table_set_partitions (UDISKS_PARTITION_TABLE (table),
                                          partition_object_paths);
-  g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (table));
 
+  /* update partition table type */
+  device = udisks_linux_block_object_get_device (object);
+  if (device)
+    {
+      part_type = g_udev_device_get_property (device->udev_device, "ID_PART_TABLE_TYPE");
+      if (!part_type && num_parts > 0)
+        {
+          /* probe the device in case no cached udev property is available */
+          device_file = g_udev_device_get_device_file (device->udev_device);
+          if (device_file)
+            {
+              spec = bd_part_get_disk_spec (device_file, &error);
+              if (spec)
+                {
+                  part_type = bd_part_get_part_table_type_str (spec->table_type, NULL);
+                  bd_part_disk_spec_free (spec);
+                }
+              else
+                {
+                  udisks_warning ("Partitions found on device '%s' but couldn't read partition table signature: %s",
+                                  device_file, error->message);
+                  g_clear_error (&error);
+                }
+            }
+        }
+    }
+  udisks_partition_table_set_type_ (UDISKS_PARTITION_TABLE (table), part_type);
+
+  g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (table));
 
   g_free (partition_object_paths);
   g_clear_object (&device);
@@ -273,17 +297,19 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
   GError *error = NULL;
   UDisksBaseJob *job = NULL;
   const gchar *partition_type = NULL;
+  const gchar *partition_uuid = NULL;
 
   object = udisks_daemon_util_dup_object (table, &error);
   if (object == NULL)
     {
-      g_dbus_method_invocation_take_error (invocation, error);
+      g_dbus_method_invocation_return_gerror (invocation, error);
       goto out;
     }
 
   daemon = udisks_linux_block_object_get_daemon (UDISKS_LINUX_BLOCK_OBJECT (object));
 
   g_variant_lookup (options, "partition-type", "&s", &partition_type);
+  g_variant_lookup (options, "partition-uuid", "&s", &partition_uuid);
 
   block = udisks_object_get_block (object);
   if (block == NULL)
@@ -293,7 +319,6 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
       goto out;
     }
 
-  error = NULL;
   if (!udisks_daemon_util_get_caller_uid_sync (daemon,
                                                invocation,
                                                NULL /* GCancellable */,
@@ -301,7 +326,6 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
                                                &error))
     {
       g_dbus_method_invocation_return_gerror (invocation, error);
-      g_clear_error (&error);
       goto out;
     }
 
@@ -458,15 +482,28 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
       goto out;
     }
 
-  /* set name if given */
-  if (g_strcmp0 (table_type, "gpt") == 0 && strlen (name) > 0)
+  /* set name and UUID if given */
+  if (g_strcmp0 (table_type, "gpt") == 0)
     {
-      if (!bd_part_set_part_name (device_name, part_spec->path, name, &error))
+      if (strlen (name) > 0)
         {
-          g_prefix_error (&error, "Error setting name for newly created partition: ");
-          g_dbus_method_invocation_take_error (invocation, error);
-          udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
-          goto out;
+          if (!bd_part_set_part_name (device_name, part_spec->path, name, &error))
+            {
+              g_prefix_error (&error, "Error setting name for newly created partition: ");
+              g_dbus_method_invocation_return_gerror (invocation, error);
+              udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
+              goto out;
+            }
+        }
+      else if (partition_uuid)
+        {
+          if (!bd_part_set_part_uuid (device_name, part_spec->path, partition_uuid, &error))
+            {
+              g_prefix_error (&error, "Error setting partition UUID for newly created partition: ");
+              g_dbus_method_invocation_return_gerror (invocation, error);
+              udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
+              goto out;
+            }
         }
     }
 
@@ -483,7 +520,7 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
       if (!ret)
         {
           g_prefix_error (&error, "Error setting type for newly created partition: ");
-          g_dbus_method_invocation_take_error (invocation, error);
+          g_dbus_method_invocation_return_gerror (invocation, error);
           udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
           goto out;
         }
@@ -492,7 +529,7 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
   /* wipe the newly created partition if wanted */
   if (part_spec->type != BD_PART_TYPE_EXTENDED)
     {
-      if (!bd_fs_wipe (part_spec->path, TRUE, &error))
+      if (!bd_fs_wipe (part_spec->path, TRUE, FALSE, &error))
         {
           if (g_error_matches (error, BD_FS_ERROR, BD_FS_ERROR_NOFS))
             g_clear_error (&error);
@@ -516,7 +553,6 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
   /* sit and wait for the partition to show up */
   g_warn_if_fail (wait_data->pos_to_wait_for > 0);
   wait_data->partition_table_object = object;
-  error = NULL;
   partition_object = udisks_daemon_wait_for_object_sync (daemon,
                                                          wait_for_partition,
                                                          wait_data,
@@ -526,7 +562,7 @@ udisks_linux_partition_table_handle_create_partition (UDisksPartitionTable   *ta
   if (partition_object == NULL)
     {
       g_prefix_error (&error, "Error waiting for partition to appear: ");
-      g_dbus_method_invocation_take_error (invocation, error);
+      g_dbus_method_invocation_return_gerror (invocation, error);
       udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
       goto out;
     }

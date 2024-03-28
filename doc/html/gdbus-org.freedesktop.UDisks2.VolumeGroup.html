@@ -35,68 +35,79 @@
 <div class="refsynopsisdiv">
 <h2>Methods</h2>
 <pre class="synopsis">
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Poll" title="The Poll() method">Poll</a>                 ();
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Delete" title="The Delete() method">Delete</a>               (IN  b     wipe,
-                      IN  a{sv} options);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Rename" title="The Rename() method">Rename</a>               (IN  s     new_name,
-                      IN  a{sv} options,
-                      OUT o     result);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.AddDevice" title="The AddDevice() method">AddDevice</a>            (IN  o     block,
-                      IN  a{sv} options);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.EmptyDevice" title="The EmptyDevice() method">EmptyDevice</a>          (IN  o     block,
-                      IN  a{sv} options);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveDevice" title="The RemoveDevice() method">RemoveDevice</a>         (IN  o     block,
-                      IN  b     wipe,
-                      IN  a{sv} options);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolume" title="The CreatePlainVolume() method">CreatePlainVolume</a>    (IN  s     name,
-                      IN  t     size,
-                      IN  a{sv} options,
-                      OUT o     result);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinPoolVolume" title="The CreateThinPoolVolume() method">CreateThinPoolVolume</a> (IN  s     name,
-                      IN  t     size,
-                      IN  a{sv} options,
-                      OUT o     result);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinVolume" title="The CreateThinVolume() method">CreateThinVolume</a>     (IN  s     name,
-                      IN  t     size,
-                      IN  o     pool,
-                      IN  a{sv} options,
-                      OUT o     result);
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateVDOVolume" title="The CreateVDOVolume() method">CreateVDOVolume</a>      (IN  s     lv_name,
-                      IN  s     pool_name,
-                      IN  t     data_size,
-                      IN  t     virtual_size,
-                      IN  t     index_memory,
-                      IN  b     compression,
-                      IN  b     deduplication,
-                      IN  s     write_policy,
-                      IN  a{sv} options,
-                      OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Poll" title="The Poll() method">Poll</a>                         ();
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Delete" title="The Delete() method">Delete</a>                       (IN  b     wipe,
+                              IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.Rename" title="The Rename() method">Rename</a>                       (IN  s     new_name,
+                              IN  a{sv} options,
+                              OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.AddDevice" title="The AddDevice() method">AddDevice</a>                    (IN  o     block,
+                              IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.EmptyDevice" title="The EmptyDevice() method">EmptyDevice</a>                  (IN  o     block,
+                              IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveDevice" title="The RemoveDevice() method">RemoveDevice</a>                 (IN  o     block,
+                              IN  b     wipe,
+                              IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveMissingPhysicalVolumes" title="The RemoveMissingPhysicalVolumes() method">RemoveMissingPhysicalVolumes</a> (IN  a{sv} options);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolume" title="The CreatePlainVolume() method">CreatePlainVolume</a>            (IN  s     name,
+                              IN  t     size,
+                              IN  a{sv} options,
+                              OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolumeWithLayout" title="The CreatePlainVolumeWithLayout() method">CreatePlainVolumeWithLayout</a>  (IN  s     name,
+                              IN  t     size,
+                              IN  s     layout,
+                              IN  ao    pvs,
+                              IN  a{sv} options,
+                              OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinPoolVolume" title="The CreateThinPoolVolume() method">CreateThinPoolVolume</a>         (IN  s     name,
+                              IN  t     size,
+                              IN  a{sv} options,
+                              OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinVolume" title="The CreateThinVolume() method">CreateThinVolume</a>             (IN  s     name,
+                              IN  t     size,
+                              IN  o     pool,
+                              IN  a{sv} options,
+                              OUT o     result);
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateVDOVolume" title="The CreateVDOVolume() method">CreateVDOVolume</a>              (IN  s     lv_name,
+                              IN  s     pool_name,
+                              IN  t     data_size,
+                              IN  t     virtual_size,
+                              IN  t     index_memory,
+                              IN  b     compression,
+                              IN  b     deduplication,
+                              IN  s     write_policy,
+                              IN  a{sv} options,
+                              OUT o     result);
 </pre>
 </div>
 <div class="refsect1">
-<a name="id-1.3.3.21.4"></a><h2>Properties</h2>
+<a name="id-1.3.3.25.4"></a><h2>Properties</h2>
 <pre class="synopsis">
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.Name" title='The "Name" property'>Name</a>          readable   s
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.UUID" title='The "UUID" property'>UUID</a>          readable   s
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.Size" title='The "Size" property'>Size</a>          readable   t
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.FreeSize" title='The "FreeSize" property'>FreeSize</a>      readable   t
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.ExtentSize" title='The "ExtentSize" property'>ExtentSize</a>    readable   t
-<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.NeedsPolling" title='The "NeedsPolling" property'>NeedsPolling</a>  readable   b
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.Name" title='The "Name" property'>Name</a>                    readable   s
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.UUID" title='The "UUID" property'>UUID</a>                    readable   s
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.Size" title='The "Size" property'>Size</a>                    readable   t
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.FreeSize" title='The "FreeSize" property'>FreeSize</a>                readable   t
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.ExtentSize" title='The "ExtentSize" property'>ExtentSize</a>              readable   t
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.NeedsPolling" title='The "NeedsPolling" property'>NeedsPolling</a>            readable   b
+<a class="link" href="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.MissingPhysicalVolumes" title='The "MissingPhysicalVolumes" property'>MissingPhysicalVolumes</a>  readable   as
 </pre>
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-VolumeGroup"></a><h2>Description</h2>
-<p>      Objects implementing this interface represent LVM2 volume
-      groups.  They appear under /org/freedesktop/UDisks2/lvm/.
+<p>
+Objects implementing this interface represent LVM2 volume
+groups.  They appear under /org/freedesktop/UDisks2/lvm/.
 </p>
-<p>      The logical volume objects of a volume group are the children of
-      the volume group objects in the D-Bus object hierarchy.  See the
-      <a class="link" href="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-interface-org-freedesktop-UDisks2-LogicalVolume.top_of_page">org.freedesktop.UDisks2.LogicalVolume</a> interface.
+<p>
+The logical volume objects of a volume group are the children of
+the volume group objects in the D-Bus object hierarchy.  See the
+<a class="link" href="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-interface-org-freedesktop-UDisks2-LogicalVolume.top_of_page">org.freedesktop.UDisks2.LogicalVolume</a> interface.
 </p>
-<p>      The physical volume objects of a volume group can be found by
-      looking for block devices with a
-      <a class="link" href="gdbus-org.freedesktop.UDisks2.PhysicalVolume.html#gdbus-interface-org-freedesktop-UDisks2-PhysicalVolume.top_of_page">org.freedesktop.UDisks2.PhysicalVolume</a>.VolumeGroup property
-      that points to the volume group object.
+<p>
+The physical volume objects of a volume group can be found by
+looking for block devices with a
+<a class="link" href="gdbus-org.freedesktop.UDisks2.PhysicalVolume.html#gdbus-interface-org-freedesktop-UDisks2-PhysicalVolume.top_of_page">org.freedesktop.UDisks2.PhysicalVolume</a>.VolumeGroup property
+that points to the volume group object.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -107,11 +118,13 @@
 <pre class="programlisting">
 Poll ();
 </pre>
-<p>         Make sure that all properties of this volume group and of all
-         their logical and physical volumes are up-to-date.
+<p>
+Make sure that all properties of this volume group and of all
+their logical and physical volumes are up-to-date.
 </p>
-<p>         The properties are not guaranteed to be up-to-date yet when
-         this method returns.
+<p>
+The properties are not guaranteed to be up-to-date yet when
+this method returns.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -122,17 +135,19 @@ Poll ();
 Delete (IN  b     wipe,
         IN  a{sv} options);
 </pre>
-<p>         Delete this volume group.  All its logical volumes will be
-         deleted, too.
+<p>
+Delete this volume group.  All its logical volumes will be
+deleted, too.
 </p>
-<p>         If the option <em class="parameter"><code>tear-down</code></em> is set to
-         <code class="constant">TRUE</code>, then all logical volumes will be cleaned up before
-         deletion.  This cleanup consists of removing entries from
-         /etc/fstab and /etc/crypttab, and locking of encrypted block
-         devices.  Entries in /etc/fstab and /etc/crypttab that have
-         been created with the 'track-parents' options to
-         AddConfigurationItem will be removed even if their block
-         device is currently unavailable.
+<p>
+If the option <em class="parameter"><code>tear-down</code></em> is set to
+<code class="constant">TRUE</code>, then all logical volumes will be cleaned up before
+deletion.  This cleanup consists of removing entries from
+/etc/fstab and /etc/crypttab, and locking of encrypted block
+devices.  Entries in /etc/fstab and /etc/crypttab that have
+been created with the 'track-parents' options to
+AddConfigurationItem will be removed even if their block
+device is currently unavailable.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -142,11 +157,15 @@ Delete (IN  b     wipe,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>wipe</code></em></code>:</span></p></td>
-<td><p>Whether to wipe the volume group.</p></td>
+<td><p>
+Whether to wipe the volume group.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -160,11 +179,13 @@ Rename (IN  s     new_name,
         IN  a{sv} options,
         OUT o     result);
 </pre>
-<p>         Rename this volume group.  This might cause the volume group
-         object to disappear from D-Bus and reappear with a different
-         path.
+<p>
+Rename this volume group.  This might cause the volume group
+object to disappear from D-Bus and reappear with a different
+path.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -174,15 +195,21 @@ Rename (IN  s     new_name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>new_name</code></em></code>:</span></p></td>
-<td><p>The new name.</p></td>
+<td><p>
+The new name.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The new object path.</p></td>
+<td><p>
+The new object path.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -195,8 +222,9 @@ Rename (IN  s     new_name,
 AddDevice (IN  o     block,
            IN  a{sv} options);
 </pre>
-<p>         Add a new physical volume to the volume group.  The block
-         device will be wiped and all data on it will be lost.
+<p>
+Add a new physical volume to the volume group.  The block
+device will be wiped and all data on it will be lost.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -206,11 +234,15 @@ AddDevice (IN  o     block,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>block</code></em></code>:</span></p></td>
-<td><p>The block device to add, as a UDisks2 object path.</p></td>
+<td><p>
+The block device to add, as a UDisks2 object path.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -223,10 +255,12 @@ AddDevice (IN  o     block,
 EmptyDevice (IN  o     block,
              IN  a{sv} options);
 </pre>
-<p>         Move all data on the given block device somewhere else so
-         that the block device might be removed.
+<p>
+Move all data on the given block device somewhere else so
+that the block device might be removed.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -236,11 +270,15 @@ EmptyDevice (IN  o     block,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>block</code></em></code>:</span></p></td>
-<td><p>The block device to empty, as a UDisks2 object path.</p></td>
+<td><p>
+The block device to empty, as a UDisks2 object path.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -254,10 +292,12 @@ RemoveDevice (IN  o     block,
               IN  b     wipe,
               IN  a{sv} options);
 </pre>
-<p>         Remove the indicated physical volume from the volume group.
-         The physical device must be unused.
+<p>
+Remove the indicated physical volume from the volume group.
+The physical device must be unused.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -267,19 +307,54 @@ RemoveDevice (IN  o     block,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>block</code></em></code>:</span></p></td>
-<td><p>The block device to remove, as a UDisks2 object path.</p></td>
+<td><p>
+The block device to remove, as a UDisks2 object path.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>wipe</code></em></code>:</span></p></td>
-<td><p>Whether to wipe the physical volume.</p></td>
+<td><p>
+Whether to wipe the physical volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 2.0.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveMissingPhysicalVolumes"></a><h3>The RemoveMissingPhysicalVolumes() method</h3>
+<pre class="programlisting">
+RemoveMissingPhysicalVolumes (IN  a{sv} options);
+</pre>
+<p>
+Forget about all physical volumes that went missing.
+</p>
+<p>
+No additional options are currently defined.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
+<td>
+<p>
+</p>
+<p>
+</p>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 2.10.0</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -290,9 +365,14 @@ CreatePlainVolume (IN  s     name,
                    IN  a{sv} options,
                    OUT o     result);
 </pre>
-<p>         Create a 'normal' new logical volume.
+<p>
+Create a 'normal' new logical volume.  Calling this method is
+equivalent to calling CreatePlainVolumeWithLayout with
+"linear" as the layout type and an empty array of physical
+volumes.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -302,23 +382,116 @@ CreatePlainVolume (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name of the new logical volume.</p></td>
+<td><p>
+The name of the new logical volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The size.</p></td>
+<td><p>
+The size.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The object path of the new logical volume.</p></td>
+<td><p>
+The object path of the new logical volume.
+</p></td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 2.0.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolumeWithLayout"></a><h3>The CreatePlainVolumeWithLayout() method</h3>
+<pre class="programlisting">
+CreatePlainVolumeWithLayout (IN  s     name,
+                             IN  t     size,
+                             IN  s     layout,
+                             IN  ao    pvs,
+                             IN  a{sv} options,
+                             OUT o     result);
+</pre>
+<p>
+Create a 'normal' new logical volume with the given layout
+type on the given physical volumes.  It is okay to leave
+"pvs" empty; LVM2 will then choose suitable ones on its own.
+</p>
+<p>
+If "pvs" is not empty and the given "layout" uses subvolumes
+(like all the raid variants), then this method will create
+exactly one subvolume for each given physical volume.
+</p>
+<p>
+For example, when "layout" is "raid5" and "pvs" contains four
+entries, then this method will have the same effect as
+"lvcreate --type raid5 --stripes 3 ...": The resulting logical volume
+will have four subvolumes.
+</p>
+<p>
+The "subvolumes" (i) option can be used to override the
+number of subvolumes.  The consequences of this are hard to
+predict and might also lead to creation of logical volumes
+that have less redundancy than expected, so it is best to
+always create exactly one subvolume per physical volume.
+</p>
+<p>
+Note again that this only happens when "pvs" is not empty.
+When "pvs" is empty, LVM2 will decide how many subvolumes to
+create.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
+<td><p>
+The name of the new logical volume.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
+<td><p>
+The size.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>layout</code></em></code>:</span></p></td>
+<td><p>
+The layout type, like "linear", "raid5"
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN ao <em class="parameter"><code>pvs</code></em></code>:</span></p></td>
+<td><p>
+The physical volumes to use
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
+<td><p>
+Additional options.
+</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
+<td><p>
+The object path of the new logical volume.
+</p></td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.10.0</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -329,14 +502,16 @@ CreateThinPoolVolume (IN  s     name,
                       IN  a{sv} options,
                       OUT o     result);
 </pre>
-<p>         Create a new logical volume that can be used to back
-         thinly-provisioned logical volumes.  The <em class="parameter"><code>size</code></em> parameter is
-         the total amount of space taken out of the volume group.
-         That space will be used for data and metadata.  The actual
-         amount of data that can be stored in the pool will be
-         slightly smaller.
+<p>
+Create a new logical volume that can be used to back
+thinly-provisioned logical volumes.  The <em class="parameter"><code>size</code></em> parameter is
+the total amount of space taken out of the volume group.
+That space will be used for data and metadata.  The actual
+amount of data that can be stored in the pool will be
+slightly smaller.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -346,19 +521,27 @@ CreateThinPoolVolume (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name of the new logical volume.</p></td>
+<td><p>
+The name of the new logical volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The total size.</p></td>
+<td><p>
+The total size.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The object path of the new logical volume.</p></td>
+<td><p>
+The object path of the new logical volume.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -374,10 +557,12 @@ CreateThinVolume (IN  s     name,
                   IN  a{sv} options,
                   OUT o     result);
 </pre>
-<p>         Create a new thinly provisioned logical volume in the given
-         pool.
+<p>
+Create a new thinly provisioned logical volume in the given
+pool.
 </p>
-<p>         No additional options are currently defined.
+<p>
+No additional options are currently defined.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -387,23 +572,33 @@ CreateThinVolume (IN  s     name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>name</code></em></code>:</span></p></td>
-<td><p>The name of the new logical volume.</p></td>
+<td><p>
+The name of the new logical volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>size</code></em></code>:</span></p></td>
-<td><p>The virtual size.</p></td>
+<td><p>
+The virtual size.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>pool</code></em></code>:</span></p></td>
-<td><p>The thin pool to use.</p></td>
+<td><p>
+The thin pool to use.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The object path of the new logical volume.</p></td>
+<td><p>
+The object path of the new logical volume.
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -424,22 +619,23 @@ CreateVDOVolume (IN  s     lv_name,
                  IN  a{sv} options,
                  OUT o     result);
 </pre>
-<p>         <em class="parameter"><code>since</code></em>: 2.9.0
+<p>
+Create a new VDO logical volume that is backed by a newly created
+VDO pool. The VDO data logical volume and VDO pool logical volume
+are created together, VDO pool supports only a single VDO LV.
+The <em class="parameter"><code>data_size</code></em> parameter is the total amount of space
+taken out of the volume group and it's the size of the <em class="parameter"><code>pool_name</code></em>
+VDO pool logical volume.
+The <em class="parameter"><code>virtual_size</code></em> is the size of the <em class="parameter"><code>lv_name</code></em> VDO logical volume
+and represents expected amount of the data that can be stored
+after deduplication and compression.
 </p>
-<p>         Create a new VDO logical volume that is backed by a newly created
-         VDO pool. The VDO data logical volume and VDO pool logical volume
-         are created together, VDO pool supports only a single VDO LV.
-         The <em class="parameter"><code>data_size</code></em> parameter is the total amount of space
-         taken out of the volume group and it's the size of the <em class="parameter"><code>pool_name</code></em>
-         VDO pool logical volume.
-         The <em class="parameter"><code>virtual_size</code></em> is the size of the <em class="parameter"><code>lv_name</code></em> VDO logical volume
-         and represents expected amount of the data that can be stored
-         after deduplication and compression.
+<p>
+No additional options are currently defined.
 </p>
-<p>         No additional options are currently defined.
+<p>
+Known <em class="parameter"><code>write_policy</code></em> values include:
 </p>
-<p>         Known <em class="parameter"><code>write_policy</code></em> values include:
-         </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -470,47 +666,67 @@ CreateVDOVolume (IN  s     lv_name,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>lv_name</code></em></code>:</span></p></td>
-<td><p>The name of the to-be-created VDO LV.</p></td>
+<td><p>
+The name of the to-be-created VDO LV.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>pool_name</code></em></code>:</span></p></td>
-<td><p>The name of the to-be-created VDO pool LV.</p></td>
+<td><p>
+The name of the to-be-created VDO pool LV or an empty string for a default name.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>data_size</code></em></code>:</span></p></td>
-<td><p>The size of the data VDO LV (physical size of the <em class="parameter"><code>pool_name</code></em> VDO pool LV).</p></td>
+<td><p>
+The size of the data VDO LV (physical size of the <em class="parameter"><code>pool_name</code></em> VDO pool LV).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>virtual_size</code></em></code>:</span></p></td>
-<td><p>The virtual_size of the <em class="parameter"><code>lv_name</code></em> VDO LV or 0 for default (<em class="parameter"><code>data_size</code></em> minus metadata).</p></td>
+<td><p>
+The virtual_size of the <em class="parameter"><code>lv_name</code></em> VDO LV or 0 for default (<em class="parameter"><code>data_size</code></em> minus metadata).
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN t <em class="parameter"><code>index_memory</code></em></code>:</span></p></td>
-<td><p>Amount of index memory in bytes or 0 for default.</p></td>
+<td><p>
+Amount of index memory in bytes or 0 for default.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>compression</code></em></code>:</span></p></td>
-<td><p>Enables or disables compression when creating the VDO volume.</p></td>
+<td><p>
+Enables or disables compression when creating the VDO volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>deduplication</code></em></code>:</span></p></td>
-<td><p>Enables or disables deduplication when creating the VDO volume.</p></td>
+<td><p>
+Enables or disables deduplication when creating the VDO volume.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>write_policy</code></em></code>:</span></p></td>
-<td><p>Specifies the write policy.</p></td>
+<td><p>
+Specifies the write policy.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Additional options.</p></td>
+<td><p>
+Additional options.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>result</code></em></code>:</span></p></td>
-<td><p>The object path of the new VDO logical volume.</p></td>
+<td><p>
+The object path of the new VDO logical volume.
+</p></td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 2.0.0</p>
+<p class="since">Since 2.9.0</p>
 </div>
 </div>
 <div class="refsect1">
@@ -520,7 +736,8 @@ CreateVDOVolume (IN  s     lv_name,
 <pre class="programlisting">
 Name  readable   s
 </pre>
-<p>         The name of this volume group, as known to LVM2.
+<p>
+The name of this volume group, as known to LVM2.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -530,8 +747,9 @@ Name  readable   s
 <pre class="programlisting">
 UUID  readable   s
 </pre>
-<p>         The UUID this volume group.  It is guaranteed to be unique,
-         but it might change over time.
+<p>
+The UUID this volume group.  It is guaranteed to be unique,
+but it might change over time.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -541,7 +759,8 @@ UUID  readable   s
 <pre class="programlisting">
 Size  readable   t
 </pre>
-<p>         The total capacity of this volume group, in bytes.
+<p>
+The total capacity of this volume group, in bytes.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -551,7 +770,8 @@ Size  readable   t
 <pre class="programlisting">
 FreeSize  readable   t
 </pre>
-<p>         The unused capacity of this volume group, in bytes.
+<p>
+The unused capacity of this volume group, in bytes.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -561,9 +781,10 @@ FreeSize  readable   t
 <pre class="programlisting">
 ExtentSize  readable   t
 </pre>
-<p>         The size of extents.  When creating and resizing logical
-         volumes, sizes are rounded up to multiples of the extent
-         size.
+<p>
+The size of extents.  When creating and resizing logical
+volumes, sizes are rounded up to multiples of the extent
+size.
 </p>
 <p class="since">Since 2.0.0</p>
 </div>
@@ -573,10 +794,22 @@ ExtentSize  readable   t
 <pre class="programlisting">
 NeedsPolling  readable   b
 </pre>
-<p>         Whether or not this volume group needs to be periodically
-         polled to guarantee updates.
+<p>
+Whether or not this volume group needs to be periodically
+polled to guarantee updates.
 </p>
 <p class="since">Since 2.0.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-UDisks2-VolumeGroup.MissingPhysicalVolumes"></a><h3>The "MissingPhysicalVolumes" property</h3>
+<pre class="programlisting">
+MissingPhysicalVolumes  readable   as
+</pre>
+<p>
+A list of the UUIDs of missing physical volumes.
+</p>
+<p class="since">Since 2.10.0</p>
 </div>
 </div>
 </div>

@@ -171,7 +171,7 @@
 </table></div>
 </div>
 <br class="table-break"><p>
-          For reference, the polkit actions defined by udisks 2.9.4
+          For reference, the polkit actions defined by udisks 2.10.1
 
           are included here:
           </p>
@@ -214,6 +214,17 @@
   &lt;!-- mount a device attached to another seat --&gt;
   &lt;action id="org.freedesktop.udisks2.filesystem-mount-other-seat"&gt;
     &lt;description&gt;Mount a filesystem from a device plugged into another seat&lt;/description&gt;
+    &lt;message&gt;Authentication is required to mount the filesystem&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- mount a device on behalf of another user --&gt;
+  &lt;action id="org.freedesktop.udisks2.filesystem-mount-other-user"&gt;
+    &lt;description&gt;Mount a filesystem on behalf of another user&lt;/description&gt;
     &lt;message&gt;Authentication is required to mount the filesystem&lt;/message&gt;
     &lt;defaults&gt;
       &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
@@ -691,6 +702,85 @@
   &lt;action id="org.freedesktop.udisks2.ata-secure-erase"&gt;
     &lt;description&gt;Securely erase a hard disk&lt;/description&gt;
     &lt;message&gt;Authentication is required to securely erase a hard disk&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- ###################################################################### --&gt;
+  &lt;!-- NVMe Controller operations --&gt;
+
+  &lt;!-- Update/refresh SMART data --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-smart-update"&gt;
+    &lt;description&gt;Update SMART data&lt;/description&gt;
+    &lt;message&gt;Authentication is required to update SMART data&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;yes&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- Start and abort SMART self-tests --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-smart-selftest"&gt;
+    &lt;description&gt;Run device self-test&lt;/description&gt;
+    &lt;message&gt;Authentication is required to run a device self-test&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- Sanitize operation --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-sanitize"&gt;
+    &lt;description&gt;Start the sanitize operation&lt;/description&gt;
+    &lt;message&gt;Authentication is required to perform a sanitize operation&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- Format namespace --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-format-namespace"&gt;
+    &lt;description&gt;Format a namespace&lt;/description&gt;
+    &lt;message&gt;Authentication is required to format a namespace&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- Fabrics connect --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-connect"&gt;
+    &lt;description&gt;NVMeoF connection&lt;/description&gt;
+    &lt;message&gt;Authentication is required to connect to an NVMe over Fabrics controller&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;action id="org.freedesktop.udisks2.nvme-disconnect"&gt;
+    &lt;description&gt;Disconnect a NVMeoF controller&lt;/description&gt;
+    &lt;message&gt;Authentication is required to disconnect a NVMe over Fabrics controller&lt;/message&gt;
+    &lt;defaults&gt;
+      &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
+      &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;
+      &lt;allow_active&gt;auth_admin_keep&lt;/allow_active&gt;
+    &lt;/defaults&gt;
+  &lt;/action&gt;
+
+  &lt;!-- Host NQN and Host ID manipulation --&gt;
+  &lt;action id="org.freedesktop.udisks2.nvme-set-hostnqn-id"&gt;
+    &lt;description&gt;Set a NVMe Host NQN/ID&lt;/description&gt;
+    &lt;message&gt;Authentication is required to set NVMe Host NQN or Host ID&lt;/message&gt;
     &lt;defaults&gt;
       &lt;allow_any&gt;auth_admin&lt;/allow_any&gt;
       &lt;allow_inactive&gt;auth_admin&lt;/allow_inactive&gt;

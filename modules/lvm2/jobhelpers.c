@@ -34,7 +34,34 @@ gboolean lvcreate_job_func (UDisksThreadedJob  *job,
                             GError            **error)
 {
     LVJobData *data = user_data;
-    return bd_lvm_lvcreate (data->vg_name, data->new_lv_name, data->new_lv_size, NULL /* type */, NULL /* pvs */, NULL /* extra_args */, error);
+    gchar *stripes_string = NULL;
+    gchar *mirrors_string = NULL;
+    BDExtraArg *extra[3] = {NULL, NULL, NULL};
+    int n_extras = 0;
+    gboolean ret;
+
+    if (data->new_lv_stripes > 0)
+      {
+        stripes_string = g_strdup_printf("%u", data->new_lv_stripes);
+        extra[n_extras++] = bd_extra_arg_new ("--stripes", stripes_string);
+      }
+
+    if (data->new_lv_mirrors > 0)
+      {
+        mirrors_string = g_strdup_printf("%u", data->new_lv_mirrors);
+        extra[n_extras++] = bd_extra_arg_new ("--mirrors", mirrors_string);
+      }
+
+
+    ret = bd_lvm_lvcreate (data->vg_name, data->new_lv_name, data->new_lv_size, data->new_lv_layout, data->new_lv_pvs,
+                           (const BDExtraArg**) extra, error);
+
+    bd_extra_arg_free (extra[0]);
+    bd_extra_arg_free (extra[1]);
+    g_free (stripes_string);
+    g_free (mirrors_string);
+
+    return ret;
 }
 
 gboolean lvcreate_thin_pool_job_func (UDisksThreadedJob  *job,
@@ -46,7 +73,7 @@ gboolean lvcreate_thin_pool_job_func (UDisksThreadedJob  *job,
     LVJobData *data = user_data;
 
     /* get metadata size */
-    md_size = bd_lvm_get_thpool_meta_size (data->new_lv_size, BD_LVM_DEFAULT_CHUNK_SIZE, 100 /* snapshots */, error);
+    md_size = bd_lvm_get_thpool_meta_size (data->new_lv_size, 0, 100 /* snapshots */, error);
     if (md_size == 0)
       /* error is set */
       return FALSE;
@@ -59,7 +86,7 @@ gboolean lvcreate_thin_pool_job_func (UDisksThreadedJob  *job,
     /* create a thin pool of given total size (with part of space being used for
        metadata), but also leave space for the pmspare device (of the same size
        as metadata space) which need to be created */
-    return bd_lvm_thpoolcreate (data->vg_name, data->new_lv_name, data->new_lv_size - 2*md_size, md_size, BD_LVM_DEFAULT_CHUNK_SIZE,
+    return bd_lvm_thpoolcreate (data->vg_name, data->new_lv_name, data->new_lv_size - 2*md_size, md_size, 0,
                                 NULL /* profile */, NULL /* extra_args */, error);
 }
 
@@ -114,7 +141,7 @@ gboolean lvresize_job_func (UDisksThreadedJob  *job,
                             GError            **error)
 {
     LVJobData *data = user_data;
-    BDExtraArg *extra[4] = {NULL, NULL, NULL, NULL};
+    BDExtraArg **extra = g_new0 (BDExtraArg *, 4 + (data->new_lv_pvs ? g_strv_length ((gchar **)data->new_lv_pvs) : 0));
     gint extra_top = -1;
     gboolean ret = FALSE;
 
@@ -126,9 +153,16 @@ gboolean lvresize_job_func (UDisksThreadedJob  *job,
         extra[++extra_top] = bd_extra_arg_new ("--yes", "");
       }
 
+    if (data->new_lv_pvs)
+      {
+        for (int i = 0; data->new_lv_pvs[i]; i++)
+          extra[++extra_top] = bd_extra_arg_new (data->new_lv_pvs[i], "");
+      }
+
     ret = bd_lvm_lvresize (data->vg_name, data->lv_name, data->new_lv_size, (const BDExtraArg**) extra, error);
     for (; extra_top >= 0; extra_top--)
         bd_extra_arg_free (extra[extra_top]);
+    g_free (extra);
 
     return ret;
 }
@@ -139,7 +173,7 @@ gboolean lvactivate_job_func (UDisksThreadedJob  *job,
                               GError            **error)
 {
     LVJobData *data = user_data;
-    return bd_lvm_lvactivate (data->vg_name, data->lv_name, TRUE /* ignore_skip */, NULL /* extra_args */, error);
+    return bd_lvm_lvactivate (data->vg_name, data->lv_name, TRUE /* ignore_skip */, FALSE /* shared */, NULL /* extra_args */, error);
 }
 
 gboolean lvdeactivate_job_func (UDisksThreadedJob  *job,
@@ -205,6 +239,15 @@ gboolean lv_vdo_deduplication_job_func (UDisksThreadedJob  *job,
         return bd_lvm_vdo_enable_deduplication (data->vg_name, data->lv_name, NULL /* extra_args */, error);
     else
         return bd_lvm_vdo_disable_deduplication (data->vg_name, data->lv_name, NULL /* extra_args */, error);
+}
+
+gboolean lvrepair_job_func (UDisksThreadedJob  *job,
+                            GCancellable       *cancellable,
+                            gpointer            user_data,
+                            GError            **error)
+{
+    LVJobData *data = user_data;
+    return bd_lvm_lvrepair (data->vg_name, data->lv_name, data->new_lv_pvs, NULL /* extra_args */, error);
 }
 
 gboolean vgcreate_job_func (UDisksThreadedJob  *job,
@@ -349,7 +392,7 @@ void lvs_task_func (GTask        *task,
   BDLVMLVdata **ret = NULL;
   gchar *vg_name = (gchar*) task_data;
 
-  ret = bd_lvm_lvs (vg_name, &error);
+  ret = bd_lvm_lvs_tree (vg_name, &error);
   if (!ret)
     g_task_return_error (task, error);
   else

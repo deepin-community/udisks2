@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <sys/file.h>
 #include <fcntl.h>
 
 #include <pwd.h>
@@ -437,43 +438,6 @@ selftest_status_to_string (SkSmartSelfTestExecutionStatus status)
   return ret;
 }
 
-static gboolean
-get_pm_state (UDisksLinuxDevice *device, GError **error, guchar *count)
-{
-  int fd;
-  gboolean rc = FALSE;
-  /* ATA8: 7.8 CHECK POWER MODE - E5h, Non-Data */
-  UDisksAtaCommandInput input = {.command = 0xe5};
-  UDisksAtaCommandOutput output = {0};
-
-  fd = open (g_udev_device_get_device_file (device->udev_device), O_RDONLY|O_NONBLOCK);
-  if (fd == -1)
-    {
-      g_set_error (error, UDISKS_ERROR, UDISKS_ERROR_FAILED,
-                   "Error opening device file %s while getting PM state: %m",
-                   g_udev_device_get_device_file (device->udev_device));
-      goto out;
-    }
-
-  if (!udisks_ata_send_command_sync (fd,
-                                     -1,
-                                     UDISKS_ATA_COMMAND_PROTOCOL_NONE,
-                                     &input,
-                                     &output,
-                                     error))
-    {
-      g_prefix_error (error, "Error sending ATA command CHECK POWER MODE: ");
-      goto out;
-    }
-  /* count field is used for the state, see ATA8: table 102 */
-  *count = output.count;
-  rc = TRUE;
- out:
-  if (fd != -1)
-    close (fd);
-  return rc;
-}
-
 static gboolean update_io_stats (UDisksLinuxDriveAta *drive, UDisksLinuxDevice *device)
 {
   const gchar *drivepath = g_udev_device_get_sysfs_path (device->udev_device);
@@ -553,13 +517,18 @@ udisks_linux_drive_ata_refresh_smart_sync (UDisksLinuxDriveAta  *drive,
 
   if (drive->secure_erase_in_progress)
     {
-      g_set_error (error, UDISKS_ERROR, UDISKS_ERROR_DEVICE_BUSY,
-                   "Secure erase in progress");
+      g_set_error_literal (error, UDISKS_ERROR, UDISKS_ERROR_DEVICE_BUSY,
+                           "Secure erase in progress");
       goto out;
     }
 
   device = udisks_linux_drive_object_get_device (object, TRUE /* get_hw */);
-  g_assert (device != NULL);
+  if (device == NULL)
+    {
+      g_set_error_literal (error, UDISKS_ERROR, UDISKS_ERROR_FAILED,
+                           "No udev device");
+      goto out;
+    }
 
   /* TODO: use cancellable */
 
@@ -601,11 +570,11 @@ udisks_linux_drive_ata_refresh_smart_sync (UDisksLinuxDriveAta  *drive,
     {
       guchar count;
       gboolean noio = FALSE;
-      if (!get_pm_state (device, error, &count))
-        goto out;
-      awake = count == 0xFF || count == 0x80;
       if (drive->standby_enabled)
         noio = update_io_stats (drive, device);
+      if (!udisks_ata_get_pm_state (g_udev_device_get_device_file (device->udev_device), error, &count))
+        goto out;
+      awake = count == 0xFF || count == 0x80;
       /* don't wake up disk unless specically asked to */
       if (nowakeup && (!awake || noio))
         {
@@ -613,7 +582,7 @@ udisks_linux_drive_ata_refresh_smart_sync (UDisksLinuxDriveAta  *drive,
                        UDISKS_ERROR,
                        UDISKS_ERROR_WOULD_WAKEUP,
                        "Disk is in sleep mode and the nowakeup option was passed");
-          goto out;
+          goto out_io;
         }
     }
 
@@ -681,11 +650,14 @@ udisks_linux_drive_ata_refresh_smart_sync (UDisksLinuxDriveAta  *drive,
   update_smart (drive, device);
 
   ret = TRUE;
-  /* update stats again to account for the IO we just did to read the SMART info */
-  update_io_stats (drive, device);
 
   /* ensure property changes are sent before the method return */
   g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (drive));
+
+ out_io:
+  /* update stats again to account for the IO we just did to read the SMART info */
+  if (drive->standby_enabled)
+    update_io_stats (drive, device);
 
  out:
   g_clear_object (&device);
@@ -730,7 +702,12 @@ udisks_linux_drive_ata_smart_selftest_sync (UDisksLinuxDriveAta  *drive,
     goto out;
 
   device = udisks_linux_drive_object_get_device (object, TRUE /* get_hw */);
-  g_assert (device != NULL);
+  if (device == NULL)
+    {
+      g_set_error_literal (error, UDISKS_ERROR, UDISKS_ERROR_FAILED,
+                           "No udev device");
+      goto out;
+    }
 
   if (g_strcmp0 (type, "short") == 0)
     test = SK_SMART_SELF_TEST_SHORT;
@@ -1322,7 +1299,7 @@ udisks_linux_drive_ata_get_pm_state (UDisksLinuxDriveAta  *drive,
       goto out;
     }
 
-  ret = get_pm_state (device, error, pm_state);
+  ret = udisks_ata_get_pm_state (g_udev_device_get_device_file (device->udev_device), error, pm_state);
 
  out:
   g_clear_object (&device);
@@ -1944,6 +1921,7 @@ udisks_linux_drive_ata_secure_erase_sync (UDisksLinuxDriveAta  *drive,
   UDisksBaseJob *job = NULL;
   gint num_minutes = 0;
   guint timeout_id = 0;
+  gint num_tries = 0;
   gboolean claimed = FALSE;
   GError *local_error = NULL;
   const gchar *pass = "xxxx";
@@ -2001,6 +1979,13 @@ udisks_linux_drive_ata_secure_erase_sync (UDisksLinuxDriveAta  *drive,
 
   drive->secure_erase_in_progress = TRUE;
 
+  /* Acquire an exclusive BSD lock to prevent udev probes */
+  while (flock (fd, LOCK_EX | LOCK_NB) != 0)
+    {
+      g_usleep (100 * 1000); /* microseconds */
+      if (num_tries++ > 5)
+        break;
+    }
   claimed = TRUE;
 
   /* First get the IDENTIFY data directly from the drive, for sanity checks */
@@ -2164,7 +2149,12 @@ udisks_linux_drive_ata_secure_erase_sync (UDisksLinuxDriveAta  *drive,
 
   clear_passwd_on_failure = FALSE;
 
-  udisks_linux_block_object_reread_partition_table (UDISKS_LINUX_BLOCK_OBJECT (block_object));
+  if (! udisks_linux_block_object_reread_partition_table (UDISKS_LINUX_BLOCK_OBJECT (block_object),
+                                                          &local_error))
+    {
+      udisks_warning ("%s", local_error->message);
+      g_clear_error (&local_error);
+    }
 
   ret = TRUE;
 
@@ -2319,7 +2309,12 @@ handle_security_erase_unit (UDisksDriveAta        *_drive,
       goto out;
     }
 
-  udisks_linux_block_object_reread_partition_table (UDISKS_LINUX_BLOCK_OBJECT (block_object));
+  if (!udisks_linux_block_object_reread_partition_table (UDISKS_LINUX_BLOCK_OBJECT (block_object), &error))
+    {
+      udisks_warning ("%s", error->message);
+      g_clear_error (&error);
+    }
+
   udisks_linux_block_object_trigger_uevent_sync (UDISKS_LINUX_BLOCK_OBJECT (block_object),
                                                  UDISKS_DEFAULT_WAIT_TIMEOUT);
 

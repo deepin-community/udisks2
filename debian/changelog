@@ -1,15 +1,149 @@
-udisks2 (2.9.4.1-deepin2) unstable; urgency=medium
+udisks2 (2.10.1-6) unstable; urgency=medium
 
-  * sysnc stable version.
+  [ Martin Pitt ]
+  * Don't build with -Wl,-Bsymbolic-functions.
+    It breaks module loading, as it confuses GObject's type loading cache:
+    "cannot register existing type 'UDisksDaemon'".
+    Ubuntu enables this linker flag by default, no-op for Debian.
+    (LP: #2040488)
 
- -- LiChengGang <lichenggang@uniontech.com>  Fri, 28 Apr 2023 16:50:22 +0800
+  [ Michael Biebl ]
+  * Drop python3-distutils Depends from debian/tests/control.
+    No longer needed since 2.10.0. (Closes: #1065991)
+  * Build-depend on pkgconf instead of pkg-config
 
-udisks2 (2.9.4.1-deepin1) unstable; urgency=medium
+ -- Michael Biebl <biebl@debian.org>  Mon, 11 Mar 2024 23:19:45 +0100
 
-  * Non-maintainer upload.
-  * merge patches from uos v20
+udisks2 (2.10.1-5) unstable; urgency=medium
 
- -- Ding Heng <dingheng@uniontech.com>  Fri, 04 Nov 2022 15:50:18 +0800
+  * tests: Fix targetcli_config.json.
+    Not all attributes are available anymore in newer kernel versions.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 10 Jan 2024 12:28:58 +0100
+
+udisks2 (2.10.1-4) unstable; urgency=medium
+
+  * Stop moving files from /usr/sbin to /sbin.
+    With merged-/usr being mandatory, this is no longer necessary.
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 27 Nov 2023 05:40:54 +0100
+
+udisks2 (2.10.1-3) unstable; urgency=medium
+
+  * Replace udev Build-Depends with systemd-dev.
+    The new systemd-dev package ships udev.pc and systemd.pc which provides
+    the paths for udevdir/systemdsystemunitdir/tmpfilesdir.
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 20 Nov 2023 23:51:36 +0100
+
+udisks2 (2.10.1-2) unstable; urgency=medium
+
+  * Move systemd services files and udev rules to /usr.
+    Add a corresponding versioned Build-Depends on debhelper (>= 13.11.6) to
+    ensure we have a recent enough dh_installsystemd.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 21 Oct 2023 14:39:24 +0200
+
+udisks2 (2.10.1-1) unstable; urgency=medium
+
+  * New upstream version 2.10.1
+    - Limit getting filesystem size only to Ext and XFS
+      (Closes: #1043022, #1040836)
+    - Use ID_FS_SIZE for filesystems that are not known to report
+      ID_FS_LASTBLOCK (Closes: #1041774)
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 12 Sep 2023 14:47:10 +0200
+
+udisks2 (2.10.0-5) unstable; urgency=medium
+
+  * Remove libblockdev-crypto2 from test dependencies.
+    It has been replaced by libblockdev-crypto3, but since libblockdev-crypto
+    is no longer an optional dependency, udisks2 already depends on it, so an
+    explicit test dependency is no longer needed.
+    (Closes: #1042794)
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 01 Aug 2023 08:20:32 +0200
+
+udisks2 (2.10.0-4) unstable; urgency=medium
+
+  * Drop obsolete --disable-vdo configure switch as well
+  * udiskslinuxloop: Avoid warnings on empty loop devices (Closes: #1041649)
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 23 Jul 2023 22:02:00 +0200
+
+udisks2 (2.10.0-3) unstable; urgency=medium
+
+  * Update libblockdev-mdraid2 to libblockdev-mdraid3 (Closes: #1040797)
+  * Bump libblockdev-{crypto3,mdraid3,nvme3} to Depends.
+    Fixes a crash in udisksd if those plugins are missing. (Closes: #1040793)
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 10 Jul 2023 23:36:46 +0200
+
+udisks2 (2.10.0-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 10 Jul 2023 09:22:10 +0200
+
+udisks2 (2.10.0-1) experimental; urgency=medium
+
+  * New upstream version 2.10.0
+  * Drop patches, merged upstream
+  * Install new zsh completion file
+  * Drop obsolete configure switches
+  * Drop udisks2-bcache and udisks2-zram subpackages.
+    The kbd and vdo libblockdev plugins were removed and so were zram,
+    bcache and vdo udisks modules.
+  * Update (Build-)Depends
+    - Bump libblockdev-*-dev to (>= 3.0)
+    - Bump libglib2.0-dev to (>= 2.68)
+    - Drop libblockdev-kbd-dev, no longer exits in version 3.0
+    - Add libblockdev-nvme-dev for NVME support
+    - Add libblkid-dev
+    - Update libblockdev-* Depends/Recommends for the soversion bump from 2 to 3
+    - Add new Recommends libblockdev-nvme3 to udisks2
+  * Update symbols file for libudisks2-0.
+    Drop bcache and zram related symbols. Those were only used internally,
+    so we get away without a soname bump.
+  * Bump Standards-Version to 4.6.2
+  * Add strictly versioned dependency between udisks2 and libudisks2-0.
+    udisks2 and libudisks2-0 should always be in sync.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 07 Jul 2023 21:39:17 +0200
+
+udisks2 (2.9.4-4) unstable; urgency=medium
+
+  * Update debian/watch.
+    Use the GitHub API when checking for new upstream releases.
+  * (Build-)Depend on polkitd instead of the transitional policykit-1
+    (Closes: #1025586)
+  * Add lintian override for source-is-missing false positive
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 07 Dec 2022 17:02:25 +0100
+
+udisks2 (2.9.4-3) unstable; urgency=medium
+
+  * Drop no longer needed override for dh_missing.
+    In compat 13 and later, --fail-missing is the default.
+  * Simplify debian/rules a bit.
+    Drop unused overrides and use execute_before/after where appropriate.
+  * Bump Standards-Version to 4.6.1
+  * Use dh-sequence-gir Build-Depends to enable the gir addon
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 02 Sep 2022 15:33:30 +0200
+
+udisks2 (2.9.4-2) unstable; urgency=medium
+
+  * Team upload
+
+  [ Alex Murray ]
+  * Cherry-pick patch to fix crash on shutdown
+    - Avoid a double free of static daemon resources (LP: #1964532)
+
+  [ Steve Langasek ]
+  * debian/tests/control: Use exfatprogs instead of obsolete exfat-utils
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 09 Aug 2022 07:41:47 -0400
 
 udisks2 (2.9.4-1) unstable; urgency=medium
 

@@ -37,6 +37,8 @@
 #include "udisksmodulemanager.h"
 #include "udisksmodule.h"
 #include "udisksmoduleobject.h"
+#include "udiskslinuxnvmecontroller.h"
+#include "udiskslinuxnvmefabrics.h"
 
 /**
  * SECTION:udiskslinuxdriveobject
@@ -62,10 +64,13 @@ struct _UDisksLinuxDriveObject
 
   /* list of UDisksLinuxDevice objects for block objects */
   GList *devices;
+  GMutex devices_mutex;
 
   /* interfaces */
   UDisksDrive *iface_drive;
   UDisksDriveAta *iface_drive_ata;
+  UDisksLinuxNVMeController *iface_nvme_ctrl;
+  UDisksNVMeFabrics *iface_nvme_fabrics;
   GHashTable *module_ifaces;
 };
 
@@ -90,11 +95,16 @@ udisks_linux_drive_object_finalize (GObject *_object)
 
   /* note: we don't hold a ref to drive_object->daemon or drive_object->mount_monitor */
   g_list_free_full (object->devices, g_object_unref);
+  g_mutex_clear (&object->devices_mutex);
 
   if (object->iface_drive != NULL)
     g_object_unref (object->iface_drive);
   if (object->iface_drive_ata != NULL)
     g_object_unref (object->iface_drive_ata);
+  if (object->iface_nvme_ctrl != NULL)
+    g_object_unref (object->iface_nvme_ctrl);
+  if (object->iface_nvme_fabrics != NULL)
+    g_object_unref (object->iface_nvme_fabrics);
   if (object->module_ifaces != NULL)
     g_hash_table_destroy (object->module_ifaces);
 
@@ -140,7 +150,9 @@ udisks_linux_drive_object_set_property (GObject      *__object,
 
     case PROP_DEVICE:
       g_assert (object->devices == NULL);
+      g_mutex_lock (&object->devices_mutex);
       object->devices = g_list_prepend (NULL, g_value_dup_object (value));
+      g_mutex_unlock (&object->devices_mutex);
       break;
 
     default:
@@ -239,6 +251,8 @@ udisks_linux_drive_object_constructed (GObject *_object)
   gchar *model;
   gchar *serial;
   GString *str;
+
+  g_mutex_init (&object->devices_mutex);
 
   object->module_ifaces = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_object_unref);
 
@@ -391,7 +405,11 @@ udisks_linux_drive_object_get_devices (UDisksLinuxDriveObject *object)
 {
   GList *ret;
   g_return_val_if_fail (UDISKS_IS_LINUX_DRIVE_OBJECT (object), NULL);
+
+  g_mutex_lock (&object->devices_mutex);
   ret = g_list_copy_deep (object->devices, (GCopyFunc) udisks_g_object_ref_copy, NULL);
+  g_mutex_unlock (&object->devices_mutex);
+
   return ret;
 }
 
@@ -416,6 +434,7 @@ udisks_linux_drive_object_get_device (UDisksLinuxDriveObject *object,
   UDisksLinuxDevice *ret = NULL;
   GList *devices;
 
+  g_mutex_lock (&object->devices_mutex);
   for (devices = object->devices; devices; devices = devices->next)
     {
       if (!get_hw || !is_dm_multipath (UDISKS_LINUX_DEVICE (devices->data)))
@@ -427,6 +446,8 @@ udisks_linux_drive_object_get_device (UDisksLinuxDriveObject *object,
 
   if (ret != NULL)
     g_object_ref (ret);
+  g_mutex_unlock (&object->devices_mutex);
+
   return ret;
 }
 
@@ -527,21 +548,20 @@ update_iface (UDisksObject                     *object,
     {
       if (!has)
         {
+          gpointer iface = g_steal_pointer (interface_pointer);
+
           /* Check before we remove interface from object  */
-          interface_info = g_dbus_interface_get_info (*interface_pointer);
-          tmp_iface = g_dbus_object_get_interface ((GDBusObject *) object,
-                                                   interface_info->name);
+          interface_info = g_dbus_interface_get_info (iface);
+          tmp_iface = g_dbus_object_get_interface ((GDBusObject *) object, interface_info->name);
 
           if (tmp_iface)
             {
-              g_dbus_object_skeleton_remove_interface
-                (G_DBUS_OBJECT_SKELETON (object),
-                 G_DBUS_INTERFACE_SKELETON (*interface_pointer));
-              g_object_unref(tmp_iface);
+              g_dbus_object_skeleton_remove_interface (G_DBUS_OBJECT_SKELETON (object),
+                                                       G_DBUS_INTERFACE_SKELETON (iface));
+              g_object_unref (tmp_iface);
             }
 
-          g_object_unref (*interface_pointer);
-          *interface_pointer = NULL;
+          g_object_unref (iface);
         }
     }
 
@@ -619,6 +639,72 @@ drive_ata_update (UDisksObject   *object,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gboolean
+nvme_ctrl_check (UDisksObject *object)
+{
+  UDisksLinuxDriveObject *drive_object = UDISKS_LINUX_DRIVE_OBJECT (object);
+  gboolean ret;
+  UDisksLinuxDevice *device;
+
+  ret = FALSE;
+  if (drive_object->devices == NULL)
+    goto out;
+
+  device = drive_object->devices->data;
+  if (udisks_linux_device_subsystem_is_nvme (device) &&
+      g_udev_device_has_sysfs_attr (device->udev_device, "subsysnqn"))
+    ret = TRUE;
+
+ out:
+  return ret;
+}
+
+static void
+nvme_ctrl_connect (UDisksObject *object)
+{
+
+}
+
+static gboolean
+nvme_ctrl_update (UDisksObject   *object,
+                  const gchar    *uevent_action,
+                  GDBusInterface *_iface)
+{
+  UDisksLinuxDriveObject *drive_object = UDISKS_LINUX_DRIVE_OBJECT (object);
+
+  return udisks_linux_nvme_controller_update (UDISKS_LINUX_NVME_CONTROLLER (drive_object->iface_nvme_ctrl), drive_object);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static gboolean
+nvme_fabrics_check (UDisksObject *object)
+{
+  UDisksLinuxDriveObject *drive_object = UDISKS_LINUX_DRIVE_OBJECT (object);
+
+  if (drive_object->devices == NULL)
+    return FALSE;
+
+  return udisks_linux_device_nvme_is_fabrics (drive_object->devices->data);
+}
+
+static void
+nvme_fabrics_connect (UDisksObject *object)
+{
+}
+
+static gboolean
+nvme_fabrics_update (UDisksObject   *object,
+                     const gchar    *uevent_action,
+                     GDBusInterface *_iface)
+{
+  UDisksLinuxDriveObject *drive_object = UDISKS_LINUX_DRIVE_OBJECT (object);
+
+  return udisks_linux_nvme_fabrics_update (UDISKS_LINUX_NVME_FABRICS (drive_object->iface_nvme_fabrics), drive_object);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static void apply_configuration (UDisksLinuxDriveObject *object);
 
 static GList *
@@ -663,6 +749,8 @@ udisks_linux_drive_object_uevent (UDisksLinuxDriveObject *object,
   g_return_if_fail (UDISKS_IS_LINUX_DRIVE_OBJECT (object));
   g_return_if_fail (device == NULL || UDISKS_IS_LINUX_DEVICE (device));
 
+
+  g_mutex_lock (&object->devices_mutex);
   link = NULL;
   if (device != NULL)
     link = find_link_for_sysfs_path (object, g_udev_device_get_sysfs_path (device->udev_device));
@@ -692,12 +780,17 @@ udisks_linux_drive_object_uevent (UDisksLinuxDriveObject *object,
             object->devices = g_list_append (object->devices, g_object_ref (device));
         }
     }
+  g_mutex_unlock (&object->devices_mutex);
 
   conf_changed = FALSE;
   conf_changed |= update_iface (UDISKS_OBJECT (object), action, drive_check, drive_connect, drive_update,
                                 UDISKS_TYPE_LINUX_DRIVE, &object->iface_drive);
   conf_changed |= update_iface (UDISKS_OBJECT (object), action, drive_ata_check, drive_ata_connect, drive_ata_update,
                                 UDISKS_TYPE_LINUX_DRIVE_ATA, &object->iface_drive_ata);
+  conf_changed |= update_iface (UDISKS_OBJECT (object), action, nvme_ctrl_check, nvme_ctrl_connect, nvme_ctrl_update,
+                                UDISKS_TYPE_LINUX_NVME_CONTROLLER, &object->iface_nvme_ctrl);
+  conf_changed |= update_iface (UDISKS_OBJECT (object), action, nvme_fabrics_check, nvme_fabrics_connect, nvme_fabrics_update,
+                                UDISKS_TYPE_LINUX_NVME_FABRICS, &object->iface_nvme_fabrics);
 
   /* Attach interfaces from modules */
   module_manager = udisks_daemon_get_module_manager (object->daemon);
@@ -860,24 +953,57 @@ udisks_linux_drive_object_should_include_device (GUdevClient        *client,
                                                  UDisksLinuxDevice  *device,
                                                  gchar             **out_vpd)
 {
-  gboolean ret;
-  gchar *vpd;
+  gboolean ret = FALSE;
+  gchar *vpd = NULL;
 
-  ret = FALSE;
-  vpd = NULL;
+  if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "block") == 0)
+    {
+      /* The 'block' subsystem encompasses several objects with varying
+       * DEVTYPE including
+       *
+       *  - disk
+       *  - partition
+       *
+       * and we are only interested in the first.
+       */
+      if (g_strcmp0 (g_udev_device_get_devtype (device->udev_device), "disk") != 0)
+        goto out;
+      /* however for NVMe we only want to expose controller nodes */
+      if (udisks_linux_device_subsystem_is_nvme (device))
+        goto out;
+      vpd = check_for_vpd (device->udev_device);
+    }
+  else if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "nvme") == 0)
+    {
+      const gchar *sysfs_path;
+      const gchar *hostnqn;
+      const gchar *transport;
 
-  /* The 'block' subsystem encompasses several objects with varying
-   * DEVTYPE including
-   *
-   *  - disk
-   *  - partition
-   *
-   * and we are only interested in the first.
-   */
-  if (g_strcmp0 (g_udev_device_get_devtype (device->udev_device), "disk") != 0)
-    goto out;
+      if (!g_udev_device_has_sysfs_attr (device->udev_device, "transport"))
+        goto out;
+      if (!g_udev_device_get_device_file (device->udev_device))
+        /* calls we're about to do need a device node */
+        goto out;
 
-  vpd = check_for_vpd (device->udev_device);
+      sysfs_path = g_udev_device_get_sysfs_path (device->udev_device);
+      hostnqn = g_udev_device_get_sysfs_attr (device->udev_device, "hostnqn");
+      transport = g_udev_device_get_sysfs_attr (device->udev_device, "transport");
+
+      /* FIXME: Contrary to the SCSI VPD string that is unique and stable there's no such
+       *  common identifier available for all the NVMe transports. At early stages of fabrics
+       *  connection the availability of the following sysfs attributes proved to be spotty:
+       *  'subsysnqn', 'cntlid', 'cntrltype', 'model', 'serial', 'firmware'. As a temporary
+       *  solution a sysfs path is taken into account, along with hostnqn (if available)
+       *  and a transport to form the VPD string. As this string is used to uniquely identify
+       *  a drive in its lifecycle and there's very little chance of the sysfs path changing,
+       *  this should do the trick. It may be possible to differentiate key attributes
+       *  according to the actual transport.
+       */
+      vpd = g_strdup_printf ("NVMe:hostnqn=%s+transport=%s+%s",
+                             hostnqn ? hostnqn : "nohostnqn",
+                             transport ? transport : "notransport",
+                             sysfs_path);
+    }
 
   if (vpd == NULL)
     {
@@ -969,12 +1095,12 @@ udisks_linux_drive_object_should_include_device (GUdevClient        *client,
 /**
  * udisks_linux_drive_object_housekeeping:
  * @object: A #UDisksLinuxDriveObject.
- * @secs_since_last: Number of seconds sincex the last housekeeping or 0 if the first housekeeping ever.
+ * @secs_since_last: Number of seconds since the last housekeeping or 0 if the first housekeeping ever.
  * @cancellable: A %GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Called periodically (every ten minutes or so) to perform
- * housekeeping tasks such as refreshing ATA SMART data.
+ * housekeeping tasks such as refreshing ATA/NVMe SMART data.
  *
  * The function runs in a dedicated thread and is allowed to perform
  * blocking I/O.
@@ -994,6 +1120,7 @@ udisks_linux_drive_object_housekeeping (UDisksLinuxDriveObject  *object,
 
   ret = FALSE;
 
+  /* ATA */
   if (object->iface_drive_ata != NULL &&
       udisks_drive_ata_get_smart_supported (object->iface_drive_ata) &&
       udisks_drive_ata_get_smart_enabled (object->iface_drive_ata))
@@ -1037,6 +1164,21 @@ udisks_linux_drive_object_housekeeping (UDisksLinuxDriveObject  *object,
               g_propagate_prefixed_error (error, local_error, "Error updating SMART data: ");
               goto out;
             }
+        }
+    }
+  /* NVMe */
+  if (object->iface_nvme_ctrl != NULL)
+    {
+      GError *local_error = NULL;
+
+      udisks_info ("Refreshing Health Information on %s",
+                   g_dbus_object_get_object_path (G_DBUS_OBJECT (object)));
+
+      if (!udisks_linux_nvme_controller_refresh_smart_sync (UDISKS_LINUX_NVME_CONTROLLER (object->iface_nvme_ctrl),
+                                                            cancellable, &local_error))
+        {
+          g_propagate_prefixed_error (error, local_error, "Error updating Health Information: ");
+          goto out;
         }
     }
 

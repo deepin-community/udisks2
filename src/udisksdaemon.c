@@ -44,10 +44,7 @@
 #include "udisksmodule.h"
 #include "udisksconfigmanager.h"
 #include "udiskslinuxmountoptions.h"
-
-#ifdef HAVE_LIBMOUNT_UTAB
 #include "udisksutabmonitor.h"
-#endif
 
 /**
  * SECTION:udisksdaemon
@@ -81,10 +78,7 @@ struct _UDisksDaemon
   UDisksState *state;
 
   UDisksCrypttabMonitor *crypttab_monitor;
-
-#ifdef HAVE_LIBMOUNT_UTAB
   UDisksUtabMonitor *utab_monitor;
-#endif
 
   UDisksModuleManager *module_manager;
 
@@ -136,9 +130,7 @@ udisks_daemon_finalize (GObject *object)
   g_object_unref (daemon->connection);
   g_object_unref (daemon->mount_monitor);
   g_object_unref (daemon->crypttab_monitor);
-#ifdef HAVE_LIBMOUNT_UTAB
   g_object_unref (daemon->utab_monitor);
-#endif
   g_clear_object (&daemon->module_manager);
 
   g_object_unref (daemon->state);
@@ -334,25 +326,15 @@ udisks_daemon_constructed (GObject *object)
   BDPluginSpec mdraid_plugin = {BD_PLUGIN_MDRAID, NULL};
   BDPluginSpec fs_plugin = {BD_PLUGIN_FS, NULL};
   BDPluginSpec crypto_plugin = {BD_PLUGIN_CRYPTO, NULL};
+  BDPluginSpec nvme_plugin = {BD_PLUGIN_NVME, NULL};
 
   /* The core daemon needs the part, swap, loop, mdraid, fs and crypto plugins.
      Additional plugins are required by various modules, but they make sure
      plugins are loaded themselves. */
   BDPluginSpec *plugins[] = {&part_plugin, &swap_plugin, &loop_plugin, &mdraid_plugin,
-                             &fs_plugin, &crypto_plugin, NULL};
+                             &fs_plugin, &crypto_plugin, &nvme_plugin, NULL};
   BDPluginSpec **plugin_p = NULL;
   error = NULL;
-
-  /* Skip runtime dependency checks when initializing libblockdev. Plugin
-     shouldn't fail to load just because some if its dependencies is missing.
-   */
-  ret = bd_switch_init_checks (FALSE, &error);
-  if (!ret)
-    {
-      udisks_error ("Error initializing libblockdev library: %s (%s, %d)",
-                    error->message, g_quark_to_string (error->domain), error->code);
-      g_clear_error (&error);
-    }
 
   ret = bd_try_init (plugins, NULL, NULL, &error);
   if (!ret)
@@ -365,12 +347,10 @@ udisks_daemon_constructed (GObject *object)
         }
     else
       {
-        /* a missing plugin is okay, calling functions from it will fail, but
-           until that happens, life will just be great */
-        for (plugin_p=plugins; *plugin_p; plugin_p++)
+        for (plugin_p = plugins; *plugin_p; plugin_p++)
           if (!bd_is_plugin_available ((*plugin_p)->name))
-            udisks_warning ("Failed to load the '%s' libblockdev plugin",
-                            bd_get_plugin_name ((*plugin_p)->name));
+            udisks_error ("Failed to load the '%s' libblockdev plugin",
+                          bd_get_plugin_name ((*plugin_p)->name));
       }
     }
 
@@ -427,9 +407,7 @@ udisks_daemon_constructed (GObject *object)
                     daemon);
 
   daemon->crypttab_monitor = udisks_crypttab_monitor_new ();
-#ifdef HAVE_LIBMOUNT_UTAB
   daemon->utab_monitor = udisks_utab_monitor_new ();
-#endif
 
   /* now add providers */
   daemon->linux_provider = udisks_linux_provider_new (daemon);
@@ -685,7 +663,6 @@ udisks_daemon_get_crypttab_monitor (UDisksDaemon *daemon)
   return daemon->crypttab_monitor;
 }
 
-#ifdef HAVE_LIBMOUNT_UTAB
 /**
  * udisks_daemon_get_utab_monitor:
  * @daemon: A #UDisksDaemon
@@ -700,7 +677,6 @@ udisks_daemon_get_utab_monitor (UDisksDaemon *daemon)
   g_return_val_if_fail (UDISKS_IS_DAEMON (daemon), NULL);
   return daemon->utab_monitor;
 }
-#endif
 
 /**
  * udisks_daemon_get_linux_provider:

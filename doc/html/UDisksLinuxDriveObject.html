@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="UDisks Reference Manual">
 <link rel="up" href="ref-daemon-drives.html" title="Drives on Linux">
 <link rel="prev" href="UDisksLinuxDriveAta.html" title="UDisksLinuxDriveAta">
-<link rel="next" href="ref-daemon-mdraid.html" title="Linux RAID">
+<link rel="next" href="UDisksLinuxNVMeController.html" title="UDisksLinuxNVMeController">
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -23,7 +23,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ref-daemon-drives.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="UDisksLinuxDriveAta.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="ref-daemon-mdraid.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="UDisksLinuxNVMeController.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="UDisksLinuxDriveObject"></a><div class="titlepage"></div>
@@ -546,7 +546,7 @@ udisks_linux_drive_object_housekeeping
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Called periodically (every ten minutes or so) to perform
-housekeeping tasks such as refreshing ATA SMART data.</p>
+housekeeping tasks such as refreshing ATA/NVMe SMART data.</p>
 <p>The function runs in a dedicated thread and is allowed to perform
 blocking I/O.</p>
 <p>Long-running tasks should periodically check <em class="parameter"><code>cancellable</code></em>
@@ -568,7 +568,7 @@ they have been cancelled.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>secs_since_last</p></td>
-<td class="parameter_description"><p>Number of seconds sincex the last housekeeping or 0 if the first housekeeping ever.</p></td>
+<td class="parameter_description"><p>Number of seconds since the last housekeeping or 0 if the first housekeeping ever.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

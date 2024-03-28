@@ -61,57 +61,56 @@ CLEANFILES += $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libudisks-daemon.la
 
-libudisks_daemon_la_SOURCES =                                                  \
-	udisksdaemontypes.h                                                    \
-	udisksdaemon.h                 udisksdaemon.c                          \
-	udisksprovider.h               udisksprovider.c                        \
-	udiskslinuxprovider.h          udiskslinuxprovider.c                   \
-	udiskslinuxblockobject.h       udiskslinuxblockobject.c                \
-	udiskslinuxblock.h             udiskslinuxblock.c                      \
-	udiskslinuxpartition.h         udiskslinuxpartition.c                  \
-	udiskslinuxpartitiontable.h    udiskslinuxpartitiontable.c             \
-	udiskslinuxfilesystem.h        udiskslinuxfilesystem.c                 \
-	udiskslinuxfilesystemhelpers.h udiskslinuxfilesystemhelpers.c          \
-	udiskslinuxencrypted.h         udiskslinuxencrypted.c                  \
-	udiskslinuxencryptedhelpers.h udiskslinuxencryptedhelpers.c            \
-	udiskslinuxswapspace.h         udiskslinuxswapspace.c                  \
-	udiskslinuxloop.h              udiskslinuxloop.c                       \
-	udiskslinuxdriveobject.h       udiskslinuxdriveobject.c                \
-	udiskslinuxdrive.h             udiskslinuxdrive.c                      \
-	udiskslinuxdriveata.h          udiskslinuxdriveata.c                   \
-	udiskslinuxmdraidobject.h      udiskslinuxmdraidobject.c               \
-	udiskslinuxmdraidhelpers.h     udiskslinuxmdraidhelpers.c              \
-	udiskslinuxmdraid.h            udiskslinuxmdraid.c                     \
-	udiskslinuxmanager.h           udiskslinuxmanager.c                    \
-	udiskslinuxmountoptions.h      udiskslinuxmountoptions.c               \
-	udiskslinuxfsinfo.h            udiskslinuxfsinfo.c                     \
-	udisksbasejob.h                udisksbasejob.c                         \
-	udisksspawnedjob.h             udisksspawnedjob.c                      \
-	udisksthreadedjob.h            udisksthreadedjob.c                     \
-	udiskssimplejob.h              udiskssimplejob.c                       \
-	udisksmount.h                  udisksmount.c                           \
-	udisksmountmonitor.h           udisksmountmonitor.c                    \
-	udisksdaemonutil.h             udisksdaemonutil.c                      \
-	udiskslogging.h                udiskslogging.c                         \
-	udisksstate.h                  udisksstate.c                           \
-	udisksprivate.h                                                        \
-	udisksfstabentry.h             udisksfstabentry.c                      \
-	udiskscrypttabentry.h          udiskscrypttabentry.c                   \
-	udiskscrypttabmonitor.h        udiskscrypttabmonitor.c                 \
-	udiskslinuxdevice.h            udiskslinuxdevice.c                     \
-	udisksata.h                    udisksata.c                             \
-	udisksmodulemanager.h          udisksmodulemanager.c                   \
-	udisksmoduleobject.h           udisksmoduleobject.c                    \
-	udisksmodule.h                 udisksmodule.c                          \
-	udisksconfigmanager.h          udisksconfigmanager.c                   \
-	$(BUILT_SOURCES)                                                       \
+libudisks_daemon_la_SOURCES =                                                    \
+	udisksdaemontypes.h                                                      \
+	udisksdaemon.h                   udisksdaemon.c                          \
+	udisksprovider.h                 udisksprovider.c                        \
+	udiskslinuxprovider.h            udiskslinuxprovider.c                   \
+	udiskslinuxblockobject.h         udiskslinuxblockobject.c                \
+	udiskslinuxblock.h               udiskslinuxblock.c                      \
+	udiskslinuxpartition.h           udiskslinuxpartition.c                  \
+	udiskslinuxpartitiontable.h      udiskslinuxpartitiontable.c             \
+	udiskslinuxfilesystem.h          udiskslinuxfilesystem.c                 \
+	udiskslinuxfilesystemhelpers.h   udiskslinuxfilesystemhelpers.c          \
+	udiskslinuxencrypted.h           udiskslinuxencrypted.c                  \
+	udiskslinuxencryptedhelpers.h    udiskslinuxencryptedhelpers.c           \
+	udiskslinuxswapspace.h           udiskslinuxswapspace.c                  \
+	udiskslinuxloop.h                udiskslinuxloop.c                       \
+	udiskslinuxdriveobject.h         udiskslinuxdriveobject.c                \
+	udiskslinuxdrive.h               udiskslinuxdrive.c                      \
+	udiskslinuxdriveata.h            udiskslinuxdriveata.c                   \
+	udiskslinuxmdraidobject.h        udiskslinuxmdraidobject.c               \
+	udiskslinuxmdraidhelpers.h       udiskslinuxmdraidhelpers.c              \
+	udiskslinuxmdraid.h              udiskslinuxmdraid.c                     \
+	udiskslinuxmanager.h             udiskslinuxmanager.c                    \
+	udiskslinuxmountoptions.h        udiskslinuxmountoptions.c               \
+	udisksbasejob.h                  udisksbasejob.c                         \
+	udisksspawnedjob.h               udisksspawnedjob.c                      \
+	udisksthreadedjob.h              udisksthreadedjob.c                     \
+	udiskssimplejob.h                udiskssimplejob.c                       \
+	udisksmount.h                    udisksmount.c                           \
+	udisksmountmonitor.h             udisksmountmonitor.c                    \
+	udisksdaemonutil.h               udisksdaemonutil.c                      \
+	udiskslogging.h                  udiskslogging.c                         \
+	udisksstate.h                    udisksstate.c                           \
+	udisksprivate.h                                                          \
+	udisksfstabentry.h               udisksfstabentry.c                      \
+	udiskscrypttabentry.h            udiskscrypttabentry.c                   \
+	udiskscrypttabmonitor.h          udiskscrypttabmonitor.c                 \
+	udisksutabentry.h                udisksutabentry.c                       \
+	udisksutabmonitor.h              udisksutabmonitor.c                     \
+	udiskslinuxdevice.h              udiskslinuxdevice.c                     \
+	udisksata.h                      udisksata.c                             \
+	udisksmodulemanager.h            udisksmodulemanager.c                   \
+	udisksmoduleobject.h             udisksmoduleobject.c                    \
+	udisksmodule.h                   udisksmodule.c                          \
+	udisksconfigmanager.h            udisksconfigmanager.c                   \
+	udiskslinuxnvmecontroller.h      udiskslinuxnvmecontroller.c             \
+	udiskslinuxnvmenamespace.h       udiskslinuxnvmenamespace.c              \
+	udiskslinuxmanagernvme.h         udiskslinuxmanagernvme.c                \
+	udiskslinuxnvmefabrics.h         udiskslinuxnvmefabrics.c                \
+	$(BUILT_SOURCES)                                                         \
 	$(NULL)
-
-if HAVE_LIBMOUNT_UTAB
-libudisks_daemon_la_SOURCES +=                                                 \
-	udisksutabentry.h              udisksutabentry.c                       \
-	udisksutabmonitor.h            udisksutabmonitor.c
-endif # HAVE_LIBMOUNT_UTAB
 
 libudisks_daemon_la_CFLAGS =                                                   \
 	-I$(top_srcdir)                                                        \
@@ -121,6 +120,7 @@ libudisks_daemon_la_CFLAGS =                                                   \
 	$(GMODULE_CFLAGS)                                                      \
 	$(GUDEV_CFLAGS)                                                        \
 	$(LIBATASMART_CFLAGS)                                                  \
+	$(LIBBLKID_CFLAGS)                                                     \
 	$(LIBMOUNT_CFLAGS)                                                     \
 	$(LIBUUID_CFLAGS)                                                      \
 	$(POLKIT_GOBJECT_1_CFLAGS)                                             \
@@ -139,6 +139,7 @@ libudisks_daemon_la_LIBADD =                                                   \
 	$(BLOCKDEV_LIBS)                                                       \
 	-lbd_utils                                                             \
 	$(LIBATASMART_LIBS)                                                    \
+	$(LIBBLKID_LIBS)                                                       \
 	$(LIBMOUNT_LIBS)                                                       \
 	$(LIBUUID_LIBS)                                                        \
 	$(POLKIT_GOBJECT_1_LIBS)                                               \

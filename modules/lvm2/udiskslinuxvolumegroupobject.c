@@ -66,6 +66,7 @@ struct _UDisksLinuxVolumeGroupObject
   gchar *name;
 
   GHashTable *logical_volumes;
+  guint32 update_epoch;
   guint32 poll_epoch;
   guint poll_timeout_id;
   gboolean poll_requested;
@@ -99,6 +100,7 @@ static void crypttab_changed (UDisksCrypttabMonitor  *monitor,
 typedef struct {
   BDLVMVGdata *vg_info;
   GSList *vg_pvs;
+  guint32 epoch;
 } VGUpdateData;
 
 static void
@@ -183,6 +185,7 @@ udisks_linux_volume_group_object_set_property (GObject      *__object,
 static void
 udisks_linux_volume_group_object_init (UDisksLinuxVolumeGroupObject *object)
 {
+  object->update_epoch = 0;
   object->poll_epoch = 0;
   object->poll_timeout_id = 0;
   object->poll_requested = FALSE;
@@ -575,6 +578,12 @@ update_vg (GObject      *source_obj,
   BDLVMVGdata *vg_info = data->vg_info;
   GSList *vg_pvs = data->vg_pvs;
 
+  if (data->epoch != object->update_epoch)
+    {
+      lv_list_free (lvs);
+      return;
+    }
+
   /* free the data container (but not 'vg_info' and 'vg_pvs') */
   g_free (data);
 
@@ -602,7 +611,8 @@ update_vg (GObject      *source_obj,
   daemon = udisks_module_get_daemon (UDISKS_MODULE (object->module));
   manager = udisks_daemon_get_object_manager (daemon);
 
-  udisks_linux_volume_group_update (UDISKS_LINUX_VOLUME_GROUP (object->iface_volume_group), vg_info, &needs_polling);
+  udisks_linux_volume_group_update (UDISKS_LINUX_VOLUME_GROUP (object->iface_volume_group), vg_info, vg_pvs,
+                                    &needs_polling);
 
   if (!g_dbus_object_manager_server_is_exported (manager, G_DBUS_OBJECT_SKELETON (object)))
     g_dbus_object_manager_server_export_uniquely (manager, G_DBUS_OBJECT_SKELETON (object));
@@ -644,13 +654,13 @@ update_vg (GObject      *source_obj,
       if (volume == NULL)
         {
           volume = udisks_linux_logical_volume_object_new (object->module, object, lv_name);
-          udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, vdo_info, &needs_polling);
+          udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, lvs, vdo_info, &needs_polling);
           udisks_linux_logical_volume_object_update_etctabs (volume);
           g_dbus_object_manager_server_export_uniquely (manager, G_DBUS_OBJECT_SKELETON (volume));
           g_hash_table_insert (object->logical_volumes, g_strdup (lv_name), volume);
         }
       else
-        udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, vdo_info, &needs_polling);
+        udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, lvs, vdo_info, &needs_polling);
 
       if (vdo_info)
         bd_lvm_vdopooldata_free (vdo_info);
@@ -711,8 +721,11 @@ udisks_linux_volume_group_object_update (UDisksLinuxVolumeGroupObject *object, B
   gchar *vg_name = g_strdup (vg_info->name);
   GTask *task = NULL;
 
+  object->update_epoch++;
+
   data->vg_info = vg_info;
   data->vg_pvs = pvs;
+  data->epoch = object->update_epoch;
 
   /* the callback (update_vg) is called in the default main loop (context) */
   task = g_task_new (g_object_ref (object), NULL /* cancellable */, update_vg, data /* callback_data */);
@@ -793,7 +806,7 @@ poll_vg_update (GObject      *source_obj,
       update_operations (object, lv_name, lv_info, &needs_polling);
       volume = g_hash_table_lookup (object->logical_volumes, lv_name);
       if (volume)
-        udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, vdo_info, &needs_polling);
+        udisks_linux_logical_volume_object_update (volume, lv_info, meta_lv_info, lvs, vdo_info, &needs_polling);
     }
 
   lv_list_free (lvs);
@@ -875,6 +888,12 @@ udisks_linux_volume_group_object_destroy (UDisksLinuxVolumeGroupObject *object)
       UDisksLinuxLogicalVolumeObject *volume = value;
       g_dbus_object_manager_server_unexport (udisks_daemon_get_object_manager (daemon),
                                              g_dbus_object_get_object_path (G_DBUS_OBJECT (volume)));
+    }
+
+  if (object->iface_volume_group != NULL)
+    {
+      g_dbus_object_skeleton_remove_interface (G_DBUS_OBJECT_SKELETON (object),
+                                               G_DBUS_INTERFACE_SKELETON (object->iface_volume_group));
     }
 }
 

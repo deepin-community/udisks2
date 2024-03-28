@@ -23,7 +23,7 @@
 <div class="titlepage"><div><div><h2 class="title">
 <a name="mount_options"></a>Configurable mount options</h2></div></div></div>
 <p>
-    UDisks comes with a set of predefined mount options for common filesystem types used for dynamic mountpoints (excluding <code class="filename">/etc/fstab</code> records).
+    UDisks comes with a set of predefined mount options for common filesystems used for dynamic mountpoints (i.e., excluding <code class="filename">/etc/fstab</code> records).
     This selection has been made with focus on the primary project target: end users, consumers and workstations mostly working with removable media.
     </p>
 <p>
@@ -32,9 +32,9 @@
     For removable media it usually involves synchronous writes to prevent data loss by accidental physical removal of the device while background filesystem sync is running yet the user interface provided no indication of such process.
     </p>
 <p>
-    Technically UDisks carries a set of allowed mount options for well known filesystem types and related set of default options that are subset of the allowed ones and are always passed to the mount command.
+    Technically UDisks carries a set of allowed mount options for well known filesystems and related set of default options that are subset of the allowed and are always passed to the mount command.
     Additional mount options can be specified via the <em class="parameter"><code>options</code></em> parameter of the <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">org.freedesktop.UDisks2.Filesystem.Mount()</a> method call.
-    These options however need to be subset of allowed mount options for the given filesystem type. It is a client (caller) responsibility to always append desired extra mount options.
+    These options however need to be subset of allowed mount options for the given filesystem type.
     </p>
 <p>
     Since the 2.9.0 UDisks release a new way of overriding builtin set of mount options is supported. This is primarily targeted to sysadmins with system-wide write access (e.g. <code class="filename">/etc/udisks2</code> or udev rules) and essentially transfers responsibility for security and data consistency to their side.
@@ -46,7 +46,18 @@
     </p>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.7"></a>Basic definitions</h2></div></div></div>
+<a name="id-1.2.8.7"></a>Filesystem signature vs. filesystem driver</h2></div></div></div>
+<p>
+    The configurable mount options definition introduced in UDisks 2.9.0 considered the filesystem signature and corresponding filesystem driver an equal definition. Matching filesystem signature identifier was used as a filesystem type for mounting, as is common for most widely used filesystems.
+    </p>
+<p>
+    This has been changed in UDisks 2.10.0 and the configurable mount options gained ability to specify filesystem driver (i.e. a kernel or fuse driver) for a particular filesystem signature, along with a definition of filesystem driver priorities if necessary.
+    In the following paragraphs the term <span class="emphasis"><em>'filesystem signature'</em></span> typically means <span class="emphasis"><em>'filesystem type'</em></span> unless stated otherwise.
+    </p>
+</div>
+<div class="simplesect">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="id-1.2.8.8"></a>Basic definitions</h2></div></div></div>
 <p>
     For the reference this is what the builtin set of options looks like:
 
@@ -93,7 +104,15 @@
 36
 37
 38
-39</pre></td>
+39
+40
+41
+42
+43
+44
+45
+46
+47</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="p">[</span><span class="n">defaults</span><span class="p">]</span>
 <span class="n">allow</span><span class="o">=</span><span class="n">exec</span><span class="p">,</span><span class="n">noexec</span><span class="p">,</span><span class="n">nodev</span><span class="p">,</span><span class="n">nosuid</span><span class="p">,</span><span class="n">atime</span><span class="p">,</span><span class="n">noatime</span><span class="p">,</span><span class="n">nodiratime</span><span class="p">,</span><span class="n">relatime</span><span class="p">,</span><span class="n">strictatime</span><span class="p">,</span><span class="n">lazytime</span><span class="p">,</span><span class="n">ro</span><span class="p">,</span><span class="n">rw</span><span class="p">,</span><span class="n">sync</span><span class="p">,</span><span class="n">dirsync</span><span class="p">,</span><span class="n">noload</span><span class="p">,</span><span class="n">acl</span><span class="p">,</span><span class="n">nosymfollow</span>
 
@@ -104,35 +123,43 @@
 <span class="n">exfat_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">iocharset</span><span class="o">=</span><span class="n">utf8</span><span class="p">,</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
 <span class="n">exfat_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">errors</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">iocharset</span><span class="p">,</span><span class="n">namecase</span><span class="p">,</span><span class="n">umask</span>
 
-<span class="cp"># ntfs3, ntfs-3g and the legacy ntfs kernel driver options</span>
-<span class="n">ntfs_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">windows_names</span>
-<span class="n">ntfs_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">locale</span><span class="p">,</span><span class="n">norecover</span><span class="p">,</span><span class="n">ignore_case</span><span class="p">,</span><span class="n">windows_names</span><span class="p">,</span><span class="n">compression</span><span class="p">,</span><span class="n">nocompression</span><span class="p">,</span><span class="n">big_writes</span><span class="p">,</span><span class="n">nls</span><span class="p">,</span><span class="n">nohidden</span><span class="p">,</span><span class="n">sys_immutable</span><span class="p">,</span><span class="n">sparse</span><span class="p">,</span><span class="n">showmeta</span><span class="p">,</span><span class="n">prealloc</span>
+<span class="cp"># &#39;ntfs&#39; signature, definitions for the legacy ntfs kernel driver and the ntfs-3g fuse driver</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">windows_names</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">locale</span><span class="p">,</span><span class="n">norecover</span><span class="p">,</span><span class="n">ignore_case</span><span class="p">,</span><span class="n">windows_names</span><span class="p">,</span><span class="n">compression</span><span class="p">,</span><span class="n">nocompression</span><span class="p">,</span><span class="n">big_writes</span>
 
-<span class="n">iso9660_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">iocharset</span><span class="o">=</span><span class="n">utf8</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="mo">0400</span><span class="p">,</span><span class="n">dmode</span><span class="o">=</span><span class="mo">0500</span>
-<span class="n">iso9660_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">norock</span><span class="p">,</span><span class="n">nojoliet</span><span class="p">,</span><span class="n">iocharset</span><span class="p">,</span><span class="n">mode</span><span class="p">,</span><span class="n">dmode</span>
+<span class="cp"># &#39;ntfs&#39; signature, the new &#39;ntfs3&#39; kernel driver</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs3_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs3_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">iocharset</span><span class="p">,</span><span class="n">discard</span><span class="p">,</span><span class="n">nodiscard</span><span class="p">,</span><span class="n">sparse</span><span class="p">,</span><span class="n">nosparse</span><span class="p">,</span><span class="n">hidden</span><span class="p">,</span><span class="n">nohidden</span><span class="p">,</span><span class="n">sys_immutable</span><span class="p">,</span><span class="n">nosys_immutable</span><span class="p">,</span><span class="n">showmeta</span><span class="p">,</span><span class="n">noshowmeta</span><span class="p">,</span><span class="n">prealloc</span><span class="p">,</span><span class="n">noprealloc</span><span class="p">,</span><span class="n">hide_dot_files</span><span class="p">,</span><span class="n">nohide_dot_files</span><span class="p">,</span><span class="n">windows_names</span><span class="p">,</span><span class="n">nocase</span><span class="p">,</span><span class="k">case</span>
 
-<span class="n">udf_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">iocharset</span><span class="o">=</span><span class="n">utf8</span>
-<span class="n">udf_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">iocharset</span><span class="p">,</span><span class="n">utf8</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">mode</span><span class="p">,</span><span class="n">dmode</span><span class="p">,</span><span class="n">unhide</span><span class="p">,</span><span class="n">undelete</span>
+<span class="cp"># define order of filesystem driver priorities for the actual mount call,</span>
+<span class="cp"># required definition for non-matching driver names</span>
+<span class="no">ntfs_drivers</span><span class="o">=</span><span class="no">ntfs3</span><span class="p">,</span><span class="no">ntfs</span>
 
-<span class="n">hfsplus_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">nls</span><span class="o">=</span><span class="n">utf8</span>
-<span class="n">hfsplus_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">creator</span><span class="p">,</span><span class="n">type</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">session</span><span class="p">,</span><span class="n">part</span><span class="p">,</span><span class="n">decompose</span><span class="p">,</span><span class="n">nodecompose</span><span class="p">,</span><span class="n">force</span><span class="p">,</span><span class="n">nls</span>
+<span class="no">iso9660_defaults</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">iocharset</span><span class="o">=</span><span class="no">utf8</span><span class="p">,</span><span class="no">mode</span><span class="o">=</span><span class="mo">0400</span><span class="p">,</span><span class="no">dmode</span><span class="o">=</span><span class="mo">0500</span>
+<span class="no">iso9660_allow</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">norock</span><span class="p">,</span><span class="no">nojoliet</span><span class="p">,</span><span class="no">iocharset</span><span class="p">,</span><span class="no">mode</span><span class="p">,</span><span class="no">dmode</span>
 
-<span class="n">btrfs_allow</span><span class="o">=</span><span class="n">compress</span><span class="p">,</span><span class="n">compress</span><span class="o">-</span><span class="n">force</span><span class="p">,</span><span class="n">datacow</span><span class="p">,</span><span class="n">nodatacow</span><span class="p">,</span><span class="n">datasum</span><span class="p">,</span><span class="n">nodatasum</span><span class="p">,</span><span class="n">autodefrag</span><span class="p">,</span><span class="n">noautodefrag</span><span class="p">,</span><span class="n">degraded</span><span class="p">,</span><span class="n">device</span><span class="p">,</span><span class="n">discard</span><span class="p">,</span><span class="n">nodiscard</span><span class="p">,</span><span class="n">subvol</span><span class="p">,</span><span class="n">subvolid</span><span class="p">,</span><span class="n">space_cache</span>
+<span class="no">udf_defaults</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">iocharset</span><span class="o">=</span><span class="no">utf8</span>
+<span class="no">udf_allow</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">iocharset</span><span class="p">,</span><span class="no">utf8</span><span class="p">,</span><span class="no">umask</span><span class="p">,</span><span class="no">mode</span><span class="p">,</span><span class="no">dmode</span><span class="p">,</span><span class="no">unhide</span><span class="p">,</span><span class="no">undelete</span>
 
-<span class="n">f2fs_allow</span><span class="o">=</span><span class="n">discard</span><span class="p">,</span><span class="n">nodiscard</span><span class="p">,</span><span class="n">compress_algorithm</span><span class="p">,</span><span class="n">compress_log_size</span><span class="p">,</span><span class="n">compress_extension</span><span class="p">,</span><span class="n">alloc_mode</span>
+<span class="no">hfsplus_defaults</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">nls</span><span class="o">=</span><span class="no">utf8</span>
+<span class="no">hfsplus_allow</span><span class="o">=</span><span class="no">uid</span><span class="o">=</span><span class="no">$UID</span><span class="p">,</span><span class="no">gid</span><span class="o">=</span><span class="no">$GID</span><span class="p">,</span><span class="no">creator</span><span class="p">,</span><span class="no">type</span><span class="p">,</span><span class="no">umask</span><span class="p">,</span><span class="no">session</span><span class="p">,</span><span class="no">part</span><span class="p">,</span><span class="no">decompose</span><span class="p">,</span><span class="no">nodecompose</span><span class="p">,</span><span class="no">force</span><span class="p">,</span><span class="no">nls</span>
 
-<span class="n">xfs_allow</span><span class="o">=</span><span class="n">discard</span><span class="p">,</span><span class="n">nodiscard</span><span class="p">,</span><span class="n">inode32</span><span class="p">,</span><span class="n">largeio</span><span class="p">,</span><span class="n">wsync</span>
+<span class="no">btrfs_allow</span><span class="o">=</span><span class="no">compress</span><span class="p">,</span><span class="no">compress</span><span class="o">-</span><span class="no">force</span><span class="p">,</span><span class="no">datacow</span><span class="p">,</span><span class="no">nodatacow</span><span class="p">,</span><span class="no">datasum</span><span class="p">,</span><span class="no">nodatasum</span><span class="p">,</span><span class="no">autodefrag</span><span class="p">,</span><span class="no">noautodefrag</span><span class="p">,</span><span class="no">degraded</span><span class="p">,</span><span class="no">device</span><span class="p">,</span><span class="no">discard</span><span class="p">,</span><span class="no">nodiscard</span><span class="p">,</span><span class="no">subvol</span><span class="p">,</span><span class="no">subvolid</span><span class="p">,</span><span class="no">space_cache</span>
 
-<span class="n">reiserfs_allow</span><span class="o">=</span><span class="n">hashed_relocation</span><span class="p">,</span><span class="n">no_unhashed_relocation</span><span class="p">,</span><span class="n">noborder</span><span class="p">,</span><span class="n">notail</span>
+<span class="no">f2fs_allow</span><span class="o">=</span><span class="no">discard</span><span class="p">,</span><span class="no">nodiscard</span><span class="p">,</span><span class="no">compress_algorithm</span><span class="p">,</span><span class="no">compress_log_size</span><span class="p">,</span><span class="no">compress_extension</span><span class="p">,</span><span class="no">alloc_mode</span>
 
-<span class="n">ext2_defaults</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
-<span class="n">ext2_allow</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
+<span class="no">xfs_allow</span><span class="o">=</span><span class="no">discard</span><span class="p">,</span><span class="no">nodiscard</span><span class="p">,</span><span class="no">inode32</span><span class="p">,</span><span class="no">largeio</span><span class="p">,</span><span class="no">wsync</span>
 
-<span class="n">ext3_defaults</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
-<span class="n">ext3_allow</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
+<span class="no">reiserfs_allow</span><span class="o">=</span><span class="no">hashed_relocation</span><span class="p">,</span><span class="no">no_unhashed_relocation</span><span class="p">,</span><span class="no">noborder</span><span class="p">,</span><span class="no">notail</span>
 
-<span class="n">ext4_defaults</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span>
-<span class="n">ext4_allow</span><span class="o">=</span><span class="n">errors</span><span class="o">=</span><span class="n">remount</span><span class="o">-</span><span class="n">ro</span></pre></td>
+<span class="no">ext2_defaults</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span>
+<span class="no">ext2_allow</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span>
+
+<span class="no">ext3_defaults</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span>
+<span class="no">ext3_allow</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span>
+
+<span class="no">ext4_defaults</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span>
+<span class="no">ext4_allow</span><span class="o">=</span><span class="no">errors</span><span class="o">=</span><span class="no">remount</span><span class="o">-</span><span class="no">ro</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -141,20 +168,34 @@
 <p>
     </p>
 <p>
-    For each filesystem type a pair of two sets are defined: <code class="literal">_allow</code> and <code class="literal">_defaults</code>.
+    Typically for each filesystem signature a pair of two sets are defined: <code class="literal">_allow</code> and <code class="literal">_defaults</code>.
+    The syntax of each record is <code class="literal">fs_signature[:fs_driver]_key=value1,value2,...</code> where <code class="literal">fs_signature</code> denotes the on-disk filesystem signature as detected by <code class="literal">udev/blkid</code>,
+    an optional <code class="literal">fs_driver</code> separated by the '<code class="literal">:</code>' character indicates the filesystem type (<span class="emphasis"><em>driver</em></span>) to use for the mount call and
+    the <code class="literal">key</code> is one of the <code class="literal">_allow</code>, <code class="literal">_defaults</code> or <code class="literal">_drivers</code> set of values.
+    In case the optional <code class="literal">fs_driver</code> part is not specified, it is expected that the name of the filesystem drive equals to filesystem signature, as usual.
     </p>
 <p>
-    The <code class="literal">_allow</code> set define mount options ever allowed and considered, the <code class="literal">_defaults</code> are the target options to use that are then finally passed to the <span class="command"><strong>mount</strong></span> command.
+    The <code class="literal">_allow</code> set define mount options ever allowed and considered, the <code class="literal">_defaults</code> are the target options to use that are then (after further amendmends) passed to the mount command.
     </p>
 <p>
     The <code class="literal">_defaults</code> always need to be a subset of <code class="literal">_allow</code>. The <code class="literal">_defaults</code> options are also merged with any extra options passed via the <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount()</a> method call.
     </p>
 <p>
-    Other than the filesystem specific options there's also a group of general options that are always merged with fs-specific ones. These include general options like <code class="literal">rw</code>, <code class="literal">ro</code>, etc.
-    Let's refer to them as <code class="literal"><span class="emphasis"><em>any</em></span></code> filesystem type options for simplicity in the further text. The result of option set stacking, overrides and merging is referred to as <span class="emphasis"><em>(resulting) computed set of options</em></span>.
+    Optionally, the <code class="literal">_drivers</code> set defines filesystem driver priorities for the particular filesystem signature to use for the actual mount call, from highest to lowest.
+    Only the <code class="literal">fs_driver</code> part of the <code class="literal">fs_signature[:fs_driver]_key</code> triplet should be specified here, separated by comma.
     </p>
 <p>
-    Apart from the final computed options UDisks always adds the following options: <code class="literal">nodev</code>, <code class="literal">nosuid</code>, <code class="literal">uhelper=udisks2</code> no matter if included in <code class="literal">_allow</code> or not. These are hardcoded and can't be changed.
+    The <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount()</a> method call will then attempt to mount the filesystem using computed options defined for the particular filesystem driver separately.
+    Multiple mount attempts are made where in case the filesystem driver is unknown to the kernel, the next one in the list is tried until the operation succeeds. This might potentially lead to extra error messages in the system log from the unsuccessful tries.
+    Distributors are suggested to tweak the priorities according to the supported filesystem drivers.
+    To take advantage of this functionality the <code class="literal">_drivers</code> record needs to be present, otherwise the extra filesystem driver definitions are ignored and only the base filesystem signature definition matching the filesystem driver name is taken in account.
+    </p>
+<p>
+    Other than the filesystem signature specific options there's also a group of general options that are always merged with fs-specific ones. These include general options like <code class="literal">rw</code>, <code class="literal">ro</code>, etc.
+    Let's refer to them as <code class="literal"><span class="emphasis"><em>any</em></span></code> filesystem options for simplicity in the further text. The result of option set stacking, overrides and merging is referred to as <span class="emphasis"><em>(resulting) computed set of options</em></span>.
+    </p>
+<p>
+    Apart from the final computed options UDisks always adds the following options due to security concerns: <code class="literal">nodev</code>, <code class="literal">nosuid</code>, <code class="literal">uhelper=udisks2</code> no matter if included in <code class="literal">_allow</code> or not. These are hardcoded and can't be changed.
     </p>
 <p>
     Options that are not allowed in the computed <code class="literal">_allow</code> set will fail the mount operation with an error.
@@ -162,13 +203,13 @@
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.8"></a>Unprivileged mounts, UID and GID passing</h2></div></div></div>
+<a name="id-1.2.8.9"></a>Unprivileged mounts, UID and GID passing</h2></div></div></div>
 <p>
-    UDisks daemon typically runs as root and spawns the <span class="command"><strong>mount</strong></span> command with root privileges while processing requests from unprivileged clients and it needs a way to set proper permissions for the mounted filesystem.
+    UDisks daemon typically runs as root and spawns the mount command with root privileges while processing requests from unprivileged clients and it needs a way to set proper permissions for the mounted filesystem.
     This is usually done by passing the <code class="literal">uid</code> and <code class="literal">gid</code> mount options that common filesystems honour. UDisks take the D-Bus method caller effective UID and finds its corresponding primary GID.
     </p>
 <p>
-    Also a <code class="literal">uhelper=udisks2</code> mount option is added automatically to indicate the <span class="command"><strong>umount</strong></span> command to use UDisks again for unmounting when called by an unprivileged user.
+    Also a <code class="literal">uhelper=udisks2</code> mount option is added automatically to indicate the umount command to use UDisks again for unmounting when called by an unprivileged user.
     </p>
 <p>
     To allow flexibility in mount option naming, two special values are defined as placeholders for aforementioned IDs: <code class="literal">$UID</code> and <code class="literal">$GID</code>.
@@ -181,9 +222,9 @@
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.9"></a>Option set specifics</h2></div></div></div>
+<a name="id-1.2.8.10"></a>Option set specifics</h2></div></div></div>
 <p>
-    Option sets are composite strings of mount options with or without arguments separated by commas. There's generally no difference from an option string commonly used with the <span class="command"><strong>mount</strong></span> command. However UDisks brings a couple of specifics for greater flexibility.
+    Option sets are composite strings of mount options with or without arguments separated by commas. There's generally no difference from an option string commonly used with the mount command. UDisks brings a couple of specifics for greater flexibility.
     </p>
 <p>
     As explained above any particular mount option either defined in the <code class="literal">_defaults</code> set or passed as an extra argument via the <a class="link" href="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount" title="The Mount() method">Mount()</a> method call need to be allowed by the <code class="literal">_allow</code> set of mount options.
@@ -210,7 +251,7 @@
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.10"></a>The config file syntax</h2></div></div></div>
+<a name="id-1.2.8.11"></a>The config file syntax</h2></div></div></div>
 <p>
       A sample config file showing rich syntax:
 </p>
@@ -246,7 +287,7 @@ vfat_defaults=noexec,umask=111,dmask=000
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.11"></a>udev rules overrides</h2></div></div></div>
+<a name="id-1.2.8.12"></a>udev rules overrides</h2></div></div></div>
 <p>
     Another possibility of overriding mount options is from the udev rules. This brings the flexibility of fine-grained matching by various identifiers and even using external helpers for identification. It's also a less error-prone way than matching by block device symlinks at the config file level.
     </p>
@@ -295,7 +336,7 @@ LABEL="udisks_mount_options_end"
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.12"></a>Levels of overrides</h2></div></div></div>
+<a name="id-1.2.8.13"></a>Levels of overrides</h2></div></div></div>
 <p>
     Levels from lower to higher:
     </p>
@@ -318,7 +359,7 @@ LABEL="udisks_mount_options_end"
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.13"></a>Rules computation</h2></div></div></div>
+<a name="id-1.2.8.14"></a>Rules computation</h2></div></div></div>
 <p>
     This is the most important part to understand as badly formulated options may lead to unforeseen consequences.
     </p>
@@ -345,11 +386,11 @@ LABEL="udisks_mount_options_end"
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id-1.2.8.14"></a>Examples</h2></div></div></div>
+<a name="id-1.2.8.15"></a>Examples</h2></div></div></div>
 <p>
     </p>
 <div class="example">
-<a name="id-1.2.8.14.2.1"></a><p class="title"><b>Example 1. Disable <code class="literal">flush</code> on vfat and <code class="literal">windows_names</code> on ntfs</b></p>
+<a name="id-1.2.8.15.2.1"></a><p class="title"><b>Example 1. Disable <code class="literal">flush</code> on vfat and <code class="literal">windows_names</code> on ntfs</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 [defaults]
@@ -363,7 +404,7 @@ ntfs_defaults=uid=$UID,gid=$GID
 
     </p>
 <div class="example">
-<a name="id-1.2.8.14.2.2"></a><p class="title"><b>Example 2. Force all mounts read only</b></p>
+<a name="id-1.2.8.15.2.2"></a><p class="title"><b>Example 2. Force all mounts read only</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 [defaults]
@@ -377,7 +418,7 @@ allow=exec,noexec,nodev,nosuid,atime,noatime,nodiratime,ro,sync,dirsync,noload
 
     </p>
 <div class="example">
-<a name="id-1.2.8.14.2.3"></a><p class="title"><b>Example 3. Force all mounts read only except of my trusty USB drive</b></p>
+<a name="id-1.2.8.15.2.3"></a><p class="title"><b>Example 3. Force all mounts read only except of my trusty USB drive</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 [defaults]
@@ -395,7 +436,7 @@ allow=exec,noexec,nodev,nosuid,atime,noatime,nodiratime,ro,rw,sync,dirsync,noloa
 
     </p>
 <div class="example">
-<a name="id-1.2.8.14.2.4"></a><p class="title"><b>Example 4. Much safer way of matching my trusty USB drive</b></p>
+<a name="id-1.2.8.15.2.4"></a><p class="title"><b>Example 4. Much safer way of matching my trusty USB drive</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 [defaults]
@@ -420,7 +461,7 @@ LABEL="udisks_mount_options_end"
 
     </p>
 <div class="example">
-<a name="id-1.2.8.14.2.5"></a><p class="title"><b>Example 5. Allow fine-grained control over UIDs</b></p>
+<a name="id-1.2.8.15.2.5"></a><p class="title"><b>Example 5. Allow fine-grained control over UIDs</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 [defaults]
@@ -430,6 +471,49 @@ vfat_allow=uid=1001,uid=1005,gid=$GID,flush,utf8,shortname,umask,dmask,fmask,cod
           As the <code class="literal">vfat_defaults</code> set is not being overridden here and still carries the <code class="literal">uid=$UID</code> mount option that gets automatically replaced by caller effective UID, the computed option value must match any of the <code class="literal">vfat_allow</code> options,
           thus the whole mount operation will be denied if the UIDs don't match.</div>
 </div>
+</div>
+<p><br class="example-break">
+
+    </p>
+<div class="example">
+<a name="id-1.2.8.15.2.6"></a><p class="title"><b>Example 6. Multiple filesystem drivers for a common filesystem signature</b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="p">[</span><span class="n">defaults</span><span class="p">]</span>
+<span class="cp"># the legacy ntfs kernel driver and the ntfs-3g fuse driver</span>
+<span class="cp"># the usual case where the filesystem signature corresponds with the filesystem driver</span>
+<span class="n">ntfs_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">windows_names</span>
+<span class="n">ntfs_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">locale</span><span class="p">,</span><span class="n">norecover</span><span class="p">,</span><span class="n">ignore_case</span><span class="p">,</span><span class="n">windows_names</span><span class="p">,</span><span class="n">compression</span><span class="p">,</span><span class="n">nocompression</span><span class="p">,</span><span class="n">big_writes</span>
+
+<span class="cp"># ntfs3 kernel driver</span>
+<span class="cp"># different filesystem driver for a common filesystem signature</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs3_defaults</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span>
+<span class="nl">ntfs</span><span class="p">:</span><span class="n">ntfs3_allow</span><span class="o">=</span><span class="n">uid</span><span class="o">=</span><span class="n">$UID</span><span class="p">,</span><span class="n">gid</span><span class="o">=</span><span class="n">$GID</span><span class="p">,</span><span class="n">umask</span><span class="p">,</span><span class="n">dmask</span><span class="p">,</span><span class="n">fmask</span><span class="p">,</span><span class="n">iocharset</span><span class="p">,</span><span class="n">discard</span><span class="p">,</span><span class="n">nodiscard</span><span class="p">,</span><span class="n">sparse</span><span class="p">,</span><span class="n">nosparse</span><span class="p">,</span><span class="n">hidden</span><span class="p">,</span><span class="n">nohidden</span><span class="p">,</span><span class="n">sys_immutable</span><span class="p">,</span><span class="n">nosys_immutable</span><span class="p">,</span><span class="n">showmeta</span><span class="p">,</span><span class="n">noshowmeta</span><span class="p">,</span><span class="n">prealloc</span><span class="p">,</span><span class="n">noprealloc</span>
+
+<span class="cp"># filesystem driver order for the specified filesystem signature</span>
+<span class="cp"># required to actually use the extra definitions</span>
+<span class="n">ntfs_drivers</span><span class="o">=</span><span class="n">ntfs3</span><span class="p">,</span><span class="n">ntfs</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </div>
 <p><br class="example-break">
 

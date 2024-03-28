@@ -4,8 +4,7 @@ import six
 import dbus
 import unittest
 import tempfile
-
-from distutils.spawn import find_executable
+import shutil
 
 import udiskstestcase
 
@@ -34,7 +33,7 @@ class UdisksLSMTestCase(udiskstestcase.UdisksTestCase):
         udiskstestcase.UdisksTestCase.setUpClass()
 
         # sqlite3 is needed to hack the lsm sim db
-        if not find_executable('sqlite3'):
+        if not shutil.which('sqlite3'):
             udiskstestcase.UdisksTestCase.tearDownClass()
             raise unittest.SkipTest('LSM: sqlite3 executable not found in $PATH, skipping.')
 
@@ -164,7 +163,8 @@ class UdisksLSMTestCase(udiskstestcase.UdisksTestCase):
             # now call each of the LED control methods and let them fail
             for method_name in UdisksLSMTestCase._LED_CONTROL_METHOD_NAMES:
                 method = drive_lsm_local.get_dbus_method(method_name)
-                with six.assertRaisesRegex(self, dbus.exceptions.DBusException, r'Specified disk does not support this action'):
+                msg = r'(Specified disk does not support this action|Unable to find block device for drive)'
+                with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
                     method(self.no_options)
 
     def test_drive_lsm(self):
@@ -187,16 +187,16 @@ class UdisksLSMTestCase(udiskstestcase.UdisksTestCase):
             self.assertIsNotNone(drive_lsm)
 
             if wwn == drive_wwn:
-                self.assertTrue  (self.get_property_raw(drive, '.Drive.LSM', 'IsOK'))
-                self.assertFalse (self.get_property_raw(drive, '.Drive.LSM', 'IsRaidDegraded'))
-                self.assertFalse (self.get_property_raw(drive, '.Drive.LSM', 'IsRaidError'))
-                self.assertFalse (self.get_property_raw(drive, '.Drive.LSM', 'IsRaidVerifying'))
-                self.assertFalse (self.get_property_raw(drive, '.Drive.LSM', 'IsRaidReconstructing'))
-                self.assertEquals(self.get_property_raw(drive, '.Drive.LSM', 'RaidType'), 'RAID 1')
-                self.assertEquals(self.get_property_raw(drive, '.Drive.LSM', 'StatusInfo'), '')
-                self.assertEquals(self.get_property_raw(drive, '.Drive.LSM', 'MinIoSize'), 512)
-                self.assertEquals(self.get_property_raw(drive, '.Drive.LSM', 'OptIoSize'), 512)
-                self.assertEquals(self.get_property_raw(drive, '.Drive.LSM', 'RaidDiskCount'), 2)
+                self.assertTrue (self.get_property_raw(drive, '.Drive.LSM', 'IsOK'))
+                self.assertFalse(self.get_property_raw(drive, '.Drive.LSM', 'IsRaidDegraded'))
+                self.assertFalse(self.get_property_raw(drive, '.Drive.LSM', 'IsRaidError'))
+                self.assertFalse(self.get_property_raw(drive, '.Drive.LSM', 'IsRaidVerifying'))
+                self.assertFalse(self.get_property_raw(drive, '.Drive.LSM', 'IsRaidReconstructing'))
+                self.assertEqual(self.get_property_raw(drive, '.Drive.LSM', 'RaidType'), 'RAID 1')
+                self.assertEqual(self.get_property_raw(drive, '.Drive.LSM', 'StatusInfo'), '')
+                self.assertEqual(self.get_property_raw(drive, '.Drive.LSM', 'MinIoSize'), 512)
+                self.assertEqual(self.get_property_raw(drive, '.Drive.LSM', 'OptIoSize'), 512)
+                self.assertEqual(self.get_property_raw(drive, '.Drive.LSM', 'RaidDiskCount'), 2)
             else:
                 # no .Drive.LSM interface should be present on other objects
                 with six.assertRaisesRegex(self, dbus.exceptions.DBusException, r'org.freedesktop.DBus.Error.InvalidArgs: No such interface'):

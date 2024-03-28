@@ -161,7 +161,7 @@ class DBusProperty(object):
     def _update_value(self):
         self._value = self.obj.Get(self.iface, self.prop, dbus_interface=dbus.PROPERTIES_IFACE)
 
-    def _check(self, timeout, check_fn):
+    def _check(self, timeout, check_fn, poll_vg=None):
         for _ in range(int(timeout / 0.5)):
             try:
                 self._update_value()
@@ -171,16 +171,18 @@ class DBusProperty(object):
                 # ignore all exceptions -- they might be result of property
                 # not having the expected type (e.g. 'None' when checking for len)
                 pass
+            if poll_vg:
+                poll_vg.Poll(dbus_interface='org.freedesktop.UDisks2.VolumeGroup')
             time.sleep(0.5)
 
         return False
 
-    def assertEqual(self, value, timeout=TIMEOUT, getter=None):
+    def assertEqual(self, value, timeout=TIMEOUT, getter=None, poll_vg=None):
         if getter is not None:
             check_fn = lambda x: getter(x) == value
         else:
             check_fn = lambda x: x == value
-        ret = self._check(timeout, check_fn)
+        ret = self._check(timeout, check_fn, poll_vg)
 
         if not ret:
             if getter is not None:
@@ -529,10 +531,9 @@ class UdisksTestCase(unittest.TestCase):
 
     @classmethod
     def assertHasIface(self, obj, iface):
-        obj_intro = dbus.Interface(obj, "org.freedesktop.DBus.Introspectable")
-        intro_data = obj_intro.Introspect()
-
         for _ in range(20):
+            obj_intro = dbus.Interface(obj, "org.freedesktop.DBus.Introspectable")
+            intro_data = obj_intro.Introspect()
             if ('interface name="%s"' % iface) in intro_data:
                 return
             time.sleep(0.5)

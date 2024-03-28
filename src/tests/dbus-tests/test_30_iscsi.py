@@ -6,6 +6,7 @@ import os
 import re
 import six
 import time
+import shutil
 import unittest
 
 
@@ -25,6 +26,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
     noauth_iqn = 'iqn.2003-01.udisks.test:iscsi-test-noauth'
     chap_iqn = 'iqn.2003-01.udisks.test:iscsi-test-chap'
     mutual_iqn = 'iqn.2003-01.udisks.test:iscsi-test-mutual'
+
 
     # Define common D-Bus method call timeout that needs to be slightly longer
     # than the corresponding timeout defined in libiscsi:
@@ -46,8 +48,20 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
     def _set_initiator_name(self):
         manager = self.get_object('/Manager')
 
+        # make backup of INITIATOR_FILE and restore it at the end
+        try:
+            initiatorname_backup = self.read_file(INITIATOR_FILE)
+            self.addCleanup(self.write_file, INITIATOR_FILE, initiatorname_backup)
+        except FileNotFoundError as e:
+            # no existing file, simply remove it once finished
+            self.addCleanup(self.remove_file, INITIATOR_FILE, True)
+
         manager.SetInitiatorName(self.initiator, self.no_options,
                                  dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator')
+
+        # running iscsid needs to be restarted to reflect the change
+        self.run_command('systemctl try-reload-or-restart iscsid.service')
+        # ignore the return code in case of non-systemd distros
 
         init = manager.GetInitiatorName(self.no_options,
                                         dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator')
@@ -60,6 +74,10 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         # in Python 2 data is string even when opening the file as 'rb'
         initiator = bytearray(data)
         return initiator.strip().split(b"InitiatorName=")[1]
+
+    def _clean_iscsid_node_dir(self):
+        for iqn in [self.noauth_iqn, self.chap_iqn, self.mutual_iqn]:
+            shutil.rmtree(os.path.join('/var/lib/iscsi/nodes/', iqn), ignore_errors=True)
 
     def test__manager_interface(self):
         '''Test for module D-Bus Manager interface presence'''
@@ -86,6 +104,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         nodes, _ = manager.DiscoverSendTargets(self.address, self.port, self.no_options,
                                                dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
                                                timeout=self.iscsi_timeout)
+        self.addCleanup(self._clean_iscsid_node_dir)
 
         node = next((node for node in nodes if node[0] == self.noauth_iqn), None)
         self.assertIsNotNone(node)
@@ -131,6 +150,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         nodes, _ = manager.DiscoverSendTargets(self.address, self.port, self.no_options,
                                                dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
                                                timeout=self.iscsi_timeout)
+        self.addCleanup(self._clean_iscsid_node_dir)
 
         node = next((node for node in nodes if node[0] == self.chap_iqn), None)
         self.assertIsNotNone(node)
@@ -141,10 +161,17 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         self.assertEqual(port, self.port)
 
         options = dbus.Dictionary(signature='sv')
+        options['node.session.auth.chap_algs'] = 'SHA3-256,SHA256,SHA1'  # disallow MD5
         options['username'] = self.initiator
 
+        msg = r'Login failed: initiator reported error \(24 - iSCSI login failed due to authorization failure\)'
+        # missing auth info
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            manager.Login(iqn, tpg, host, port, iface, self.no_options,
+                          dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
+                          timeout=self.iscsi_timeout)
+
         # wrong password
-        msg = 'Login failed: initiator reported error'
         with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
             options['password'] = '12345'
             manager.Login(iqn, tpg, host, port, iface, options,
@@ -190,6 +217,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         nodes, _ = manager.DiscoverSendTargets(self.address, self.port, self.no_options,
                                                dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
                                                timeout=self.iscsi_timeout)
+        self.addCleanup(self._clean_iscsid_node_dir)
 
         node = next((node for node in nodes if node[0] == self.mutual_iqn), None)
         self.assertIsNotNone(node)
@@ -200,6 +228,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         self.assertEqual(port, self.port)
 
         options = dbus.Dictionary(signature='sv')
+        options['node.session.auth.chap_algs'] = 'SHA3-256,SHA256,SHA1'  # disallow MD5
         options['username'] = self.initiator
         options['password'] = self.password
         options['reverse-username'] = self.mutual_iqn
@@ -246,6 +275,7 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         nodes, _ = manager.DiscoverSendTargets(self.address, self.port, self.no_options,
                                                dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
                                                timeout=self.iscsi_timeout)
+        self.addCleanup(self._clean_iscsid_node_dir)
 
         node = next((node for node in nodes if node[0] == self.noauth_iqn), None)
         self.assertIsNotNone(node)
@@ -284,3 +314,63 @@ class UdisksISCSITest(udiskstestcase.UdisksTestCase):
         # make sure the session object is no longer on dbus
         objects = udisks.GetManagedObjects(dbus_interface='org.freedesktop.DBus.ObjectManager')
         self.assertNotIn(session_path, objects.keys())
+
+    def test_login_noauth_badauth(self):
+        """
+        Test auth info override
+        """
+        manager = self.get_object('/Manager')
+        nodes, _ = manager.DiscoverSendTargets(self.address, self.port, self.no_options,
+                                               dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
+                                               timeout=self.iscsi_timeout)
+        self.addCleanup(self._clean_iscsid_node_dir)
+
+        node = next((node for node in nodes if node[0] == self.noauth_iqn), None)
+        self.assertIsNotNone(node)
+
+        (iqn, tpg, host, port, iface) = node
+        self.assertEqual(iqn, self.noauth_iqn)
+        self.assertEqual(host, self.address)
+        self.assertEqual(port, self.port)
+
+        self.addCleanup(self._force_lougout, self.noauth_iqn)
+
+        # first attempt - wrong password
+        options = dbus.Dictionary(signature='sv')
+        options['node.session.auth.chap_algs'] = 'SHA3-256,SHA256,SHA1'  # disallow MD5
+        options['username'] = self.initiator
+        msg = r'Login failed: initiator reported error \((19 - encountered non-retryable iSCSI login failure|24 - iSCSI login failed due to authorization failure)\)'
+        with six.assertRaisesRegex(self, dbus.exceptions.DBusException, msg):
+            options['password'] = '12345'
+            manager.Login(iqn, tpg, host, port, iface, options,
+                          dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
+                          timeout=self.iscsi_timeout)
+
+        # second atttempt - no password
+        manager.Login(iqn, tpg, host, port, iface, self.no_options,
+                      dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
+                      timeout=self.iscsi_timeout)
+
+        devs = glob.glob('/dev/disk/by-path/*%s*' % iqn)
+        self.assertEqual(len(devs), 1)
+
+        # check if the block device have 'Symlinks' property updated
+        disk_name = os.path.realpath(devs[0]).split('/')[-1]
+        disk_obj = self.get_object('/block_devices/' + disk_name)
+        dbus_path = str(disk_obj.object_path)
+        self.assertIsNotNone(disk_obj)
+
+        symlinks = self.get_property_raw(disk_obj, '.Block', 'Symlinks')
+        self.assertIn(self.str_to_ay(devs[0]), symlinks)
+
+        manager.Logout(iqn, tpg, host, port, iface, self.no_options,
+                       dbus_interface=self.iface_prefix + '.Manager.ISCSI.Initiator',
+                       timeout=self.iscsi_timeout)
+
+        devs = glob.glob('/dev/disk/by-path/*%s*' % iqn)
+        self.assertEqual(len(devs), 0)
+
+        # make sure the disk is no longer on dbus
+        udisks = self.get_object('')
+        objects = udisks.GetManagedObjects(dbus_interface='org.freedesktop.DBus.ObjectManager')
+        self.assertNotIn(dbus_path, objects.keys())

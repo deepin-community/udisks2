@@ -36,6 +36,10 @@
         <sub name="org.freedesktop.UDisks2.Encrypted" link="gdbus-org.freedesktop.UDisks2.Encrypted.html"/>
         <sub name="org.freedesktop.UDisks2.Loop" link="gdbus-org.freedesktop.UDisks2.Loop.html"/>
         <sub name="org.freedesktop.UDisks2.Job" link="gdbus-org.freedesktop.UDisks2.Job.html"/>
+        <sub name="org.freedesktop.UDisks2.NVMe.Controller" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html"/>
+        <sub name="org.freedesktop.UDisks2.NVMe.Namespace" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html"/>
+        <sub name="org.freedesktop.UDisks2.Manager.NVMe" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html"/>
+        <sub name="org.freedesktop.UDisks2.NVMe.Fabrics" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html"/>
         <sub name="org.freedesktop.UDisks2.Drive.LSM" link="gdbus-org.freedesktop.UDisks2.Drive.LSM.html"/>
         <sub name="org.freedesktop.UDisks2.Drive.LsmLocal" link="gdbus-org.freedesktop.UDisks2.Drive.LsmLocal.html"/>
         <sub name="org.freedesktop.UDisks2.Block.LVM2" link="gdbus-org.freedesktop.UDisks2.Block.LVM2.html"/>
@@ -48,10 +52,6 @@
         <sub name="org.freedesktop.UDisks2.Manager.ISCSI.Initiator" link="gdbus-org.freedesktop.UDisks2.Manager.ISCSI.Initiator.html"/>
         <sub name="org.freedesktop.UDisks2.Manager.BTRFS" link="gdbus-org.freedesktop.UDisks2.Manager.BTRFS.html"/>
         <sub name="org.freedesktop.UDisks2.Filesystem.BTRFS" link="gdbus-org.freedesktop.UDisks2.Filesystem.BTRFS.html"/>
-        <sub name="org.freedesktop.UDisks2.Manager.ZRAM" link="gdbus-org.freedesktop.UDisks2.Manager.ZRAM.html"/>
-        <sub name="org.freedesktop.UDisks2.Block.ZRAM" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html"/>
-        <sub name="org.freedesktop.UDisks2.Manager.Bcache" link="gdbus-org.freedesktop.UDisks2.Manager.Bcache.html"/>
-        <sub name="org.freedesktop.UDisks2.Block.Bcache" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html"/>
       </sub>
     </sub>
     <sub name="Library API Reference" link="ref-library.html">
@@ -73,7 +73,10 @@
         <sub name="UDisksSwapspace" link="UDisksSwapspace.html"/>
         <sub name="UDisksEncrypted" link="UDisksEncrypted.html"/>
         <sub name="UDisksLoop" link="UDisksLoop.html"/>
-        <sub name="UDisksManagerLSM" link="udisks2-UDisksManagerLSM.html"/>
+        <sub name="UDisksNVMeController" link="UDisksNVMeController.html"/>
+        <sub name="UDisksNVMeNamespace" link="UDisksNVMeNamespace.html"/>
+        <sub name="UDisksManagerNVMe" link="UDisksManagerNVMe.html"/>
+        <sub name="UDisksNVMeFabrics" link="UDisksNVMeFabrics.html"/>
         <sub name="UDisksDriveLSM" link="UDisksDriveLSM.html"/>
         <sub name="UDisksDriveLsmLocal" link="UDisksDriveLsmLocal.html"/>
         <sub name="UDisksManagerLVM2" link="UDisksManagerLVM2.html"/>
@@ -84,12 +87,8 @@
         <sub name="UDisksVDOVolume" link="UDisksVDOVolume.html"/>
         <sub name="UDisksISCSISession" link="UDisksISCSISession.html"/>
         <sub name="UDisksManagerISCSIInitiator" link="UDisksManagerISCSIInitiator.html"/>
-        <sub name="UDisksManagerBTRFS" link="UDisksManagerBTRFS.html"/>
-        <sub name="UDisksFilesystemBTRFS" link="UDisksFilesystemBTRFS.html"/>
-        <sub name="UDisksManagerZRAM" link="UDisksManagerZRAM.html"/>
-        <sub name="UDisksBlockZRAM" link="UDisksBlockZRAM.html"/>
-        <sub name="UDisksManagerBcache" link="UDisksManagerBcache.html"/>
-        <sub name="UDisksBlockBcache" link="UDisksBlockBcache.html"/>
+        <sub name="UDisksManagerBTRFS" link="udisks2-UDisksManagerBTRFS.html"/>
+        <sub name="UDisksFilesystemBTRFS" link="udisks2-UDisksFilesystemBTRFS.html"/>
       </sub>
     </sub>
     <sub name="Daemon Implementation Details" link="ref-daemon.html">
@@ -117,6 +116,7 @@
       </sub>
       <sub name="Linux-specific types" link="ref-daemon-linux-types.html">
         <sub name="UDisksLinuxManager" link="UDisksLinuxManager.html"/>
+        <sub name="UDisksLinuxManagerNVMe" link="udisks2-UDisksLinuxManagerNVMe.html"/>
         <sub name="UDisksLinuxProvider" link="UDisksLinuxProvider.html"/>
         <sub name="UDisksLinuxDevice" link="UDisksLinuxDevice.html"/>
       </sub>
@@ -124,6 +124,8 @@
         <sub name="UDisksLinuxDrive" link="UDisksLinuxDrive.html"/>
         <sub name="UDisksLinuxDriveAta" link="UDisksLinuxDriveAta.html"/>
         <sub name="UDisksLinuxDriveObject" link="UDisksLinuxDriveObject.html"/>
+        <sub name="UDisksLinuxNVMeController" link="UDisksLinuxNVMeController.html"/>
+        <sub name="UDisksLinuxNVMeFabrics" link="udisks2-UDisksLinuxNVMeFabrics.html"/>
       </sub>
       <sub name="Linux RAID" link="ref-daemon-mdraid.html">
         <sub name="UDisksLinuxMDRaid" link="UDisksLinuxMDRaid.html"/>
@@ -138,11 +140,12 @@
         <sub name="UDisksLinuxSwapspace" link="UDisksLinuxSwapspace.html"/>
         <sub name="UDisksLinuxLoop" link="UDisksLinuxLoop.html"/>
         <sub name="UDisksLinuxBlockObject" link="UDisksLinuxBlockObject.html"/>
+        <sub name="UDisksLinuxNVMeNamespace" link="UDisksLinuxNVMeNamespace.html"/>
       </sub>
     </sub>
     <sub name="Index" link="api-index.html"/>
     <sub name="Index of deprecated symbols" link="api-index-deprecated.html"/>
-    <sub name="Index of new symbols in 2.9.4" link="api-index-2.9.4.html"/>
+    <sub name="Index of new symbols in 2.10.1" link="api-index-2.10.1.html"/>
     <sub name="Annotation Glossary" link="annotation-glossary.html"/>
     <sub name="Object Hierarchy" link="gio-hierarchy.html"/>
   </chapters>
@@ -286,6 +289,7 @@
     <keyword type="property" name="The &quot;UserspaceMountOptions&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-property-org-freedesktop-UDisks2-Block.UserspaceMountOptions"/>
     <keyword type="method" name="The SetType() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetType"/>
     <keyword type="method" name="The SetName() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetName"/>
+    <keyword type="method" name="The SetUUID() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetUUID"/>
     <keyword type="method" name="The SetFlags() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.SetFlags"/>
     <keyword type="method" name="The Resize() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.Resize"/>
     <keyword type="method" name="The Delete() method" link="gdbus-org.freedesktop.UDisks2.Partition.html#gdbus-method-org-freedesktop-UDisks2-Partition.Delete"/>
@@ -304,6 +308,7 @@
     <keyword type="property" name="The &quot;Partitions&quot; property" link="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-property-org-freedesktop-UDisks2-PartitionTable.Partitions"/>
     <keyword type="property" name="The &quot;Type&quot; property" link="gdbus-org.freedesktop.UDisks2.PartitionTable.html#gdbus-property-org-freedesktop-UDisks2-PartitionTable.Type"/>
     <keyword type="method" name="The SetLabel() method" link="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.SetLabel"/>
+    <keyword type="method" name="The SetUUID() method" link="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.SetUUID"/>
     <keyword type="method" name="The Mount() method" link="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Mount"/>
     <keyword type="method" name="The Unmount() method" link="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Unmount"/>
     <keyword type="method" name="The Resize() method" link="gdbus-org.freedesktop.UDisks2.Filesystem.html#gdbus-method-org-freedesktop-UDisks2-Filesystem.Resize"/>
@@ -315,6 +320,7 @@
     <keyword type="method" name="The Start() method" link="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.Start"/>
     <keyword type="method" name="The Stop() method" link="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.Stop"/>
     <keyword type="method" name="The SetLabel() method" link="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.SetLabel"/>
+    <keyword type="method" name="The SetUUID() method" link="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-method-org-freedesktop-UDisks2-Swapspace.SetUUID"/>
     <keyword type="property" name="The &quot;Active&quot; property" link="gdbus-org.freedesktop.UDisks2.Swapspace.html#gdbus-property-org-freedesktop-UDisks2-Swapspace.Active"/>
     <keyword type="method" name="The Unlock() method" link="gdbus-org.freedesktop.UDisks2.Encrypted.html#gdbus-method-org-freedesktop-UDisks2-Encrypted.Unlock"/>
     <keyword type="method" name="The Lock() method" link="gdbus-org.freedesktop.UDisks2.Encrypted.html#gdbus-method-org-freedesktop-UDisks2-Encrypted.Lock"/>
@@ -341,6 +347,47 @@
     <keyword type="property" name="The &quot;Objects&quot; property" link="gdbus-org.freedesktop.UDisks2.Job.html#gdbus-property-org-freedesktop-UDisks2-Job.Objects"/>
     <keyword type="property" name="The &quot;StartedByUID&quot; property" link="gdbus-org.freedesktop.UDisks2.Job.html#gdbus-property-org-freedesktop-UDisks2-Job.StartedByUID"/>
     <keyword type="property" name="The &quot;Cancelable&quot; property" link="gdbus-org.freedesktop.UDisks2.Job.html#gdbus-property-org-freedesktop-UDisks2-Job.Cancelable"/>
+    <keyword type="method" name="The SmartUpdate() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Controller.SmartUpdate"/>
+    <keyword type="method" name="The SmartGetAttributes() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Controller.SmartGetAttributes"/>
+    <keyword type="method" name="The SmartSelftestStart() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Controller.SmartSelftestStart"/>
+    <keyword type="method" name="The SmartSelftestAbort() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Controller.SmartSelftestAbort"/>
+    <keyword type="method" name="The SanitizeStart() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Controller.SanitizeStart"/>
+    <keyword type="property" name="The &quot;State&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.State"/>
+    <keyword type="property" name="The &quot;ControllerID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.ControllerID"/>
+    <keyword type="property" name="The &quot;SubsystemNQN&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SubsystemNQN"/>
+    <keyword type="property" name="The &quot;FGUID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.FGUID"/>
+    <keyword type="property" name="The &quot;NVMeRevision&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.NVMeRevision"/>
+    <keyword type="property" name="The &quot;UnallocatedCapacity&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.UnallocatedCapacity"/>
+    <keyword type="property" name="The &quot;SmartUpdated&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartUpdated"/>
+    <keyword type="property" name="The &quot;SmartCriticalWarning&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartCriticalWarning"/>
+    <keyword type="property" name="The &quot;SmartPowerOnHours&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartPowerOnHours"/>
+    <keyword type="property" name="The &quot;SmartTemperature&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartTemperature"/>
+    <keyword type="property" name="The &quot;SmartSelftestStatus&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartSelftestStatus"/>
+    <keyword type="property" name="The &quot;SmartSelftestPercentRemaining&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SmartSelftestPercentRemaining"/>
+    <keyword type="property" name="The &quot;SanitizeStatus&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SanitizeStatus"/>
+    <keyword type="property" name="The &quot;SanitizePercentRemaining&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Controller.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Controller.SanitizePercentRemaining"/>
+    <keyword type="method" name="The FormatNamespace() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Namespace.FormatNamespace"/>
+    <keyword type="property" name="The &quot;NSID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.NSID"/>
+    <keyword type="property" name="The &quot;NGUID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.NGUID"/>
+    <keyword type="property" name="The &quot;EUI64&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.EUI64"/>
+    <keyword type="property" name="The &quot;UUID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.UUID"/>
+    <keyword type="property" name="The &quot;WWN&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.WWN"/>
+    <keyword type="property" name="The &quot;LBAFormats&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.LBAFormats"/>
+    <keyword type="property" name="The &quot;FormattedLBASize&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.FormattedLBASize"/>
+    <keyword type="property" name="The &quot;NamespaceSize&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.NamespaceSize"/>
+    <keyword type="property" name="The &quot;NamespaceCapacity&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.NamespaceCapacity"/>
+    <keyword type="property" name="The &quot;NamespaceUtilization&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.NamespaceUtilization"/>
+    <keyword type="property" name="The &quot;FormatPercentRemaining&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Namespace.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Namespace.FormatPercentRemaining"/>
+    <keyword type="method" name="The SetHostNQN() method" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html#gdbus-method-org-freedesktop-UDisks2-Manager-NVMe.SetHostNQN"/>
+    <keyword type="method" name="The SetHostID() method" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html#gdbus-method-org-freedesktop-UDisks2-Manager-NVMe.SetHostID"/>
+    <keyword type="method" name="The Connect() method" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html#gdbus-method-org-freedesktop-UDisks2-Manager-NVMe.Connect"/>
+    <keyword type="property" name="The &quot;HostNQN&quot; property" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html#gdbus-property-org-freedesktop-UDisks2-Manager-NVMe.HostNQN"/>
+    <keyword type="property" name="The &quot;HostID&quot; property" link="gdbus-org.freedesktop.UDisks2.Manager.NVMe.html#gdbus-property-org-freedesktop-UDisks2-Manager-NVMe.HostID"/>
+    <keyword type="method" name="The Disconnect() method" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html#gdbus-method-org-freedesktop-UDisks2-NVMe-Fabrics.Disconnect"/>
+    <keyword type="property" name="The &quot;HostNQN&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Fabrics.HostNQN"/>
+    <keyword type="property" name="The &quot;HostID&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Fabrics.HostID"/>
+    <keyword type="property" name="The &quot;Transport&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Fabrics.Transport"/>
+    <keyword type="property" name="The &quot;TransportAddress&quot; property" link="gdbus-org.freedesktop.UDisks2.NVMe.Fabrics.html#gdbus-property-org-freedesktop-UDisks2-NVMe-Fabrics.TransportAddress"/>
     <keyword type="property" name="The &quot;IsOK&quot; property" link="gdbus-org.freedesktop.UDisks2.Drive.LSM.html#gdbus-property-org-freedesktop-UDisks2-Drive-LSM.IsOK"/>
     <keyword type="property" name="The &quot;IsRaidDegraded&quot; property" link="gdbus-org.freedesktop.UDisks2.Drive.LSM.html#gdbus-property-org-freedesktop-UDisks2-Drive-LSM.IsRaidDegraded"/>
     <keyword type="property" name="The &quot;IsRaidError&quot; property" link="gdbus-org.freedesktop.UDisks2.Drive.LSM.html#gdbus-property-org-freedesktop-UDisks2-Drive-LSM.IsRaidError"/>
@@ -361,6 +408,7 @@
     <keyword type="method" name="The Delete() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.Delete"/>
     <keyword type="method" name="The Rename() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.Rename"/>
     <keyword type="method" name="The Resize() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.Resize"/>
+    <keyword type="method" name="The Repair() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.Repair"/>
     <keyword type="method" name="The CreateSnapshot() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.CreateSnapshot"/>
     <keyword type="method" name="The CacheAttach() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.CacheAttach"/>
     <keyword type="method" name="The CacheSplit() method" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-method-org-freedesktop-UDisks2-LogicalVolume.CacheSplit"/>
@@ -373,6 +421,9 @@
     <keyword type="property" name="The &quot;DataAllocatedRatio&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.DataAllocatedRatio"/>
     <keyword type="property" name="The &quot;MetadataAllocatedRatio&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.MetadataAllocatedRatio"/>
     <keyword type="property" name="The &quot;Type&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.Type"/>
+    <keyword type="property" name="The &quot;Layout&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.Layout"/>
+    <keyword type="property" name="The &quot;Structure&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.Structure"/>
+    <keyword type="property" name="The &quot;SyncRatio&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.SyncRatio"/>
     <keyword type="property" name="The &quot;ThinPool&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.ThinPool"/>
     <keyword type="property" name="The &quot;Origin&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.Origin"/>
     <keyword type="property" name="The &quot;ChildConfiguration&quot; property" link="gdbus-org.freedesktop.UDisks2.LogicalVolume.html#gdbus-property-org-freedesktop-UDisks2-LogicalVolume.ChildConfiguration"/>
@@ -399,7 +450,9 @@
     <keyword type="method" name="The AddDevice() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.AddDevice"/>
     <keyword type="method" name="The EmptyDevice() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.EmptyDevice"/>
     <keyword type="method" name="The RemoveDevice() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveDevice"/>
+    <keyword type="method" name="The RemoveMissingPhysicalVolumes() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.RemoveMissingPhysicalVolumes"/>
     <keyword type="method" name="The CreatePlainVolume() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolume"/>
+    <keyword type="method" name="The CreatePlainVolumeWithLayout() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreatePlainVolumeWithLayout"/>
     <keyword type="method" name="The CreateThinPoolVolume() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinPoolVolume"/>
     <keyword type="method" name="The CreateThinVolume() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateThinVolume"/>
     <keyword type="method" name="The CreateVDOVolume() method" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-method-org-freedesktop-UDisks2-VolumeGroup.CreateVDOVolume"/>
@@ -409,6 +462,7 @@
     <keyword type="property" name="The &quot;FreeSize&quot; property" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.FreeSize"/>
     <keyword type="property" name="The &quot;ExtentSize&quot; property" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.ExtentSize"/>
     <keyword type="property" name="The &quot;NeedsPolling&quot; property" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.NeedsPolling"/>
+    <keyword type="property" name="The &quot;MissingPhysicalVolumes&quot; property" link="gdbus-org.freedesktop.UDisks2.VolumeGroup.html#gdbus-property-org-freedesktop-UDisks2-VolumeGroup.MissingPhysicalVolumes"/>
     <keyword type="method" name="The Logout() method" link="gdbus-org.freedesktop.UDisks2.ISCSI.Session.html#gdbus-method-org-freedesktop-UDisks2-ISCSI-Session.Logout"/>
     <keyword type="method" name="The LogoutInterface() method" link="gdbus-org.freedesktop.UDisks2.ISCSI.Session.html#gdbus-method-org-freedesktop-UDisks2-ISCSI-Session.LogoutInterface"/>
     <keyword type="property" name="The &quot;target_name&quot; property" link="gdbus-org.freedesktop.UDisks2.ISCSI.Session.html#gdbus-property-org-freedesktop-UDisks2-ISCSI-Session.target_name"/>
@@ -444,35 +498,6 @@
     <keyword type="property" name="The &quot;uuid&quot; property" link="gdbus-org.freedesktop.UDisks2.Filesystem.BTRFS.html#gdbus-property-org-freedesktop-UDisks2-Filesystem-BTRFS.uuid"/>
     <keyword type="property" name="The &quot;num_devices&quot; property" link="gdbus-org.freedesktop.UDisks2.Filesystem.BTRFS.html#gdbus-property-org-freedesktop-UDisks2-Filesystem-BTRFS.num_devices"/>
     <keyword type="property" name="The &quot;used&quot; property" link="gdbus-org.freedesktop.UDisks2.Filesystem.BTRFS.html#gdbus-property-org-freedesktop-UDisks2-Filesystem-BTRFS.used"/>
-    <keyword type="method" name="The CreateDevices() method" link="gdbus-org.freedesktop.UDisks2.Manager.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Manager-ZRAM.CreateDevices"/>
-    <keyword type="method" name="The DestroyDevices() method" link="gdbus-org.freedesktop.UDisks2.Manager.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Manager-ZRAM.DestroyDevices"/>
-    <keyword type="method" name="The Refresh() method" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Block-ZRAM.Refresh"/>
-    <keyword type="method" name="The Activate() method" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Block-ZRAM.Activate"/>
-    <keyword type="method" name="The ActivateLabeled() method" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Block-ZRAM.ActivateLabeled"/>
-    <keyword type="method" name="The Deactivate() method" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-method-org-freedesktop-UDisks2-Block-ZRAM.Deactivate"/>
-    <keyword type="property" name="The &quot;Disksize&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.Disksize"/>
-    <keyword type="property" name="The &quot;MaxCompStreams&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.MaxCompStreams"/>
-    <keyword type="property" name="The &quot;CompAlgorithm&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.CompAlgorithm"/>
-    <keyword type="property" name="The &quot;Active&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.Active"/>
-    <keyword type="property" name="The &quot;NumReads&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.NumReads"/>
-    <keyword type="property" name="The &quot;NumWrites&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.NumWrites"/>
-    <keyword type="property" name="The &quot;InvalidIo&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.InvalidIo"/>
-    <keyword type="property" name="The &quot;ZeroPages&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.ZeroPages"/>
-    <keyword type="property" name="The &quot;OrigDataSize&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.OrigDataSize"/>
-    <keyword type="property" name="The &quot;ComprDataSize&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.ComprDataSize"/>
-    <keyword type="property" name="The &quot;MemUsedTotal&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.ZRAM.html#gdbus-property-org-freedesktop-UDisks2-Block-ZRAM.MemUsedTotal"/>
-    <keyword type="method" name="The BcacheCreate() method" link="gdbus-org.freedesktop.UDisks2.Manager.Bcache.html#gdbus-method-org-freedesktop-UDisks2-Manager-Bcache.BcacheCreate"/>
-    <keyword type="method" name="The BcacheDestroy() method" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-method-org-freedesktop-UDisks2-Block-Bcache.BcacheDestroy"/>
-    <keyword type="method" name="The SetMode() method" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-method-org-freedesktop-UDisks2-Block-Bcache.SetMode"/>
-    <keyword type="property" name="The &quot;Mode&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.Mode"/>
-    <keyword type="property" name="The &quot;State&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.State"/>
-    <keyword type="property" name="The &quot;BlockSize&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.BlockSize"/>
-    <keyword type="property" name="The &quot;CacheSize&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.CacheSize"/>
-    <keyword type="property" name="The &quot;CacheUsed&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.CacheUsed"/>
-    <keyword type="property" name="The &quot;Hits&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.Hits"/>
-    <keyword type="property" name="The &quot;Misses&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.Misses"/>
-    <keyword type="property" name="The &quot;BypassHits&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.BypassHits"/>
-    <keyword type="property" name="The &quot;BypassMisses&quot; property" link="gdbus-org.freedesktop.UDisks2.Block.Bcache.html#gdbus-property-org-freedesktop-UDisks2-Block-Bcache.BypassMisses"/>
     <keyword type="macro" name="UDISKS_CHECK_VERSION()" link="UDisksClient.html#UDISKS-CHECK-VERSION:CAPS"/>
     <keyword type="function" name="udisks_client_new ()" link="UDisksClient.html#udisks-client-new"/>
     <keyword type="function" name="udisks_client_new_finish ()" link="UDisksClient.html#udisks-client-new-finish"/>
@@ -546,9 +571,13 @@
     <keyword type="function" name="udisks_object_get_encrypted ()" link="UDisksObject.html#udisks-object-get-encrypted"/>
     <keyword type="function" name="udisks_object_get_loop ()" link="UDisksObject.html#udisks-object-get-loop"/>
     <keyword type="function" name="udisks_object_get_manager ()" link="UDisksObject.html#udisks-object-get-manager"/>
+    <keyword type="function" name="udisks_object_get_manager_nvme ()" link="UDisksObject.html#udisks-object-get-manager-nvme"/>
     <keyword type="function" name="udisks_object_get_partition ()" link="UDisksObject.html#udisks-object-get-partition"/>
     <keyword type="function" name="udisks_object_get_partition_table ()" link="UDisksObject.html#udisks-object-get-partition-table"/>
     <keyword type="function" name="udisks_object_get_mdraid ()" link="UDisksObject.html#udisks-object-get-mdraid" since="2.0.0"/>
+    <keyword type="function" name="udisks_object_get_nvme_controller ()" link="UDisksObject.html#udisks-object-get-nvme-controller"/>
+    <keyword type="function" name="udisks_object_get_nvme_namespace ()" link="UDisksObject.html#udisks-object-get-nvme-namespace"/>
+    <keyword type="function" name="udisks_object_get_nvme_fabrics ()" link="UDisksObject.html#udisks-object-get-nvme-fabrics"/>
     <keyword type="function" name="udisks_object_peek_block ()" link="UDisksObject.html#udisks-object-peek-block"/>
     <keyword type="function" name="udisks_object_peek_drive ()" link="UDisksObject.html#udisks-object-peek-drive"/>
     <keyword type="function" name="udisks_object_peek_drive_ata ()" link="UDisksObject.html#udisks-object-peek-drive-ata"/>
@@ -558,9 +587,13 @@
     <keyword type="function" name="udisks_object_peek_encrypted ()" link="UDisksObject.html#udisks-object-peek-encrypted"/>
     <keyword type="function" name="udisks_object_peek_loop ()" link="UDisksObject.html#udisks-object-peek-loop"/>
     <keyword type="function" name="udisks_object_peek_manager ()" link="UDisksObject.html#udisks-object-peek-manager"/>
+    <keyword type="function" name="udisks_object_peek_manager_nvme ()" link="UDisksObject.html#udisks-object-peek-manager-nvme"/>
     <keyword type="function" name="udisks_object_peek_partition ()" link="UDisksObject.html#udisks-object-peek-partition"/>
     <keyword type="function" name="udisks_object_peek_partition_table ()" link="UDisksObject.html#udisks-object-peek-partition-table"/>
     <keyword type="function" name="udisks_object_peek_mdraid ()" link="UDisksObject.html#udisks-object-peek-mdraid" since="2.0.0"/>
+    <keyword type="function" name="udisks_object_peek_nvme_controller ()" link="UDisksObject.html#udisks-object-peek-nvme-controller"/>
+    <keyword type="function" name="udisks_object_peek_nvme_namespace ()" link="UDisksObject.html#udisks-object-peek-nvme-namespace"/>
+    <keyword type="function" name="udisks_object_peek_nvme_fabrics ()" link="UDisksObject.html#udisks-object-peek-nvme-fabrics"/>
     <keyword type="function" name="udisks_object_proxy_new ()" link="UDisksObject.html#udisks-object-proxy-new"/>
     <keyword type="function" name="udisks_object_skeleton_new ()" link="UDisksObject.html#udisks-object-skeleton-new"/>
     <keyword type="function" name="udisks_object_skeleton_set_block ()" link="UDisksObject.html#udisks-object-skeleton-set-block"/>
@@ -572,9 +605,13 @@
     <keyword type="function" name="udisks_object_skeleton_set_encrypted ()" link="UDisksObject.html#udisks-object-skeleton-set-encrypted"/>
     <keyword type="function" name="udisks_object_skeleton_set_loop ()" link="UDisksObject.html#udisks-object-skeleton-set-loop"/>
     <keyword type="function" name="udisks_object_skeleton_set_manager ()" link="UDisksObject.html#udisks-object-skeleton-set-manager"/>
+    <keyword type="function" name="udisks_object_skeleton_set_manager_nvme ()" link="UDisksObject.html#udisks-object-skeleton-set-manager-nvme"/>
     <keyword type="function" name="udisks_object_skeleton_set_partition ()" link="UDisksObject.html#udisks-object-skeleton-set-partition"/>
     <keyword type="function" name="udisks_object_skeleton_set_partition_table ()" link="UDisksObject.html#udisks-object-skeleton-set-partition-table"/>
     <keyword type="function" name="udisks_object_skeleton_set_mdraid ()" link="UDisksObject.html#udisks-object-skeleton-set-mdraid" since="2.0.0"/>
+    <keyword type="function" name="udisks_object_skeleton_set_nvme_controller ()" link="UDisksObject.html#udisks-object-skeleton-set-nvme-controller"/>
+    <keyword type="function" name="udisks_object_skeleton_set_nvme_namespace ()" link="UDisksObject.html#udisks-object-skeleton-set-nvme-namespace"/>
+    <keyword type="function" name="udisks_object_skeleton_set_nvme_fabrics ()" link="UDisksObject.html#udisks-object-skeleton-set-nvme-fabrics"/>
     <keyword type="struct" name="UDisksObject" link="UDisksObject.html#UDisksObject-struct"/>
     <keyword type="struct" name="struct UDisksObjectIface" link="UDisksObject.html#UDisksObjectIface"/>
     <keyword type="struct" name="struct UDisksObjectProxy" link="UDisksObject.html#UDisksObjectProxy-struct"/>
@@ -582,9 +619,7 @@
     <keyword type="struct" name="struct UDisksObjectSkeleton" link="UDisksObject.html#UDisksObjectSkeleton-struct"/>
     <keyword type="struct" name="struct UDisksObjectSkeletonClass" link="UDisksObject.html#UDisksObjectSkeletonClass"/>
     <keyword type="property" name="The “block” property" link="UDisksObject.html#UDisksObject--block"/>
-    <keyword type="property" name="The “block-bcache” property" link="UDisksObject.html#UDisksObject--block-bcache"/>
     <keyword type="property" name="The “block-lvm2” property" link="UDisksObject.html#UDisksObject--block-lvm2"/>
-    <keyword type="property" name="The “block-zram” property" link="UDisksObject.html#UDisksObject--block-zram"/>
     <keyword type="property" name="The “drive” property" link="UDisksObject.html#UDisksObject--drive"/>
     <keyword type="property" name="The “drive-ata” property" link="UDisksObject.html#UDisksObject--drive-ata"/>
     <keyword type="property" name="The “drive-lsm” property" link="UDisksObject.html#UDisksObject--drive-lsm"/>
@@ -597,12 +632,14 @@
     <keyword type="property" name="The “logical-volume” property" link="UDisksObject.html#UDisksObject--logical-volume"/>
     <keyword type="property" name="The “loop” property" link="UDisksObject.html#UDisksObject--loop"/>
     <keyword type="property" name="The “manager” property" link="UDisksObject.html#UDisksObject--manager"/>
-    <keyword type="property" name="The “manager-bcache” property" link="UDisksObject.html#UDisksObject--manager-bcache"/>
     <keyword type="property" name="The “manager-btrfs” property" link="UDisksObject.html#UDisksObject--manager-btrfs"/>
     <keyword type="property" name="The “manager-iscsi-initiator” property" link="UDisksObject.html#UDisksObject--manager-iscsi-initiator"/>
     <keyword type="property" name="The “manager-lvm2” property" link="UDisksObject.html#UDisksObject--manager-lvm2"/>
-    <keyword type="property" name="The “manager-zram” property" link="UDisksObject.html#UDisksObject--manager-zram"/>
+    <keyword type="property" name="The “manager-nvme” property" link="UDisksObject.html#UDisksObject--manager-nvme"/>
     <keyword type="property" name="The “mdraid” property" link="UDisksObject.html#UDisksObject--mdraid"/>
+    <keyword type="property" name="The “nvme-controller” property" link="UDisksObject.html#UDisksObject--nvme-controller"/>
+    <keyword type="property" name="The “nvme-fabrics” property" link="UDisksObject.html#UDisksObject--nvme-fabrics"/>
+    <keyword type="property" name="The “nvme-namespace” property" link="UDisksObject.html#UDisksObject--nvme-namespace"/>
     <keyword type="property" name="The “partition” property" link="UDisksObject.html#UDisksObject--partition"/>
     <keyword type="property" name="The “partition-table” property" link="UDisksObject.html#UDisksObject--partition-table"/>
     <keyword type="property" name="The “physical-volume” property" link="UDisksObject.html#UDisksObject--physical-volume"/>
@@ -1264,10 +1301,10 @@
     <keyword type="function" name="udisks_partition_call_delete_finish ()" link="UDisksPartition.html#udisks-partition-call-delete-finish"/>
     <keyword type="function" name="udisks_partition_call_delete_sync ()" link="UDisksPartition.html#udisks-partition-call-delete-sync"/>
     <keyword type="function" name="udisks_partition_complete_delete ()" link="UDisksPartition.html#udisks-partition-complete-delete"/>
-    <keyword type="function" name="udisks_partition_call_resize ()" link="UDisksPartition.html#udisks-partition-call-resize"/>
-    <keyword type="function" name="udisks_partition_call_resize_finish ()" link="UDisksPartition.html#udisks-partition-call-resize-finish"/>
-    <keyword type="function" name="udisks_partition_call_resize_sync ()" link="UDisksPartition.html#udisks-partition-call-resize-sync"/>
-    <keyword type="function" name="udisks_partition_complete_resize ()" link="UDisksPartition.html#udisks-partition-complete-resize"/>
+    <keyword type="function" name="udisks_partition_call_resize ()" link="UDisksPartition.html#udisks-partition-call-resize" since="2.7.2"/>
+    <keyword type="function" name="udisks_partition_call_resize_finish ()" link="UDisksPartition.html#udisks-partition-call-resize-finish" since="2.7.2"/>
+    <keyword type="function" name="udisks_partition_call_resize_sync ()" link="UDisksPartition.html#udisks-partition-call-resize-sync" since="2.7.2"/>
+    <keyword type="function" name="udisks_partition_complete_resize ()" link="UDisksPartition.html#udisks-partition-complete-resize" since="2.7.2"/>
     <keyword type="function" name="udisks_partition_call_set_type ()" link="UDisksPartition.html#udisks-partition-call-set-type"/>
     <keyword type="function" name="udisks_partition_call_set_type_finish ()" link="UDisksPartition.html#udisks-partition-call-set-type-finish"/>
     <keyword type="function" name="udisks_partition_call_set_type_sync ()" link="UDisksPartition.html#udisks-partition-call-set-type-sync"/>
@@ -1280,6 +1317,10 @@
     <keyword type="function" name="udisks_partition_call_set_flags_finish ()" link="UDisksPartition.html#udisks-partition-call-set-flags-finish"/>
     <keyword type="function" name="udisks_partition_call_set_flags_sync ()" link="UDisksPartition.html#udisks-partition-call-set-flags-sync"/>
     <keyword type="function" name="udisks_partition_complete_set_flags ()" link="UDisksPartition.html#udisks-partition-complete-set-flags"/>
+    <keyword type="function" name="udisks_partition_call_set_uuid ()" link="UDisksPartition.html#udisks-partition-call-set-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_partition_call_set_uuid_finish ()" link="UDisksPartition.html#udisks-partition-call-set-uuid-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_partition_call_set_uuid_sync ()" link="UDisksPartition.html#udisks-partition-call-set-uuid-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_partition_complete_set_uuid ()" link="UDisksPartition.html#udisks-partition-complete-set-uuid" since="2.10.0"/>
     <keyword type="function" name="udisks_partition_get_number ()" link="UDisksPartition.html#udisks-partition-get-number"/>
     <keyword type="function" name="udisks_partition_get_type_ ()" link="UDisksPartition.html#udisks-partition-get-type-"/>
     <keyword type="function" name="udisks_partition_get_offset ()" link="UDisksPartition.html#udisks-partition-get-offset"/>
@@ -1376,6 +1417,10 @@
     <keyword type="function" name="udisks_filesystem_call_set_label_finish ()" link="UDisksFilesystem.html#udisks-filesystem-call-set-label-finish"/>
     <keyword type="function" name="udisks_filesystem_call_set_label_sync ()" link="UDisksFilesystem.html#udisks-filesystem-call-set-label-sync"/>
     <keyword type="function" name="udisks_filesystem_complete_set_label ()" link="UDisksFilesystem.html#udisks-filesystem-complete-set-label"/>
+    <keyword type="function" name="udisks_filesystem_call_set_uuid ()" link="UDisksFilesystem.html#udisks-filesystem-call-set-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_filesystem_call_set_uuid_finish ()" link="UDisksFilesystem.html#udisks-filesystem-call-set-uuid-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_filesystem_call_set_uuid_sync ()" link="UDisksFilesystem.html#udisks-filesystem-call-set-uuid-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_filesystem_complete_set_uuid ()" link="UDisksFilesystem.html#udisks-filesystem-complete-set-uuid" since="2.10.0"/>
     <keyword type="function" name="udisks_filesystem_get_mount_points ()" link="UDisksFilesystem.html#udisks-filesystem-get-mount-points"/>
     <keyword type="function" name="udisks_filesystem_dup_mount_points ()" link="UDisksFilesystem.html#udisks-filesystem-dup-mount-points"/>
     <keyword type="function" name="udisks_filesystem_set_mount_points ()" link="UDisksFilesystem.html#udisks-filesystem-set-mount-points"/>
@@ -1399,6 +1444,7 @@
     <keyword type="signal" name="The “handle-repair” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-repair"/>
     <keyword type="signal" name="The “handle-resize” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-resize"/>
     <keyword type="signal" name="The “handle-set-label” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-set-label"/>
+    <keyword type="signal" name="The “handle-set-uuid” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-set-uuid"/>
     <keyword type="signal" name="The “handle-take-ownership” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-take-ownership"/>
     <keyword type="signal" name="The “handle-unmount” signal" link="UDisksFilesystem.html#UDisksFilesystem-handle-unmount"/>
     <keyword type="function" name="udisks_swapspace_interface_info ()" link="UDisksSwapspace.html#udisks-swapspace-interface-info"/>
@@ -1415,6 +1461,10 @@
     <keyword type="function" name="udisks_swapspace_call_set_label_finish ()" link="UDisksSwapspace.html#udisks-swapspace-call-set-label-finish"/>
     <keyword type="function" name="udisks_swapspace_call_set_label_sync ()" link="UDisksSwapspace.html#udisks-swapspace-call-set-label-sync"/>
     <keyword type="function" name="udisks_swapspace_complete_set_label ()" link="UDisksSwapspace.html#udisks-swapspace-complete-set-label"/>
+    <keyword type="function" name="udisks_swapspace_call_set_uuid ()" link="UDisksSwapspace.html#udisks-swapspace-call-set-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_swapspace_call_set_uuid_finish ()" link="UDisksSwapspace.html#udisks-swapspace-call-set-uuid-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_swapspace_call_set_uuid_sync ()" link="UDisksSwapspace.html#udisks-swapspace-call-set-uuid-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_swapspace_complete_set_uuid ()" link="UDisksSwapspace.html#udisks-swapspace-complete-set-uuid" since="2.10.0"/>
     <keyword type="function" name="udisks_swapspace_get_active ()" link="UDisksSwapspace.html#udisks-swapspace-get-active"/>
     <keyword type="function" name="udisks_swapspace_set_active ()" link="UDisksSwapspace.html#udisks-swapspace-set-active"/>
     <keyword type="function" name="udisks_swapspace_proxy_new ()" link="UDisksSwapspace.html#udisks-swapspace-proxy-new"/>
@@ -1432,6 +1482,7 @@
     <keyword type="struct" name="struct UDisksSwapspaceSkeletonClass" link="UDisksSwapspace.html#UDisksSwapspaceSkeletonClass"/>
     <keyword type="property" name="The “active” property" link="UDisksSwapspace.html#UDisksSwapspace--active"/>
     <keyword type="signal" name="The “handle-set-label” signal" link="UDisksSwapspace.html#UDisksSwapspace-handle-set-label"/>
+    <keyword type="signal" name="The “handle-set-uuid” signal" link="UDisksSwapspace.html#UDisksSwapspace-handle-set-uuid"/>
     <keyword type="signal" name="The “handle-start” signal" link="UDisksSwapspace.html#UDisksSwapspace-handle-start"/>
     <keyword type="signal" name="The “handle-stop” signal" link="UDisksSwapspace.html#UDisksSwapspace-handle-stop"/>
     <keyword type="function" name="udisks_encrypted_interface_info ()" link="UDisksEncrypted.html#udisks-encrypted-interface-info"/>
@@ -1508,6 +1559,187 @@
     <keyword type="property" name="The “setup-by-uid” property" link="UDisksLoop.html#UDisksLoop--setup-by-uid"/>
     <keyword type="signal" name="The “handle-delete” signal" link="UDisksLoop.html#UDisksLoop-handle-delete"/>
     <keyword type="signal" name="The “handle-set-autoclear” signal" link="UDisksLoop.html#UDisksLoop-handle-set-autoclear"/>
+    <keyword type="function" name="udisks_nvme_controller_interface_info ()" link="UDisksNVMeController.html#udisks-nvme-controller-interface-info"/>
+    <keyword type="function" name="udisks_nvme_controller_override_properties ()" link="UDisksNVMeController.html#udisks-nvme-controller-override-properties"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_get_attributes ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-get-attributes" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_get_attributes_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-get-attributes-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_get_attributes_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-get-attributes-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_complete_smart_get_attributes ()" link="UDisksNVMeController.html#udisks-nvme-controller-complete-smart-get-attributes" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_update ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-update" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_update_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-update-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_update_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-update-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_complete_smart_update ()" link="UDisksNVMeController.html#udisks-nvme-controller-complete-smart-update" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_start ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-start" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_start_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-start-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_start_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-start-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_complete_smart_selftest_start ()" link="UDisksNVMeController.html#udisks-nvme-controller-complete-smart-selftest-start" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_abort ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-abort" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_abort_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-abort-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_smart_selftest_abort_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-smart-selftest-abort-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_complete_smart_selftest_abort ()" link="UDisksNVMeController.html#udisks-nvme-controller-complete-smart-selftest-abort" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_sanitize_start ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-sanitize-start" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_sanitize_start_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-sanitize-start-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_call_sanitize_start_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-call-sanitize-start-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_complete_sanitize_start ()" link="UDisksNVMeController.html#udisks-nvme-controller-complete-sanitize-start" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_controller_id ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-controller-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_fguid ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-fguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_nvme_revision ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-nvme-revision" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_sanitize_percent_remaining ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-sanitize-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_sanitize_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-sanitize-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_critical_warning ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-critical-warning" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_power_on_hours ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-power-on-hours" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_selftest_percent_remaining ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-selftest-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_selftest_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-selftest-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_temperature ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-temperature" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_smart_updated ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-smart-updated" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_state ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-state" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_subsystem_nqn ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-subsystem-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_get_unallocated_capacity ()" link="UDisksNVMeController.html#udisks-nvme-controller-get-unallocated-capacity" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_fguid ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-fguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_nvme_revision ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-nvme-revision" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_sanitize_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-sanitize-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_smart_critical_warning ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-smart-critical-warning" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_state ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-state" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_smart_selftest_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-smart-selftest-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_dup_subsystem_nqn ()" link="UDisksNVMeController.html#udisks-nvme-controller-dup-subsystem-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_controller_id ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-controller-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_fguid ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-fguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_nvme_revision ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-nvme-revision" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_sanitize_percent_remaining ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-sanitize-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_sanitize_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-sanitize-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_critical_warning ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-critical-warning" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_power_on_hours ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-power-on-hours" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_selftest_percent_remaining ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-selftest-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_selftest_status ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-selftest-status" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_temperature ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-temperature" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_smart_updated ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-smart-updated" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_state ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-state" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_subsystem_nqn ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-subsystem-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_set_unallocated_capacity ()" link="UDisksNVMeController.html#udisks-nvme-controller-set-unallocated-capacity" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new-finish"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new-sync"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new_for_bus ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new-for-bus"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new_for_bus_finish ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new-for-bus-finish"/>
+    <keyword type="function" name="udisks_nvme_controller_proxy_new_for_bus_sync ()" link="UDisksNVMeController.html#udisks-nvme-controller-proxy-new-for-bus-sync"/>
+    <keyword type="function" name="udisks_nvme_controller_skeleton_new ()" link="UDisksNVMeController.html#udisks-nvme-controller-skeleton-new"/>
+    <keyword type="struct" name="UDisksNVMeController" link="UDisksNVMeController.html#UDisksNVMeController-struct"/>
+    <keyword type="struct" name="struct UDisksNVMeControllerIface" link="UDisksNVMeController.html#UDisksNVMeControllerIface"/>
+    <keyword type="struct" name="struct UDisksNVMeControllerProxy" link="UDisksNVMeController.html#UDisksNVMeControllerProxy"/>
+    <keyword type="struct" name="struct UDisksNVMeControllerProxyClass" link="UDisksNVMeController.html#UDisksNVMeControllerProxyClass"/>
+    <keyword type="struct" name="struct UDisksNVMeControllerSkeleton" link="UDisksNVMeController.html#UDisksNVMeControllerSkeleton-struct"/>
+    <keyword type="struct" name="struct UDisksNVMeControllerSkeletonClass" link="UDisksNVMeController.html#UDisksNVMeControllerSkeletonClass"/>
+    <keyword type="function" name="udisks_nvme_namespace_interface_info ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-interface-info"/>
+    <keyword type="function" name="udisks_nvme_namespace_override_properties ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-override-properties"/>
+    <keyword type="function" name="udisks_nvme_namespace_call_format_namespace ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-call-format-namespace" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_call_format_namespace_finish ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-call-format-namespace-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_call_format_namespace_sync ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-call-format-namespace-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_complete_format_namespace ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-complete-format-namespace" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_eui64 ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-eui64" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_format_percent_remaining ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-format-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_formatted_lbasize ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-formatted-lbasize" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_lbaformats ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-lbaformats" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_namespace_capacity ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-namespace-capacity" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_namespace_size ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-namespace-size" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_namespace_utilization ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-namespace-utilization" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_nguid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-nguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_nsid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-nsid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_uuid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_get_wwn ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-get-wwn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_eui64 ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-eui64" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_formatted_lbasize ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-formatted-lbasize" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_lbaformats ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-lbaformats" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_nguid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-nguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_uuid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_dup_wwn ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-dup-wwn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_eui64 ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-eui64" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_format_percent_remaining ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-format-percent-remaining" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_formatted_lbasize ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-formatted-lbasize" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_lbaformats ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-lbaformats" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_namespace_capacity ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-namespace-capacity" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_namespace_size ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-namespace-size" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_namespace_utilization ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-namespace-utilization" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_nguid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-nguid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_nsid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-nsid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_uuid ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-uuid" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_set_wwn ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-set-wwn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new_finish ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new-finish"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new_sync ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new-sync"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new_for_bus ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new-for-bus"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new_for_bus_finish ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new-for-bus-finish"/>
+    <keyword type="function" name="udisks_nvme_namespace_proxy_new_for_bus_sync ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-proxy-new-for-bus-sync"/>
+    <keyword type="function" name="udisks_nvme_namespace_skeleton_new ()" link="UDisksNVMeNamespace.html#udisks-nvme-namespace-skeleton-new"/>
+    <keyword type="struct" name="UDisksNVMeNamespace" link="UDisksNVMeNamespace.html#UDisksNVMeNamespace-struct"/>
+    <keyword type="struct" name="struct UDisksNVMeNamespaceIface" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface"/>
+    <keyword type="struct" name="struct UDisksNVMeNamespaceProxy" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceProxy"/>
+    <keyword type="struct" name="struct UDisksNVMeNamespaceProxyClass" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceProxyClass"/>
+    <keyword type="struct" name="struct UDisksNVMeNamespaceSkeleton" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceSkeleton-struct"/>
+    <keyword type="struct" name="struct UDisksNVMeNamespaceSkeletonClass" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceSkeletonClass"/>
+    <keyword type="function" name="udisks_manager_nvme_interface_info ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-interface-info"/>
+    <keyword type="function" name="udisks_manager_nvme_override_properties ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-override-properties"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_nqn ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_nqn_finish ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-nqn-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_nqn_sync ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-nqn-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_complete_set_host_nqn ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-complete-set-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_id ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_id_finish ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-id-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_set_host_id_sync ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-set-host-id-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_complete_set_host_id ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-complete-set-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_connect ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-connect" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_connect_finish ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-connect-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_call_connect_sync ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-call-connect-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_complete_connect ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-complete-connect" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_get_host_id ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-get-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_get_host_nqn ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-get-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_dup_host_id ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-dup-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_dup_host_nqn ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-dup-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_set_host_id ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-set-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_set_host_nqn ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-set-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new_finish ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new-finish"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new_sync ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new-sync"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new_for_bus ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new-for-bus"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new_for_bus_finish ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new-for-bus-finish"/>
+    <keyword type="function" name="udisks_manager_nvme_proxy_new_for_bus_sync ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-proxy-new-for-bus-sync"/>
+    <keyword type="function" name="udisks_manager_nvme_skeleton_new ()" link="UDisksManagerNVMe.html#udisks-manager-nvme-skeleton-new"/>
+    <keyword type="struct" name="UDisksManagerNVMe" link="UDisksManagerNVMe.html#UDisksManagerNVMe-struct"/>
+    <keyword type="struct" name="struct UDisksManagerNVMeIface" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface"/>
+    <keyword type="struct" name="struct UDisksManagerNVMeProxy" link="UDisksManagerNVMe.html#UDisksManagerNVMeProxy"/>
+    <keyword type="struct" name="struct UDisksManagerNVMeProxyClass" link="UDisksManagerNVMe.html#UDisksManagerNVMeProxyClass"/>
+    <keyword type="struct" name="struct UDisksManagerNVMeSkeleton" link="UDisksManagerNVMe.html#UDisksManagerNVMeSkeleton"/>
+    <keyword type="struct" name="struct UDisksManagerNVMeSkeletonClass" link="UDisksManagerNVMe.html#UDisksManagerNVMeSkeletonClass"/>
+    <keyword type="function" name="udisks_nvme_fabrics_interface_info ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-interface-info"/>
+    <keyword type="function" name="udisks_nvme_fabrics_override_properties ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-override-properties"/>
+    <keyword type="function" name="udisks_nvme_fabrics_call_disconnect ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-call-disconnect" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_call_disconnect_finish ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-call-disconnect-finish" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_call_disconnect_sync ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-call-disconnect-sync" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_complete_disconnect ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-complete-disconnect" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_get_host_id ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-get-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_get_host_nqn ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-get-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_get_transport ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-get-transport" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_get_transport_address ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-get-transport-address" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_dup_host_id ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-dup-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_dup_host_nqn ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-dup-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_dup_transport ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-dup-transport" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_dup_transport_address ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-dup-transport-address" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_set_host_id ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-set-host-id" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_set_host_nqn ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-set-host-nqn" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_set_transport ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-set-transport" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_set_transport_address ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-set-transport-address" since="2.10.0"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new_finish ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new-finish"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new_sync ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new-sync"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new_for_bus ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new-for-bus"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new_for_bus_finish ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new-for-bus-finish"/>
+    <keyword type="function" name="udisks_nvme_fabrics_proxy_new_for_bus_sync ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-proxy-new-for-bus-sync"/>
+    <keyword type="function" name="udisks_nvme_fabrics_skeleton_new ()" link="UDisksNVMeFabrics.html#udisks-nvme-fabrics-skeleton-new"/>
+    <keyword type="struct" name="UDisksNVMeFabrics" link="UDisksNVMeFabrics.html#UDisksNVMeFabrics-struct"/>
+    <keyword type="struct" name="struct UDisksNVMeFabricsIface" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface"/>
+    <keyword type="struct" name="struct UDisksNVMeFabricsProxy" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsProxy"/>
+    <keyword type="struct" name="struct UDisksNVMeFabricsProxyClass" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsProxyClass"/>
+    <keyword type="struct" name="struct UDisksNVMeFabricsSkeleton" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsSkeleton"/>
+    <keyword type="struct" name="struct UDisksNVMeFabricsSkeletonClass" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsSkeletonClass"/>
     <keyword type="function" name="udisks_drive_lsm_proxy_new ()" link="UDisksDriveLSM.html#udisks-drive-lsm-proxy-new" since="2.3.0"/>
     <keyword type="function" name="udisks_drive_lsm_proxy_new_finish ()" link="UDisksDriveLSM.html#udisks-drive-lsm-proxy-new-finish" since="2.3.0"/>
     <keyword type="function" name="udisks_drive_lsm_proxy_new_sync ()" link="UDisksDriveLSM.html#udisks-drive-lsm-proxy-new-sync" since="2.3.0"/>
@@ -1652,9 +1884,9 @@
     <keyword type="function" name="udisks_volume_group_call_create_thin_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-thin-volume" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_call_create_thin_volume_finish ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-thin-volume-finish" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_call_create_thin_volume_sync ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-thin-volume-sync" since="2.0.0"/>
-    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume" since="2.0.0"/>
-    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume_finish ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume-finish" since="2.0.0"/>
-    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume_sync ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume-sync" since="2.0.0"/>
+    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume" since="2.9.0"/>
+    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume_finish ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume-finish" since="2.9.0"/>
+    <keyword type="function" name="udisks_volume_group_call_create_vdo_volume_sync ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-create-vdo-volume-sync" since="2.9.0"/>
     <keyword type="function" name="udisks_volume_group_call_delete ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-delete" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_call_delete_finish ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-delete-finish" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_call_delete_sync ()" link="UDisksVolumeGroup.html#udisks-volume-group-call-delete-sync" since="2.0.0"/>
@@ -1675,7 +1907,7 @@
     <keyword type="function" name="udisks_volume_group_complete_create_plain_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-create-plain-volume" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_complete_create_thin_pool_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-create-thin-pool-volume" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_complete_create_thin_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-create-thin-volume" since="2.0.0"/>
-    <keyword type="function" name="udisks_volume_group_complete_create_vdo_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-create-vdo-volume" since="2.0.0"/>
+    <keyword type="function" name="udisks_volume_group_complete_create_vdo_volume ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-create-vdo-volume" since="2.9.0"/>
     <keyword type="function" name="udisks_volume_group_complete_delete ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-delete" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_complete_empty_device ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-empty-device" since="2.0.0"/>
     <keyword type="function" name="udisks_volume_group_complete_poll ()" link="UDisksVolumeGroup.html#udisks-volume-group-complete-poll" since="2.0.0"/>
@@ -1926,252 +2158,94 @@
     <keyword type="signal" name="The “handle-login” signal" link="UDisksManagerISCSIInitiator.html#UDisksManagerISCSIInitiator-handle-login"/>
     <keyword type="signal" name="The “handle-logout” signal" link="UDisksManagerISCSIInitiator.html#UDisksManagerISCSIInitiator-handle-logout"/>
     <keyword type="signal" name="The “handle-set-initiator-name” signal" link="UDisksManagerISCSIInitiator.html#UDisksManagerISCSIInitiator-handle-set-initiator-name"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new_finish ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new_sync ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus_finish ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus_sync ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_call_create_volume ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_btrfs_call_create_volume_finish ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_btrfs_call_create_volume_sync ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_btrfs_skeleton_new ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-skeleton-new" since="2.1.3"/>
-    <keyword type="function" name="udisks_manager_btrfs_complete_create_volume ()" link="UDisksManagerBTRFS.html#udisks-manager-btrfs-complete-create-volume" since="2.3.0"/>
-    <keyword type="struct" name="UDisksManagerBTRFS" link="UDisksManagerBTRFS.html#UDisksManagerBTRFS-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBTRFSProxy" link="UDisksManagerBTRFS.html#UDisksManagerBTRFSProxy-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBTRFSProxyClass" link="UDisksManagerBTRFS.html#UDisksManagerBTRFSProxyClass" since="2.1.3"/>
-    <keyword type="struct" name="struct UDisksManagerBTRFSSkeleton" link="UDisksManagerBTRFS.html#UDisksManagerBTRFSSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBTRFSSkeletonClass" link="UDisksManagerBTRFS.html#UDisksManagerBTRFSSkeletonClass" since="2.1.3"/>
-    <keyword type="signal" name="The “handle-create-volume” signal" link="UDisksManagerBTRFS.html#UDisksManagerBTRFS-handle-create-volume"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_get_label ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-label" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_dup_label ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-dup-label" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_set_label ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-label" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_get_uuid ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-uuid" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_dup_uuid ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-dup-uuid" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_set_uuid ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-uuid" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_get_num_devices ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-num-devices" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_set_num_devices ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-num-devices" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_get_used ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-used" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_set_used ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-used" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_repair ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_repair_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_repair_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_resize ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_resize_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_resize_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label_finish ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label-finish" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label_sync ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label-sync" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_skeleton_new ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-skeleton-new" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_add_device ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-add-device" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_create_snapshot ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-create-snapshot" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_create_subvolume ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-create-subvolume" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_get_subvolumes ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-get-subvolumes" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_remove_device ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-remove-device" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_remove_subvolume ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-remove-subvolume" since="2.1.3"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_repair ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-repair" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_resize ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-resize" since="2.3.0"/>
-    <keyword type="function" name="udisks_filesystem_btrfs_complete_set_label ()" link="UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-set-label" since="2.1.3"/>
-    <keyword type="struct" name="UDisksFilesystemBTRFS" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-struct"/>
-    <keyword type="struct" name="struct UDisksFilesystemBTRFSProxy" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSProxy-struct"/>
-    <keyword type="struct" name="struct UDisksFilesystemBTRFSProxyClass" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSProxyClass" since="2.1.3"/>
-    <keyword type="struct" name="struct UDisksFilesystemBTRFSSkeleton" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksFilesystemBTRFSSkeletonClass" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSSkeletonClass" since="2.1.3"/>
-    <keyword type="property" name="The “label” property" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--label"/>
-    <keyword type="property" name="The “num-devices” property" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--num-devices"/>
-    <keyword type="property" name="The “used” property" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--used"/>
-    <keyword type="property" name="The “uuid” property" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--uuid"/>
-    <keyword type="signal" name="The “handle-add-device” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-add-device"/>
-    <keyword type="signal" name="The “handle-create-snapshot” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-create-snapshot"/>
-    <keyword type="signal" name="The “handle-create-subvolume” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-create-subvolume"/>
-    <keyword type="signal" name="The “handle-get-subvolumes” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-get-subvolumes"/>
-    <keyword type="signal" name="The “handle-remove-device” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-remove-device"/>
-    <keyword type="signal" name="The “handle-remove-subvolume” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-remove-subvolume"/>
-    <keyword type="signal" name="The “handle-repair” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-repair"/>
-    <keyword type="signal" name="The “handle-resize” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-resize"/>
-    <keyword type="signal" name="The “handle-set-label” signal" link="UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-set-label"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new_finish ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new_for_bus ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new-for-bus" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new_for_bus_finish ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new-for-bus-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new_for_bus_sync ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new-for-bus-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_proxy_new_sync ()" link="UDisksManagerZRAM.html#udisks-manager-zram-proxy-new-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_create_devices ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-create-devices" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_create_devices_finish ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-create-devices-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_create_devices_sync ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-create-devices-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_destroy_devices ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-destroy-devices" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_destroy_devices_finish ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-destroy-devices-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_call_destroy_devices_sync ()" link="UDisksManagerZRAM.html#udisks-manager-zram-call-destroy-devices-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_skeleton_new ()" link="UDisksManagerZRAM.html#udisks-manager-zram-skeleton-new" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_complete_create_devices ()" link="UDisksManagerZRAM.html#udisks-manager-zram-complete-create-devices" since="2.3.0"/>
-    <keyword type="function" name="udisks_manager_zram_complete_destroy_devices ()" link="UDisksManagerZRAM.html#udisks-manager-zram-complete-destroy-devices" since="2.3.0"/>
-    <keyword type="struct" name="UDisksManagerZRAM" link="UDisksManagerZRAM.html#UDisksManagerZRAM-struct"/>
-    <keyword type="struct" name="struct UDisksManagerZRAMIface" link="UDisksManagerZRAM.html#UDisksManagerZRAMIface" since="2.3.0"/>
-    <keyword type="struct" name="struct UDisksManagerZRAMProxy" link="UDisksManagerZRAM.html#UDisksManagerZRAMProxy-struct"/>
-    <keyword type="struct" name="struct UDisksManagerZRAMProxyClass" link="UDisksManagerZRAM.html#UDisksManagerZRAMProxyClass" since="2.3.0"/>
-    <keyword type="struct" name="struct UDisksManagerZRAMSkeleton" link="UDisksManagerZRAM.html#UDisksManagerZRAMSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksManagerZRAMSkeletonClass" link="UDisksManagerZRAM.html#UDisksManagerZRAMSkeletonClass" since="2.3.0"/>
-    <keyword type="signal" name="The “handle-create-devices” signal" link="UDisksManagerZRAM.html#UDisksManagerZRAM-handle-create-devices"/>
-    <keyword type="signal" name="The “handle-destroy-devices” signal" link="UDisksManagerZRAM.html#UDisksManagerZRAM-handle-destroy-devices"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new_for_bus ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new-for-bus" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new_for_bus_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new-for-bus-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new_for_bus_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new-for-bus-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_proxy_new_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-proxy-new-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_active ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-active" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_active ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-active" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_comp_algorithm ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-comp-algorithm" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_dup_comp_algorithm ()" link="UDisksBlockZRAM.html#udisks-block-zram-dup-comp-algorithm" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_comp_algorithm ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-comp-algorithm" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_compr_data_size ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-compr-data-size" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_compr_data_size ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-compr-data-size" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_disksize ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-disksize" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_disksize ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-disksize" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_invalid_io ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-invalid-io" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_invalid_io ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-invalid-io" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_max_comp_streams ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-max-comp-streams" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_max_comp_streams ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-max-comp-streams" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_mem_used_total ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-mem-used-total" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_mem_used_total ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-mem-used-total" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_num_reads ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-num-reads" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_num_reads ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-num-reads" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_num_writes ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-num-writes" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_num_writes ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-num-writes" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_orig_data_size ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-orig-data-size" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_orig_data_size ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-orig-data-size" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_get_zero_pages ()" link="UDisksBlockZRAM.html#udisks-block-zram-get-zero-pages" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_set_zero_pages ()" link="UDisksBlockZRAM.html#udisks-block-zram-set-zero-pages" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate_labeled ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate-labeled" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate_labeled_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate-labeled-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_activate_labeled_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-activate-labeled-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_deactivate ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-deactivate" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_deactivate_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-deactivate-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_deactivate_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-deactivate-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_refresh ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-refresh" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_refresh_finish ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-refresh-finish" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_call_refresh_sync ()" link="UDisksBlockZRAM.html#udisks-block-zram-call-refresh-sync" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_skeleton_new ()" link="UDisksBlockZRAM.html#udisks-block-zram-skeleton-new" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_complete_activate ()" link="UDisksBlockZRAM.html#udisks-block-zram-complete-activate" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_complete_activate_labeled ()" link="UDisksBlockZRAM.html#udisks-block-zram-complete-activate-labeled" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_complete_deactivate ()" link="UDisksBlockZRAM.html#udisks-block-zram-complete-deactivate" since="2.3.0"/>
-    <keyword type="function" name="udisks_block_zram_complete_refresh ()" link="UDisksBlockZRAM.html#udisks-block-zram-complete-refresh" since="2.3.0"/>
-    <keyword type="struct" name="UDisksBlockZRAM" link="UDisksBlockZRAM.html#UDisksBlockZRAM-struct"/>
-    <keyword type="struct" name="struct UDisksBlockZRAMIface" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface" since="2.3.0"/>
-    <keyword type="struct" name="struct UDisksBlockZRAMProxy" link="UDisksBlockZRAM.html#UDisksBlockZRAMProxy-struct"/>
-    <keyword type="struct" name="struct UDisksBlockZRAMProxyClass" link="UDisksBlockZRAM.html#UDisksBlockZRAMProxyClass" since="2.3.0"/>
-    <keyword type="struct" name="struct UDisksBlockZRAMSkeleton" link="UDisksBlockZRAM.html#UDisksBlockZRAMSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksBlockZRAMSkeletonClass" link="UDisksBlockZRAM.html#UDisksBlockZRAMSkeletonClass" since="2.3.0"/>
-    <keyword type="property" name="The “active” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--active"/>
-    <keyword type="property" name="The “comp-algorithm” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--comp-algorithm"/>
-    <keyword type="property" name="The “compr-data-size” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--compr-data-size"/>
-    <keyword type="property" name="The “disksize” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--disksize"/>
-    <keyword type="property" name="The “invalid-io” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--invalid-io"/>
-    <keyword type="property" name="The “max-comp-streams” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--max-comp-streams"/>
-    <keyword type="property" name="The “mem-used-total” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--mem-used-total"/>
-    <keyword type="property" name="The “num-reads” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--num-reads"/>
-    <keyword type="property" name="The “num-writes” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--num-writes"/>
-    <keyword type="property" name="The “orig-data-size” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--orig-data-size"/>
-    <keyword type="property" name="The “zero-pages” property" link="UDisksBlockZRAM.html#UDisksBlockZRAM--zero-pages"/>
-    <keyword type="signal" name="The “handle-activate” signal" link="UDisksBlockZRAM.html#UDisksBlockZRAM-handle-activate"/>
-    <keyword type="signal" name="The “handle-activate-labeled” signal" link="UDisksBlockZRAM.html#UDisksBlockZRAM-handle-activate-labeled"/>
-    <keyword type="signal" name="The “handle-deactivate” signal" link="UDisksBlockZRAM.html#UDisksBlockZRAM-handle-deactivate"/>
-    <keyword type="signal" name="The “handle-refresh” signal" link="UDisksBlockZRAM.html#UDisksBlockZRAM-handle-refresh"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new_finish ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new-finish"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new_sync ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new-sync"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new_for_bus ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new-for-bus"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new_for_bus_finish ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new-for-bus-finish"/>
-    <keyword type="function" name="udisks_manager_bcache_proxy_new_for_bus_sync ()" link="UDisksManagerBcache.html#udisks-manager-bcache-proxy-new-for-bus-sync"/>
-    <keyword type="function" name="udisks_manager_bcache_call_bcache_create ()" link="UDisksManagerBcache.html#udisks-manager-bcache-call-bcache-create" since="2.4.0"/>
-    <keyword type="function" name="udisks_manager_bcache_call_bcache_create_finish ()" link="UDisksManagerBcache.html#udisks-manager-bcache-call-bcache-create-finish" since="2.4.0"/>
-    <keyword type="function" name="udisks_manager_bcache_call_bcache_create_sync ()" link="UDisksManagerBcache.html#udisks-manager-bcache-call-bcache-create-sync" since="2.4.0"/>
-    <keyword type="function" name="udisks_manager_bcache_skeleton_new ()" link="UDisksManagerBcache.html#udisks-manager-bcache-skeleton-new"/>
-    <keyword type="function" name="udisks_manager_bcache_complete_bcache_create ()" link="UDisksManagerBcache.html#udisks-manager-bcache-complete-bcache-create" since="2.4.0"/>
-    <keyword type="struct" name="UDisksManagerBcache" link="UDisksManagerBcache.html#UDisksManagerBcache-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBcacheProxy" link="UDisksManagerBcache.html#UDisksManagerBcacheProxy-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBcacheProxyClass" link="UDisksManagerBcache.html#UDisksManagerBcacheProxyClass"/>
-    <keyword type="struct" name="struct UDisksManagerBcacheSkeleton" link="UDisksManagerBcache.html#UDisksManagerBcacheSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksManagerBcacheSkeletonClass" link="UDisksManagerBcache.html#UDisksManagerBcacheSkeletonClass"/>
-    <keyword type="signal" name="The “handle-bcache-create” signal" link="UDisksManagerBcache.html#UDisksManagerBcache-handle-bcache-create"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new_finish ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new-finish"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new_sync ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new-sync"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new_for_bus ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new-for-bus"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new_for_bus_finish ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new-for-bus-finish"/>
-    <keyword type="function" name="udisks_block_bcache_proxy_new_for_bus_sync ()" link="UDisksBlockBcache.html#udisks-block-bcache-proxy-new-for-bus-sync"/>
-    <keyword type="function" name="udisks_block_bcache_get_block_size ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-block-size"/>
-    <keyword type="function" name="udisks_block_bcache_set_block_size ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-block-size"/>
-    <keyword type="function" name="udisks_block_bcache_get_bypass_hits ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-bypass-hits"/>
-    <keyword type="function" name="udisks_block_bcache_set_bypass_hits ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-bypass-hits"/>
-    <keyword type="function" name="udisks_block_bcache_get_bypass_misses ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-bypass-misses"/>
-    <keyword type="function" name="udisks_block_bcache_set_bypass_misses ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-bypass-misses"/>
-    <keyword type="function" name="udisks_block_bcache_get_cache_size ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-cache-size"/>
-    <keyword type="function" name="udisks_block_bcache_set_cache_size ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-cache-size"/>
-    <keyword type="function" name="udisks_block_bcache_get_cache_used ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-cache-used"/>
-    <keyword type="function" name="udisks_block_bcache_set_cache_used ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-cache-used"/>
-    <keyword type="function" name="udisks_block_bcache_get_hits ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-hits"/>
-    <keyword type="function" name="udisks_block_bcache_set_hits ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-hits"/>
-    <keyword type="function" name="udisks_block_bcache_get_misses ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-misses"/>
-    <keyword type="function" name="udisks_block_bcache_set_misses ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-misses"/>
-    <keyword type="function" name="udisks_block_bcache_get_mode ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-mode"/>
-    <keyword type="function" name="udisks_block_bcache_dup_mode ()" link="UDisksBlockBcache.html#udisks-block-bcache-dup-mode"/>
-    <keyword type="function" name="udisks_block_bcache_set_mode ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-mode"/>
-    <keyword type="function" name="udisks_block_bcache_get_state ()" link="UDisksBlockBcache.html#udisks-block-bcache-get-state"/>
-    <keyword type="function" name="udisks_block_bcache_dup_state ()" link="UDisksBlockBcache.html#udisks-block-bcache-dup-state"/>
-    <keyword type="function" name="udisks_block_bcache_set_state ()" link="UDisksBlockBcache.html#udisks-block-bcache-set-state"/>
-    <keyword type="function" name="udisks_block_bcache_call_bcache_destroy ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-bcache-destroy" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_call_bcache_destroy_finish ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-bcache-destroy-finish" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_call_bcache_destroy_sync ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-bcache-destroy-sync" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_call_set_mode ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-set-mode" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_call_set_mode_finish ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-set-mode-finish" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_call_set_mode_sync ()" link="UDisksBlockBcache.html#udisks-block-bcache-call-set-mode-sync" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_skeleton_new ()" link="UDisksBlockBcache.html#udisks-block-bcache-skeleton-new"/>
-    <keyword type="function" name="udisks_block_bcache_complete_bcache_destroy ()" link="UDisksBlockBcache.html#udisks-block-bcache-complete-bcache-destroy" since="2.4.0"/>
-    <keyword type="function" name="udisks_block_bcache_complete_set_mode ()" link="UDisksBlockBcache.html#udisks-block-bcache-complete-set-mode" since="2.4.0"/>
-    <keyword type="struct" name="UDisksBlockBcache" link="UDisksBlockBcache.html#UDisksBlockBcache-struct"/>
-    <keyword type="struct" name="struct UDisksBlockBcacheProxy" link="UDisksBlockBcache.html#UDisksBlockBcacheProxy-struct"/>
-    <keyword type="struct" name="struct UDisksBlockBcacheProxyClass" link="UDisksBlockBcache.html#UDisksBlockBcacheProxyClass"/>
-    <keyword type="struct" name="struct UDisksBlockBcacheSkeleton" link="UDisksBlockBcache.html#UDisksBlockBcacheSkeleton-struct"/>
-    <keyword type="struct" name="struct UDisksBlockBcacheSkeletonClass" link="UDisksBlockBcache.html#UDisksBlockBcacheSkeletonClass"/>
-    <keyword type="property" name="The “block-size” property" link="UDisksBlockBcache.html#UDisksBlockBcache--block-size"/>
-    <keyword type="property" name="The “bypass-hits” property" link="UDisksBlockBcache.html#UDisksBlockBcache--bypass-hits"/>
-    <keyword type="property" name="The “bypass-misses” property" link="UDisksBlockBcache.html#UDisksBlockBcache--bypass-misses"/>
-    <keyword type="property" name="The “cache-size” property" link="UDisksBlockBcache.html#UDisksBlockBcache--cache-size"/>
-    <keyword type="property" name="The “cache-used” property" link="UDisksBlockBcache.html#UDisksBlockBcache--cache-used"/>
-    <keyword type="property" name="The “hits” property" link="UDisksBlockBcache.html#UDisksBlockBcache--hits"/>
-    <keyword type="property" name="The “misses” property" link="UDisksBlockBcache.html#UDisksBlockBcache--misses"/>
-    <keyword type="property" name="The “mode” property" link="UDisksBlockBcache.html#UDisksBlockBcache--mode"/>
-    <keyword type="property" name="The “state” property" link="UDisksBlockBcache.html#UDisksBlockBcache--state"/>
-    <keyword type="signal" name="The “handle-bcache-destroy” signal" link="UDisksBlockBcache.html#UDisksBlockBcache-handle-bcache-destroy"/>
-    <keyword type="signal" name="The “handle-set-mode” signal" link="UDisksBlockBcache.html#UDisksBlockBcache-handle-set-mode"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new_finish ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new_sync ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus_finish ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_proxy_new_for_bus_sync ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-proxy-new-for-bus-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_call_create_volume ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume" since="2.3.0"/>
+    <keyword type="function" name="udisks_manager_btrfs_call_create_volume_finish ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume-finish" since="2.3.0"/>
+    <keyword type="function" name="udisks_manager_btrfs_call_create_volume_sync ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-call-create-volume-sync" since="2.3.0"/>
+    <keyword type="function" name="udisks_manager_btrfs_skeleton_new ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-skeleton-new" since="2.1.3"/>
+    <keyword type="function" name="udisks_manager_btrfs_complete_create_volume ()" link="udisks2-UDisksManagerBTRFS.html#udisks-manager-btrfs-complete-create-volume" since="2.3.0"/>
+    <keyword type="struct" name="UDisksManagerBTRFS" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFS" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksManagerBTRFSProxy" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFSProxy" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksManagerBTRFSProxyClass" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFSProxyClass" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksManagerBTRFSSkeleton" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFSSkeleton" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksManagerBTRFSSkeletonClass" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFSSkeletonClass" since="2.1.3"/>
+    <keyword type="signal" name="The “handle-create-volume” signal" link="udisks2-UDisksManagerBTRFS.html#UDisksManagerBTRFS-handle-create-volume"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_proxy_new_for_bus_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-proxy-new-for-bus-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_get_label ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-label" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_dup_label ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-dup-label" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_set_label ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-label" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_get_uuid ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-uuid" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_dup_uuid ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-dup-uuid" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_set_uuid ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-uuid" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_get_num_devices ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-num-devices" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_set_num_devices ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-num-devices" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_get_used ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-get-used" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_set_used ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-set-used" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device-finish" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_add_device_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-add-device-sync" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_snapshot_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-snapshot-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_create_subvolume_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-create-subvolume-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_get_subvolumes_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-get-subvolumes-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device-finish" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_device_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-device-sync" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_remove_subvolume_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-remove-subvolume-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_repair ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_repair_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair-finish" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_repair_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-repair-sync" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_resize ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_resize_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize-finish" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_resize_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-resize-sync" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label_finish ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label-finish" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_call_set_label_sync ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-call-set-label-sync" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_skeleton_new ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-skeleton-new" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_add_device ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-add-device" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_create_snapshot ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-create-snapshot" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_create_subvolume ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-create-subvolume" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_get_subvolumes ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-get-subvolumes" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_remove_device ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-remove-device" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_remove_subvolume ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-remove-subvolume" since="2.1.3"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_repair ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-repair" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_resize ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-resize" since="2.3.0"/>
+    <keyword type="function" name="udisks_filesystem_btrfs_complete_set_label ()" link="udisks2-UDisksFilesystemBTRFS.html#udisks-filesystem-btrfs-complete-set-label" since="2.1.3"/>
+    <keyword type="struct" name="UDisksFilesystemBTRFS" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksFilesystemBTRFSProxy" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSProxy" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksFilesystemBTRFSProxyClass" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSProxyClass" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksFilesystemBTRFSSkeleton" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSSkeleton" since="2.1.3"/>
+    <keyword type="struct" name="struct UDisksFilesystemBTRFSSkeletonClass" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFSSkeletonClass" since="2.1.3"/>
+    <keyword type="property" name="The “label” property" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--label"/>
+    <keyword type="property" name="The “num-devices” property" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--num-devices"/>
+    <keyword type="property" name="The “used” property" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--used"/>
+    <keyword type="property" name="The “uuid” property" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS--uuid"/>
+    <keyword type="signal" name="The “handle-add-device” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-add-device"/>
+    <keyword type="signal" name="The “handle-create-snapshot” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-create-snapshot"/>
+    <keyword type="signal" name="The “handle-create-subvolume” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-create-subvolume"/>
+    <keyword type="signal" name="The “handle-get-subvolumes” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-get-subvolumes"/>
+    <keyword type="signal" name="The “handle-remove-device” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-remove-device"/>
+    <keyword type="signal" name="The “handle-remove-subvolume” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-remove-subvolume"/>
+    <keyword type="signal" name="The “handle-repair” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-repair"/>
+    <keyword type="signal" name="The “handle-resize” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-resize"/>
+    <keyword type="signal" name="The “handle-set-label” signal" link="udisks2-UDisksFilesystemBTRFS.html#UDisksFilesystemBTRFS-handle-set-label"/>
     <keyword type="function" name="udisks_decode_udev_string ()" link="udisks2-Utilities.html#udisks-decode-udev-string"/>
     <keyword type="function" name="udisks_safe_append_to_object_path ()" link="udisks2-Utilities.html#udisks-safe-append-to-object-path"/>
     <keyword type="function" name="udisks_daemon_util_block_get_size ()" link="udisks2-Utilities.html#udisks-daemon-util-block-get-size"/>
@@ -2217,6 +2291,7 @@
     <keyword type="function" name="udisks_daemon_get_uninstalled ()" link="UDisksDaemon.html#udisks-daemon-get-uninstalled"/>
     <keyword type="function" name="udisks_daemon_get_utab_monitor ()" link="UDisksDaemon.html#udisks-daemon-get-utab-monitor"/>
     <keyword type="function" name="udisks_daemon_get_parent_for_tracking ()" link="UDisksDaemon.html#udisks-daemon-get-parent-for-tracking"/>
+    <keyword type="function" name="UDisksDaemonWaitFuncGeneric ()" link="UDisksDaemon.html#UDisksDaemonWaitFuncGeneric"/>
     <keyword type="function" name="udisks_daemon_wait_for_object_sync ()" link="UDisksDaemon.html#udisks-daemon-wait-for-object-sync"/>
     <keyword type="function" name="udisks_daemon_get_objects ()" link="UDisksDaemon.html#udisks-daemon-get-objects"/>
     <keyword type="function" name="udisks_daemon_find_object ()" link="UDisksDaemon.html#udisks-daemon-find-object"/>
@@ -2250,7 +2325,6 @@
     <keyword type="function" name="udisks_state_start_cleanup ()" link="UDisksState.html#udisks-state-start-cleanup"/>
     <keyword type="function" name="udisks_state_stop_cleanup ()" link="UDisksState.html#udisks-state-stop-cleanup"/>
     <keyword type="function" name="udisks_state_check ()" link="UDisksState.html#udisks-state-check"/>
-    <keyword type="function" name="udisks_state_check_sync ()" link="UDisksState.html#udisks-state-check-sync"/>
     <keyword type="function" name="udisks_state_check_block ()" link="UDisksState.html#udisks-state-check-block"/>
     <keyword type="function" name="udisks_state_get_daemon ()" link="UDisksState.html#udisks-state-get-daemon"/>
     <keyword type="function" name="udisks_state_add_mounted_fs ()" link="UDisksState.html#udisks-state-add-mounted-fs"/>
@@ -2267,6 +2341,8 @@
     <keyword type="struct" name="UDisksState" link="UDisksState.html#UDisksState-struct"/>
     <keyword type="property" name="The “daemon” property" link="UDisksState.html#UDisksState--daemon"/>
     <keyword type="function" name="udisks_ata_send_command_sync ()" link="udisks2-ATA-commands.html#udisks-ata-send-command-sync"/>
+    <keyword type="function" name="udisks_ata_get_pm_state ()" link="udisks2-ATA-commands.html#udisks-ata-get-pm-state"/>
+    <keyword type="macro" name="UDISKS_ATA_PM_STATE_AWAKE()" link="udisks2-ATA-commands.html#UDISKS-ATA-PM-STATE-AWAKE:CAPS"/>
     <keyword type="enum" name="enum UDisksAtaCommandProtocol" link="udisks2-ATA-commands.html#UDisksAtaCommandProtocol"/>
     <keyword type="struct" name="UDisksAtaCommandInput" link="udisks2-ATA-commands.html#UDisksAtaCommandInput"/>
     <keyword type="struct" name="UDisksAtaCommandOutput" link="udisks2-ATA-commands.html#UDisksAtaCommandOutput"/>
@@ -2371,6 +2447,9 @@
     <keyword type="function" name="udisks_linux_manager_get_daemon ()" link="UDisksLinuxManager.html#udisks-linux-manager-get-daemon"/>
     <keyword type="struct" name="UDisksLinuxManager" link="UDisksLinuxManager.html#UDisksLinuxManager-struct"/>
     <keyword type="property" name="The “daemon” property" link="UDisksLinuxManager.html#UDisksLinuxManager--daemon"/>
+    <keyword type="function" name="udisks_linux_manager_nvme_new ()" link="udisks2-UDisksLinuxManagerNVMe.html#udisks-linux-manager-nvme-new"/>
+    <keyword type="function" name="udisks_linux_manager_nvme_get_daemon ()" link="udisks2-UDisksLinuxManagerNVMe.html#udisks-linux-manager-nvme-get-daemon"/>
+    <keyword type="struct" name="UDisksLinuxManagerNVMe" link="udisks2-UDisksLinuxManagerNVMe.html#UDisksLinuxManagerNVMe"/>
     <keyword type="function" name="udisks_linux_provider_new ()" link="UDisksLinuxProvider.html#udisks-linux-provider-new"/>
     <keyword type="function" name="udisks_linux_provider_get_udev_client ()" link="UDisksLinuxProvider.html#udisks-linux-provider-get-udev-client"/>
     <keyword type="function" name="udisks_linux_provider_get_coldplug ()" link="UDisksLinuxProvider.html#udisks-linux-provider-get-coldplug"/>
@@ -2378,6 +2457,11 @@
     <keyword type="signal" name="The “uevent-probed” signal" link="UDisksLinuxProvider.html#UDisksLinuxProvider-uevent-probed"/>
     <keyword type="function" name="udisks_linux_device_new_sync ()" link="UDisksLinuxDevice.html#udisks-linux-device-new-sync"/>
     <keyword type="function" name="udisks_linux_device_reprobe_sync ()" link="UDisksLinuxDevice.html#udisks-linux-device-reprobe-sync"/>
+    <keyword type="function" name="udisks_linux_device_read_sysfs_attr ()" link="UDisksLinuxDevice.html#udisks-linux-device-read-sysfs-attr"/>
+    <keyword type="function" name="udisks_linux_device_read_sysfs_attr_as_int ()" link="UDisksLinuxDevice.html#udisks-linux-device-read-sysfs-attr-as-int"/>
+    <keyword type="function" name="udisks_linux_device_read_sysfs_attr_as_uint64 ()" link="UDisksLinuxDevice.html#udisks-linux-device-read-sysfs-attr-as-uint64"/>
+    <keyword type="function" name="udisks_linux_device_subsystem_is_nvme ()" link="UDisksLinuxDevice.html#udisks-linux-device-subsystem-is-nvme"/>
+    <keyword type="function" name="udisks_linux_device_nvme_is_fabrics ()" link="UDisksLinuxDevice.html#udisks-linux-device-nvme-is-fabrics"/>
     <keyword type="struct" name="UDisksLinuxDevice" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct"/>
     <keyword type="function" name="udisks_linux_drive_new ()" link="UDisksLinuxDrive.html#udisks-linux-drive-new"/>
     <keyword type="function" name="udisks_linux_drive_update ()" link="UDisksLinuxDrive.html#udisks-linux-drive-update"/>
@@ -2389,7 +2473,6 @@
     <keyword type="function" name="udisks_linux_drive_ata_apply_configuration ()" link="UDisksLinuxDriveAta.html#udisks-linux-drive-ata-apply-configuration"/>
     <keyword type="function" name="udisks_linux_drive_ata_secure_erase_sync ()" link="UDisksLinuxDriveAta.html#udisks-linux-drive-ata-secure-erase-sync"/>
     <keyword type="function" name="udisks_linux_drive_ata_get_pm_state ()" link="UDisksLinuxDriveAta.html#udisks-linux-drive-ata-get-pm-state"/>
-    <keyword type="macro" name="UDISKS_LINUX_DRIVE_ATA_IS_AWAKE()" link="UDisksLinuxDriveAta.html#UDISKS-LINUX-DRIVE-ATA-IS-AWAKE:CAPS"/>
     <keyword type="struct" name="UDisksLinuxDriveAta" link="UDisksLinuxDriveAta.html#UDisksLinuxDriveAta-struct"/>
     <keyword type="function" name="UDisksObjectHasInterfaceFunc ()" link="UDisksLinuxDriveObject.html#UDisksObjectHasInterfaceFunc"/>
     <keyword type="function" name="UDisksObjectConnectInterfaceFunc ()" link="UDisksLinuxDriveObject.html#UDisksObjectConnectInterfaceFunc"/>
@@ -2406,6 +2489,13 @@
     <keyword type="struct" name="UDisksLinuxDriveObject" link="UDisksLinuxDriveObject.html#UDisksLinuxDriveObject-struct"/>
     <keyword type="property" name="The “daemon” property" link="UDisksLinuxDriveObject.html#UDisksLinuxDriveObject--daemon"/>
     <keyword type="property" name="The “device” property" link="UDisksLinuxDriveObject.html#UDisksLinuxDriveObject--device"/>
+    <keyword type="function" name="udisks_linux_nvme_controller_new ()" link="UDisksLinuxNVMeController.html#udisks-linux-nvme-controller-new"/>
+    <keyword type="function" name="udisks_linux_nvme_controller_update ()" link="UDisksLinuxNVMeController.html#udisks-linux-nvme-controller-update"/>
+    <keyword type="function" name="udisks_linux_nvme_controller_refresh_smart_sync ()" link="UDisksLinuxNVMeController.html#udisks-linux-nvme-controller-refresh-smart-sync"/>
+    <keyword type="struct" name="UDisksLinuxNVMeController" link="UDisksLinuxNVMeController.html#UDisksLinuxNVMeController-struct"/>
+    <keyword type="function" name="udisks_linux_nvme_fabrics_new ()" link="udisks2-UDisksLinuxNVMeFabrics.html#udisks-linux-nvme-fabrics-new"/>
+    <keyword type="function" name="udisks_linux_nvme_fabrics_update ()" link="udisks2-UDisksLinuxNVMeFabrics.html#udisks-linux-nvme-fabrics-update"/>
+    <keyword type="struct" name="UDisksLinuxNVMeFabrics" link="udisks2-UDisksLinuxNVMeFabrics.html#UDisksLinuxNVMeFabrics"/>
     <keyword type="function" name="udisks_linux_mdraid_new ()" link="UDisksLinuxMDRaid.html#udisks-linux-mdraid-new"/>
     <keyword type="function" name="udisks_linux_mdraid_update ()" link="UDisksLinuxMDRaid.html#udisks-linux-mdraid-update"/>
     <keyword type="struct" name="UDisksLinuxMDRaid" link="UDisksLinuxMDRaid.html#UDisksLinuxMDRaid-struct"/>
@@ -2458,6 +2548,9 @@
     <keyword type="struct" name="UDisksLinuxBlockObject" link="UDisksLinuxBlockObject.html#UDisksLinuxBlockObject-struct"/>
     <keyword type="property" name="The “daemon” property" link="UDisksLinuxBlockObject.html#UDisksLinuxBlockObject--daemon"/>
     <keyword type="property" name="The “device” property" link="UDisksLinuxBlockObject.html#UDisksLinuxBlockObject--device"/>
+    <keyword type="function" name="udisks_linux_nvme_namespace_new ()" link="UDisksLinuxNVMeNamespace.html#udisks-linux-nvme-namespace-new"/>
+    <keyword type="function" name="udisks_linux_nvme_namespace_update ()" link="UDisksLinuxNVMeNamespace.html#udisks-linux-nvme-namespace-update"/>
+    <keyword type="struct" name="UDisksLinuxNVMeNamespace" link="UDisksLinuxNVMeNamespace.html#UDisksLinuxNVMeNamespace-struct"/>
     <keyword type="constant" name="UDISKS_PARTITION_TYPE_INFO_FLAGS_NONE" link="UDisksClient.html#UDISKS-PARTITION-TYPE-INFO-FLAGS-NONE:CAPS"/>
     <keyword type="constant" name="UDISKS_PARTITION_TYPE_INFO_FLAGS_SWAP" link="UDisksClient.html#UDISKS-PARTITION-TYPE-INFO-FLAGS-SWAP:CAPS"/>
     <keyword type="constant" name="UDISKS_PARTITION_TYPE_INFO_FLAGS_RAID" link="UDisksClient.html#UDISKS-PARTITION-TYPE-INFO-FLAGS-RAID:CAPS"/>
@@ -2510,8 +2603,6 @@
     <keyword type="member" name="UDisksManagerIface.parent-iface" link="UDisksManager.html#UDisksManagerIface.parent-iface"/>
     <keyword type="member" name="UDisksManagerIface.handle-enable-modules" link="UDisksManager.html#UDisksManagerIface.handle-enable-modules"/>
     <keyword type="member" name="UDisksManagerIface.handle-loop-setup" link="UDisksManager.html#UDisksManagerIface.handle-loop-setup"/>
-    <keyword type="member" name="UDisksManagerIface.get-default-encryption-type" link="UDisksManager.html#UDisksManagerIface.get-default-encryption-type"/>
-    <keyword type="member" name="UDisksManagerIface.get-supported-encryption-types" link="UDisksManager.html#UDisksManagerIface.get-supported-encryption-types"/>
     <keyword type="member" name="UDisksManagerIface.get-supported-filesystems" link="UDisksManager.html#UDisksManagerIface.get-supported-filesystems"/>
     <keyword type="member" name="UDisksManagerIface.get-version" link="UDisksManager.html#UDisksManagerIface.get-version"/>
     <keyword type="member" name="UDisksManagerIface.handle-mdraid-create" link="UDisksManager.html#UDisksManagerIface.handle-mdraid-create"/>
@@ -2521,6 +2612,8 @@
     <keyword type="member" name="UDisksManagerIface.handle-can-resize" link="UDisksManager.html#UDisksManagerIface.handle-can-resize"/>
     <keyword type="member" name="UDisksManagerIface.handle-get-block-devices" link="UDisksManager.html#UDisksManagerIface.handle-get-block-devices"/>
     <keyword type="member" name="UDisksManagerIface.handle-resolve-device" link="UDisksManager.html#UDisksManagerIface.handle-resolve-device"/>
+    <keyword type="member" name="UDisksManagerIface.get-default-encryption-type" link="UDisksManager.html#UDisksManagerIface.get-default-encryption-type"/>
+    <keyword type="member" name="UDisksManagerIface.get-supported-encryption-types" link="UDisksManager.html#UDisksManagerIface.get-supported-encryption-types"/>
     <keyword type="member" name="UDisksManagerIface.handle-enable-module" link="UDisksManager.html#UDisksManagerIface.handle-enable-module"/>
     <keyword type="member" name="UDisksDriveIface.parent-iface" link="UDisksDrive.html#UDisksDriveIface.parent-iface"/>
     <keyword type="member" name="UDisksDriveIface.handle-eject" link="UDisksDrive.html#UDisksDriveIface.handle-eject"/>
@@ -2664,7 +2757,6 @@
     <keyword type="member" name="UDisksBlockIface.handle-open-device" link="UDisksBlock.html#UDisksBlockIface.handle-open-device"/>
     <keyword type="member" name="UDisksPartitionIface.parent-iface" link="UDisksPartition.html#UDisksPartitionIface.parent-iface"/>
     <keyword type="member" name="UDisksPartitionIface.handle-delete" link="UDisksPartition.html#UDisksPartitionIface.handle-delete"/>
-    <keyword type="member" name="UDisksPartitionIface.handle-resize" link="UDisksPartition.html#UDisksPartitionIface.handle-resize"/>
     <keyword type="member" name="UDisksPartitionIface.handle-set-flags" link="UDisksPartition.html#UDisksPartitionIface.handle-set-flags"/>
     <keyword type="member" name="UDisksPartitionIface.handle-set-name" link="UDisksPartition.html#UDisksPartitionIface.handle-set-name"/>
     <keyword type="member" name="UDisksPartitionIface.handle-set-type" link="UDisksPartition.html#UDisksPartitionIface.handle-set-type"/>
@@ -2678,6 +2770,8 @@
     <keyword type="member" name="UDisksPartitionIface.get-table" link="UDisksPartition.html#UDisksPartitionIface.get-table"/>
     <keyword type="member" name="UDisksPartitionIface.get-type-" link="UDisksPartition.html#UDisksPartitionIface.get-type-"/>
     <keyword type="member" name="UDisksPartitionIface.get-uuid" link="UDisksPartition.html#UDisksPartitionIface.get-uuid"/>
+    <keyword type="member" name="UDisksPartitionIface.handle-resize" link="UDisksPartition.html#UDisksPartitionIface.handle-resize"/>
+    <keyword type="member" name="UDisksPartitionIface.handle-set-uuid" link="UDisksPartition.html#UDisksPartitionIface.handle-set-uuid"/>
     <keyword type="member" name="UDisksPartitionTableIface.parent-iface" link="UDisksPartitionTable.html#UDisksPartitionTableIface.parent-iface"/>
     <keyword type="member" name="UDisksPartitionTableIface.handle-create-partition" link="UDisksPartitionTable.html#UDisksPartitionTableIface.handle-create-partition"/>
     <keyword type="member" name="UDisksPartitionTableIface.handle-create-partition-and-format" link="UDisksPartitionTable.html#UDisksPartitionTableIface.handle-create-partition-and-format"/>
@@ -2693,11 +2787,13 @@
     <keyword type="member" name="UDisksFilesystemIface.handle-repair" link="UDisksFilesystem.html#UDisksFilesystemIface.handle-repair"/>
     <keyword type="member" name="UDisksFilesystemIface.handle-resize" link="UDisksFilesystem.html#UDisksFilesystemIface.handle-resize"/>
     <keyword type="member" name="UDisksFilesystemIface.handle-take-ownership" link="UDisksFilesystem.html#UDisksFilesystemIface.handle-take-ownership"/>
+    <keyword type="member" name="UDisksFilesystemIface.handle-set-uuid" link="UDisksFilesystem.html#UDisksFilesystemIface.handle-set-uuid"/>
     <keyword type="member" name="UDisksSwapspaceIface.parent-iface" link="UDisksSwapspace.html#UDisksSwapspaceIface.parent-iface"/>
     <keyword type="member" name="UDisksSwapspaceIface.handle-set-label" link="UDisksSwapspace.html#UDisksSwapspaceIface.handle-set-label"/>
     <keyword type="member" name="UDisksSwapspaceIface.handle-start" link="UDisksSwapspace.html#UDisksSwapspaceIface.handle-start"/>
     <keyword type="member" name="UDisksSwapspaceIface.handle-stop" link="UDisksSwapspace.html#UDisksSwapspaceIface.handle-stop"/>
     <keyword type="member" name="UDisksSwapspaceIface.get-active" link="UDisksSwapspace.html#UDisksSwapspaceIface.get-active"/>
+    <keyword type="member" name="UDisksSwapspaceIface.handle-set-uuid" link="UDisksSwapspace.html#UDisksSwapspaceIface.handle-set-uuid"/>
     <keyword type="member" name="UDisksEncryptedIface.parent-iface" link="UDisksEncrypted.html#UDisksEncryptedIface.parent-iface"/>
     <keyword type="member" name="UDisksEncryptedIface.handle-change-passphrase" link="UDisksEncrypted.html#UDisksEncryptedIface.handle-change-passphrase"/>
     <keyword type="member" name="UDisksEncryptedIface.handle-lock" link="UDisksEncrypted.html#UDisksEncryptedIface.handle-lock"/>
@@ -2713,25 +2809,51 @@
     <keyword type="member" name="UDisksLoopIface.get-autoclear" link="UDisksLoop.html#UDisksLoopIface.get-autoclear"/>
     <keyword type="member" name="UDisksLoopIface.get-backing-file" link="UDisksLoop.html#UDisksLoopIface.get-backing-file"/>
     <keyword type="member" name="UDisksLoopIface.get-setup-by-uid" link="UDisksLoop.html#UDisksLoopIface.get-setup-by-uid"/>
-    <keyword type="member" name="UDisksManagerZRAMIface.parent-iface" link="UDisksManagerZRAM.html#UDisksManagerZRAMIface.parent-iface"/>
-    <keyword type="member" name="UDisksManagerZRAMIface.handle-create-devices" link="UDisksManagerZRAM.html#UDisksManagerZRAMIface.handle-create-devices"/>
-    <keyword type="member" name="UDisksManagerZRAMIface.handle-destroy-devices" link="UDisksManagerZRAM.html#UDisksManagerZRAMIface.handle-destroy-devices"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.parent-iface" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.parent-iface"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.handle-activate" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.handle-activate"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.handle-activate-labeled" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.handle-activate-labeled"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.handle-deactivate" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.handle-deactivate"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.handle-refresh" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.handle-refresh"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-active" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-active"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-comp-algorithm" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-comp-algorithm"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-compr-data-size" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-compr-data-size"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-disksize" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-disksize"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-invalid-io" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-invalid-io"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-max-comp-streams" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-max-comp-streams"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-mem-used-total" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-mem-used-total"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-num-reads" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-num-reads"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-num-writes" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-num-writes"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-orig-data-size" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-orig-data-size"/>
-    <keyword type="member" name="UDisksBlockZRAMIface.get-zero-pages" link="UDisksBlockZRAM.html#UDisksBlockZRAMIface.get-zero-pages"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.parent-iface" link="UDisksNVMeController.html#UDisksNVMeControllerIface.parent-iface"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.handle-sanitize-start" link="UDisksNVMeController.html#UDisksNVMeControllerIface.handle-sanitize-start"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.handle-smart-get-attributes" link="UDisksNVMeController.html#UDisksNVMeControllerIface.handle-smart-get-attributes"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.handle-smart-selftest-abort" link="UDisksNVMeController.html#UDisksNVMeControllerIface.handle-smart-selftest-abort"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.handle-smart-selftest-start" link="UDisksNVMeController.html#UDisksNVMeControllerIface.handle-smart-selftest-start"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.handle-smart-update" link="UDisksNVMeController.html#UDisksNVMeControllerIface.handle-smart-update"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-controller-id" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-controller-id"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-fguid" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-fguid"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-nvme-revision" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-nvme-revision"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-sanitize-percent-remaining" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-sanitize-percent-remaining"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-sanitize-status" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-sanitize-status"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-critical-warning" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-critical-warning"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-power-on-hours" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-power-on-hours"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-selftest-percent-remaining" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-selftest-percent-remaining"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-selftest-status" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-selftest-status"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-temperature" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-temperature"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-smart-updated" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-smart-updated"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-state" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-state"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-subsystem-nqn" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-subsystem-nqn"/>
+    <keyword type="member" name="UDisksNVMeControllerIface.get-unallocated-capacity" link="UDisksNVMeController.html#UDisksNVMeControllerIface.get-unallocated-capacity"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.parent-iface" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.parent-iface"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.handle-format-namespace" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.handle-format-namespace"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-eui64" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-eui64"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-format-percent-remaining" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-format-percent-remaining"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-formatted-lbasize" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-formatted-lbasize"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-lbaformats" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-lbaformats"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-namespace-capacity" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-namespace-capacity"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-namespace-size" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-namespace-size"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-namespace-utilization" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-namespace-utilization"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-nguid" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-nguid"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-nsid" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-nsid"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-uuid" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-uuid"/>
+    <keyword type="member" name="UDisksNVMeNamespaceIface.get-wwn" link="UDisksNVMeNamespace.html#UDisksNVMeNamespaceIface.get-wwn"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.parent-iface" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.parent-iface"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.handle-connect" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.handle-connect"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.handle-set-host-id" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.handle-set-host-id"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.handle-set-host-nqn" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.handle-set-host-nqn"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.get-host-id" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.get-host-id"/>
+    <keyword type="member" name="UDisksManagerNVMeIface.get-host-nqn" link="UDisksManagerNVMe.html#UDisksManagerNVMeIface.get-host-nqn"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.parent-iface" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.parent-iface"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.handle-disconnect" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.handle-disconnect"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.get-host-id" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.get-host-id"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.get-host-nqn" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.get-host-nqn"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.get-transport" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.get-transport"/>
+    <keyword type="member" name="UDisksNVMeFabricsIface.get-transport-address" link="UDisksNVMeFabrics.html#UDisksNVMeFabricsIface.get-transport-address"/>
     <keyword type="member" name="UDisksProviderClass.start" link="UDisksProvider.html#UDisksProviderClass.start"/>
     <keyword type="member" name="UDisksAtaCommandInput.command" link="udisks2-ATA-commands.html#UDisksAtaCommandInput.command"/>
     <keyword type="member" name="UDisksAtaCommandInput.feature" link="udisks2-ATA-commands.html#UDisksAtaCommandInput.feature"/>
@@ -2760,5 +2882,7 @@
     <keyword type="member" name="UDisksLinuxDevice-struct.udev-device" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct.udev-device"/>
     <keyword type="member" name="UDisksLinuxDevice-struct.ata-identify-device-data" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct.ata-identify-device-data"/>
     <keyword type="member" name="UDisksLinuxDevice-struct.ata-identify-packet-device-data" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct.ata-identify-packet-device-data"/>
+    <keyword type="member" name="UDisksLinuxDevice-struct.nvme-ctrl-info" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct.nvme-ctrl-info"/>
+    <keyword type="member" name="UDisksLinuxDevice-struct.nvme-ns-info" link="UDisksLinuxDevice.html#UDisksLinuxDevice-struct.nvme-ns-info"/>
   </functions>
 </book>

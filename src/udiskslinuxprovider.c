@@ -32,6 +32,7 @@
 #include "udiskslinuxdriveobject.h"
 #include "udiskslinuxmdraidobject.h"
 #include "udiskslinuxmanager.h"
+#include "udiskslinuxmanagernvme.h"
 #include "udisksstate.h"
 #include "udiskslinuxdevice.h"
 #include "udisksmodulemanager.h"
@@ -39,6 +40,7 @@
 #include "udisksmoduleobject.h"
 #include "udisksdaemonutil.h"
 #include "udisksconfigmanager.h"
+#include "udisksutabentry.h"
 
 /**
  * SECTION:udiskslinuxprovider
@@ -125,7 +127,6 @@ static void crypttab_monitor_on_entry_removed (UDisksCrypttabMonitor *monitor,
                                                UDisksCrypttabEntry   *entry,
                                                gpointer               user_data);
 
-#ifdef HAVE_LIBMOUNT_UTAB
 static void utab_monitor_on_entry_added (UDisksUtabMonitor *monitor,
                                          UDisksUtabEntry   *entry,
                                          gpointer           user_data);
@@ -133,7 +134,6 @@ static void utab_monitor_on_entry_added (UDisksUtabMonitor *monitor,
 static void utab_monitor_on_entry_removed (UDisksUtabMonitor *monitor,
                                            UDisksUtabEntry   *entry,
                                            gpointer           user_data);
-#endif
 
 static void on_etc_udisks2_dir_monitor_changed (GFileMonitor     *monitor,
                                                 GFile            *file,
@@ -222,6 +222,7 @@ typedef struct
   UDisksLinuxProvider *provider;
   GUdevDevice *udev_device;
   UDisksLinuxDevice *udisks_device;
+  gboolean known_block;
 } ProbeRequest;
 
 static void
@@ -253,6 +254,30 @@ on_idle_with_probed_uevent (gpointer user_data)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+static gboolean
+uevent_is_spurious (GUdevDevice *dev)
+{
+  if (g_strcmp0 (g_udev_device_get_action (dev), "change") != 0)
+    return FALSE;
+
+  if (g_strcmp0 (g_udev_device_get_subsystem (dev), "block") != 0)
+    return FALSE;
+
+  if (g_strcmp0 (g_udev_device_get_devtype (dev), "disk") != 0)
+    return FALSE;
+
+  if (g_udev_device_has_property (dev, "ID_TYPE"))
+    return FALSE;
+
+  /* see kernel block/genhd.c: disk_uevents[] */
+  if (g_udev_device_get_property_as_int (dev, "DISK_MEDIA_CHANGE") == 1)
+    return TRUE;
+  if (g_udev_device_get_property_as_int (dev, "DISK_EJECT_REQUEST") == 1)
+    return TRUE;
+
+  return FALSE;
+}
 
 gpointer
 probe_request_thread_func (gpointer user_data)
@@ -289,6 +314,10 @@ probe_request_thread_func (gpointer user_data)
         dev_initialized = g_udev_device_get_is_initialized (request->udev_device);
       }
 
+      /* ignore spurious uevents */
+      if (!request->known_block && uevent_is_spurious (request->udev_device))
+        continue;
+
       /* probe the device - this may take a while */
       request->udisks_device = udisks_linux_device_new_sync (request->udev_device);
 
@@ -311,10 +340,14 @@ on_uevent (GUdevClient  *client,
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
   ProbeRequest *request;
+  const gchar *sysfs_path;
 
   request = g_slice_new0 (ProbeRequest);
   request->provider = g_object_ref (provider);
   request->udev_device = g_object_ref (device);
+
+  sysfs_path = g_udev_device_get_sysfs_path (device);
+  request->known_block = sysfs_path != NULL && g_hash_table_contains (provider->sysfs_to_block, sysfs_path);
 
   /* process uevent in "probing-thread" */
   g_async_queue_push (provider->probe_request_queue, request);
@@ -330,7 +363,7 @@ udisks_linux_provider_init (UDisksLinuxProvider *provider)
 static void
 udisks_linux_provider_constructed (GObject *object)
 {
-  const gchar *subsystems[] = {"block", "iscsi_connection", "scsi", NULL};
+  const gchar *subsystems[] = {"block", "iscsi_connection", "scsi", "nvme", NULL};
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (object);
   UDisksDaemon *daemon;
   UDisksConfigManager *config_manager;
@@ -485,6 +518,7 @@ get_udisks_devices (UDisksLinuxProvider *provider)
   GList *l;
 
   devices = g_udev_client_query_by_subsystem (provider->gudev_client, "block");
+  devices = g_list_concat (devices, g_udev_client_query_by_subsystem (provider->gudev_client, "nvme"));
 
   /* make sure we process sda before sdz and sdz before sdaa */
   devices = g_list_sort (devices, (GCompareFunc) udev_device_name_cmp);
@@ -655,6 +689,7 @@ udisks_linux_provider_start (UDisksProvider *_provider)
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (_provider);
   UDisksDaemon *daemon;
   UDisksManager *manager;
+  UDisksManagerNVMe *manager_nvme;
   UDisksModuleManager *module_manager;
   GList *udisks_devices;
   guint n;
@@ -700,6 +735,9 @@ udisks_linux_provider_start (UDisksProvider *_provider)
   manager = udisks_linux_manager_new (daemon);
   udisks_object_skeleton_set_manager (provider->manager_object, manager);
   g_object_unref (manager);
+  manager_nvme = udisks_linux_manager_nvme_new (daemon);
+  udisks_object_skeleton_set_manager_nvme (provider->manager_object, manager_nvme);
+  g_object_unref (manager_nvme);
 
   module_manager = udisks_daemon_get_module_manager (daemon);
   g_signal_connect_swapped (module_manager, "modules-activated", G_CALLBACK (ensure_modules), provider);
@@ -742,7 +780,6 @@ udisks_linux_provider_start (UDisksProvider *_provider)
                     "entry-removed",
                     G_CALLBACK (crypttab_monitor_on_entry_removed),
                     provider);
-#ifdef HAVE_LIBMOUNT_UTAB
   g_signal_connect (udisks_daemon_get_utab_monitor (daemon),
                     "entry-added",
                     G_CALLBACK (utab_monitor_on_entry_added),
@@ -751,7 +788,6 @@ udisks_linux_provider_start (UDisksProvider *_provider)
                     "entry-removed",
                     G_CALLBACK (utab_monitor_on_entry_removed),
                     provider);
-#endif
 
   /* The drive configurations need to be re-applied when system wakes up from suspend/hibernate */
   dbus_conn = udisks_daemon_get_connection (daemon);
@@ -1100,6 +1136,11 @@ handle_block_uevent_for_drive (UDisksLinuxProvider *provider,
                     }
                 }
             }
+          else
+            {
+              udisks_critical ("Couldn't find existing drive object for device %s (uevent action '%s', VPD '%s')",
+                               sysfs_path, action, vpd);
+            }
         }
     }
 
@@ -1158,6 +1199,9 @@ handle_block_uevent_for_block (UDisksLinuxProvider *provider,
   UDisksLinuxBlockObject *object;
   UDisksDaemon *daemon;
 
+  if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "block") != 0)
+    return;
+
   daemon = udisks_provider_get_daemon (UDISKS_PROVIDER (provider));
   sysfs_path = g_udev_device_get_sysfs_path (device->udev_device);
 
@@ -1210,6 +1254,10 @@ handle_block_uevent_for_modules (UDisksLinuxProvider *provider,
   GList *modules;
   GList *l;
   GList *modules_to_remove = NULL;
+
+  /* TODO: modules might be theoretically able to handle non-block devices */
+  if (g_strcmp0 (g_udev_device_get_subsystem (device->udev_device), "block") != 0)
+    return;
 
   daemon = udisks_provider_get_daemon (UDISKS_PROVIDER (provider));
   module_manager = udisks_daemon_get_module_manager (daemon);
@@ -1385,7 +1433,8 @@ udisks_linux_provider_handle_uevent (UDisksLinuxProvider *provider,
                 g_udev_device_get_sysfs_path (device->udev_device));
 
   subsystem = g_udev_device_get_subsystem (device->udev_device);
-  if (g_strcmp0 (subsystem, "block") == 0)
+  if (g_strcmp0 (subsystem, "block") == 0 ||
+      g_strcmp0 (subsystem, "nvme") == 0)
     {
       handle_block_uevent (provider, action, device);
     }
@@ -1526,7 +1575,7 @@ on_housekeeping_timeout (gpointer user_data)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-update_all_block_objects (UDisksLinuxProvider *provider)
+update_block_objects (UDisksLinuxProvider *provider, const gchar *device_path)
 {
   GList *objects;
   GList *l;
@@ -1539,18 +1588,36 @@ update_all_block_objects (UDisksLinuxProvider *provider)
   for (l = objects; l != NULL; l = l->next)
     {
       UDisksLinuxBlockObject *object = UDISKS_LINUX_BLOCK_OBJECT (l->data);
-      udisks_linux_block_object_uevent (object, "change", NULL);
+
+      if (device_path == NULL)
+        udisks_linux_block_object_uevent (object, "change", NULL);
+      else
+        {
+          gchar *block_dev;
+          gboolean match;
+
+          block_dev = udisks_linux_block_object_get_device_file (object);
+          match = g_strcmp0 (block_dev, device_path) == 0;
+          g_free (block_dev);
+          if (match)
+            {
+              udisks_linux_block_object_uevent (object, "change", NULL);
+              break;
+            }
+        }
     }
 
   g_list_free_full (objects, g_object_unref);
 }
 
+/* fstab monitoring */
 static void
 mount_monitor_on_mountpoints_changed (GUnixMountMonitor *monitor,
                                       gpointer           user_data)
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
-  update_all_block_objects (provider);
+  /* TODO: compare differences and only update relevant objects */
+  update_block_objects (provider, NULL);
 }
 
 static void
@@ -1559,7 +1626,7 @@ crypttab_monitor_on_entry_added (UDisksCrypttabMonitor *monitor,
                                  gpointer               user_data)
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
-  update_all_block_objects (provider);
+  update_block_objects (provider, NULL);
 }
 
 static void
@@ -1568,17 +1635,16 @@ crypttab_monitor_on_entry_removed (UDisksCrypttabMonitor *monitor,
                                    gpointer               user_data)
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
-  update_all_block_objects (provider);
+  update_block_objects (provider, NULL);
 }
 
-#ifdef HAVE_LIBMOUNT_UTAB
 static void
 utab_monitor_on_entry_added (UDisksUtabMonitor *monitor,
                              UDisksUtabEntry   *entry,
                              gpointer           user_data)
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
-  update_all_block_objects (provider);
+  update_block_objects (provider, udisks_utab_entry_get_source (entry));
 }
 
 static void
@@ -1587,6 +1653,5 @@ utab_monitor_on_entry_removed (UDisksUtabMonitor *monitor,
                                gpointer           user_data)
 {
   UDisksLinuxProvider *provider = UDISKS_LINUX_PROVIDER (user_data);
-  update_all_block_objects (provider);
+  update_block_objects (provider, udisks_utab_entry_get_source (entry));
 }
-#endif

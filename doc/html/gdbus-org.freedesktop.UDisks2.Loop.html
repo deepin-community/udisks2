@@ -50,8 +50,9 @@
 </div>
 <div class="refsect1">
 <a name="gdbus-interface-org-freedesktop-UDisks2-Loop"></a><h2>Description</h2>
-<p>      This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
-      devices that are loop devices.
+<p>
+This interface is used for <a class="link" href="gdbus-org.freedesktop.UDisks2.Block.html#gdbus-interface-org-freedesktop-UDisks2-Block.top_of_page">org.freedesktop.UDisks2.Block</a>
+devices that are loop devices.
 </p>
 </div>
 <div class="refsect1">
@@ -61,7 +62,8 @@
 <pre class="programlisting">
 Delete (IN  a{sv} options);
 </pre>
-<p>        Deletes the loop device.
+<p>
+Deletes the loop device.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -70,7 +72,9 @@ Delete (IN  a{sv} options);
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -81,10 +85,11 @@ Delete (IN  a{sv} options);
 SetAutoclear (IN  b     value,
               IN  a{sv} options);
 </pre>
-<p>        Setter for the <a class="link" href="gdbus-org.freedesktop.UDisks2.Loop.html#gdbus-property-org-freedesktop-UDisks2-Loop.Autoclear" title='The "Autoclear" property'>"Autoclear"</a>
-        property. Since this may require authentication and thus may
-        fail, it is implemented this way instead of the property being
-        writable.
+<p>
+Setter for the <a class="link" href="gdbus-org.freedesktop.UDisks2.Loop.html#gdbus-property-org-freedesktop-UDisks2-Loop.Autoclear" title='The "Autoclear" property'>"Autoclear"</a>
+property. Since this may require authentication and thus may
+fail, it is implemented this way instead of the property being
+writable.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -94,11 +99,15 @@ SetAutoclear (IN  b     value,
 <tbody>
 <tr>
 <td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>value</code></em></code>:</span></p></td>
-<td><p>The new value of autoclear.</p></td>
+<td><p>
+The new value of autoclear.
+</p></td>
 </tr>
 <tr>
 <td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>options</code></em></code>:</span></p></td>
-<td><p>Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).</p></td>
+<td><p>
+Options (currently unused except for <a class="link" href="udisks-std-options.html" title="The options parameter">standard options</a>).
+</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -111,8 +120,9 @@ SetAutoclear (IN  b     value,
 <pre class="programlisting">
 BackingFile  readable   ay
 </pre>
-<p>         A path to the file that is backing the block device or blank
-         if unknown.
+<p>
+A path to the file that is backing the block device or blank
+if unknown.
 </p>
 </div>
 <hr>
@@ -121,9 +131,10 @@ BackingFile  readable   ay
 <pre class="programlisting">
 Autoclear  readable   b
 </pre>
-<p>         If <code class="constant">TRUE</code>, the kernel will automatically clear the loop device
-         when the last closer closes the device. This typically
-         happens when the loop device is unmounted.
+<p>
+If <code class="constant">TRUE</code>, the kernel will automatically clear the loop device
+when the last closer closes the device. This typically
+happens when the loop device is unmounted.
 </p>
 </div>
 <hr>
@@ -132,8 +143,9 @@ Autoclear  readable   b
 <pre class="programlisting">
 SetupByUID  readable   u
 </pre>
-<p>         The id of the user who set up the loop device or 0 if set up
-         by root or not through udisks.
+<p>
+The id of the user who set up the loop device or 0 if set up
+by root or not through udisks.
 </p>
 </div>
 </div>

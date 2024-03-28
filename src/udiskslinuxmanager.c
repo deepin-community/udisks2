@@ -43,9 +43,9 @@
 #include "udisksdaemonutil.h"
 #include "udisksstate.h"
 #include "udiskslinuxblockobject.h"
+#include "udiskslinuxblock.h"
 #include "udiskslinuxdevice.h"
 #include "udisksmodulemanager.h"
-#include "udiskslinuxfsinfo.h"
 #include "udiskssimplejob.h"
 #include "udisksconfigmanager.h"
 
@@ -69,8 +69,6 @@ typedef struct _UDisksLinuxManagerClass   UDisksLinuxManagerClass;
 struct _UDisksLinuxManager
 {
   UDisksManagerSkeleton parent_instance;
-
-  GMutex lock;
 
   UDisksDaemon *daemon;
 };
@@ -96,10 +94,6 @@ G_DEFINE_TYPE_WITH_CODE (UDisksLinuxManager, udisks_linux_manager, UDISKS_TYPE_M
 static void
 udisks_linux_manager_finalize (GObject *object)
 {
-  UDisksLinuxManager *manager = UDISKS_LINUX_MANAGER (object);
-
-  g_mutex_clear (&(manager->lock));
-
   G_OBJECT_CLASS (udisks_linux_manager_parent_class)->finalize (object);
 }
 
@@ -146,16 +140,41 @@ udisks_linux_manager_set_property (GObject      *object,
 }
 
 static void
+set_supported_filesystems (UDisksLinuxManager *manager)
+{
+  const gchar **fss;
+  const gchar **fss_i;
+  GPtrArray *ptr_array;
+  GError *error = NULL;
+
+  fss = bd_fs_supported_filesystems (&error);
+  if (!fss)
+    {
+      udisks_warning ("Unable to retrieve list of supported filesystems: %s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  ptr_array = g_ptr_array_new ();
+  for (fss_i = fss; *fss_i; fss_i++)
+    g_ptr_array_add (ptr_array, (gpointer) *fss_i);
+  g_free (fss);
+
+  if (! g_ptr_array_find_with_equal_func (ptr_array, "swap", g_str_equal, NULL))
+    g_ptr_array_add (ptr_array, (gpointer) "swap");
+  g_ptr_array_add (ptr_array, NULL);
+
+  udisks_manager_set_supported_filesystems (UDISKS_MANAGER (manager), (const gchar * const *) ptr_array->pdata);
+  g_ptr_array_free (ptr_array, TRUE);
+}
+
+static void
 udisks_linux_manager_init (UDisksLinuxManager *manager)
 {
-  g_mutex_init (&(manager->lock));
   g_dbus_interface_skeleton_set_flags (G_DBUS_INTERFACE_SKELETON (manager),
                                        G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
 
-  udisks_manager_set_supported_filesystems (UDISKS_MANAGER (manager),
-                                            get_supported_filesystems ());
-  udisks_manager_set_supported_encryption_types (UDISKS_MANAGER (manager),
-                                                 get_supported_encryption_types ());
+  set_supported_filesystems (manager);
 }
 
 static void
@@ -166,6 +185,8 @@ udisks_linux_manager_constructed (GObject *obj)
 
   udisks_manager_set_default_encryption_type (UDISKS_MANAGER (manager),
                                               udisks_config_manager_get_encryption (config_manager));
+  udisks_manager_set_supported_encryption_types (UDISKS_MANAGER (manager),
+                                                 udisks_config_manager_get_supported_encryption_types (config_manager));
 
   G_OBJECT_CLASS (udisks_linux_manager_parent_class)->constructed (obj);
 }
@@ -332,6 +353,7 @@ handle_loop_setup (UDisksManager          *object,
   gboolean option_no_part_scan = FALSE;
   guint64 option_offset = 0;
   guint64 option_size = 0;
+  guint64 option_sector_size = 0;
   uid_t caller_uid;
   struct stat fd_statbuf;
   gboolean fd_statbuf_valid = FALSE;
@@ -394,6 +416,7 @@ handle_loop_setup (UDisksManager          *object,
   g_variant_lookup (options, "offset", "t", &option_offset);
   g_variant_lookup (options, "size", "t", &option_size);
   g_variant_lookup (options, "no-part-scan", "b", &option_no_part_scan);
+  g_variant_lookup (options, "sector-size", "t", &option_sector_size);
 
   /* it's not a problem if fstat fails... for example, this can happen if the user
    * passes a fd to a file on the GVfs fuse mount
@@ -407,6 +430,7 @@ handle_loop_setup (UDisksManager          *object,
                               option_size,
                               option_read_only,
                               !option_no_part_scan,
+                              option_sector_size,
                               &loop_name,
                               &error))
     {
@@ -537,6 +561,7 @@ handle_mdraid_create (UDisksManager         *_object,
   const gchar **disks = NULL;
   guint disks_top = 0;
   gboolean success = FALSE;
+  const gchar *option_bitmap = NULL;
 
   if (!udisks_daemon_util_get_caller_uid_sync (manager->daemon,
                                                invocation,
@@ -699,7 +724,7 @@ handle_mdraid_create (UDisksManager         *_object,
   for (l = blocks; l != NULL; l = l->next)
     {
       UDisksBlock *block = UDISKS_BLOCK (l->data);
-      if (!bd_fs_wipe (udisks_block_get_device (block), TRUE, &error))
+      if (!bd_fs_wipe (udisks_block_get_device (block), TRUE, FALSE, &error))
         {
           /* no signature to remove, ignore */
           if (g_error_matches (error, BD_FS_ERROR, BD_FS_ERROR_NOFS))
@@ -741,7 +766,8 @@ handle_mdraid_create (UDisksManager         *_object,
     }
   disks[disks_top] = NULL;
 
-  if (!bd_md_create (array_name, arg_level, disks, 0, NULL, FALSE, arg_chunk, NULL, &error))
+  g_variant_lookup (arg_options, "bitmap", "^&ay", &option_bitmap);
+  if (!bd_md_create (array_name, arg_level, disks, 0, NULL, option_bitmap, arg_chunk, NULL, &error))
     {
       g_prefix_error (&error, "Error creating RAID array: ");
       udisks_simple_job_complete (UDISKS_SIMPLE_JOB (job), FALSE, error->message);
@@ -816,7 +842,7 @@ handle_mdraid_create (UDisksManager         *_object,
                            caller_uid);
 
   /* ... wipe the created RAID array */
-  if (!bd_fs_wipe (raid_device_file, TRUE, &error))
+  if (!bd_fs_wipe (raid_device_file, TRUE, FALSE, &error))
     {
       if (g_error_matches (error, BD_FS_ERROR, BD_FS_ERROR_NOFS))
         g_clear_error (&error);
@@ -939,14 +965,19 @@ handle_enable_modules (UDisksManager         *object,
       return TRUE;
     }
 
-  if (! udisks_daemon_get_disable_modules (manager->daemon))
+  if (udisks_daemon_get_disable_modules (manager->daemon))
     {
-      data = g_new0 (EnableModulesData, 1);
-      data->object = g_object_ref (object);
-      data->invocation = g_object_ref (invocation);
-      /* push to idle, process in main thread */
-      g_idle_add (load_modules_in_idle_cb, data);
+      g_dbus_method_invocation_return_error_literal (invocation,
+                                                     G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                                                     "Modules are disabled by a commandline switch.");
+      return TRUE;
     }
+
+  data = g_new0 (EnableModulesData, 1);
+  data->object = g_object_ref (object);
+  data->invocation = g_object_ref (invocation);
+  /* push to idle, process in main thread */
+  g_idle_add (load_modules_in_idle_cb, data);
 
   return TRUE; /* returning TRUE means that we handled the method invocation */
 }
@@ -978,15 +1009,20 @@ handle_enable_module (UDisksManager         *object,
       return TRUE;
     }
 
-  if (! udisks_daemon_get_disable_modules (manager->daemon))
+  if (udisks_daemon_get_disable_modules (manager->daemon))
     {
-      data = g_new0 (EnableModulesData, 1);
-      data->object = g_object_ref (object);
-      data->invocation = g_object_ref (invocation);
-      data->module_name = g_strdup (arg_name);
-      /* push to idle, process in main thread */
-      g_idle_add (load_modules_in_idle_cb, data);
+      g_dbus_method_invocation_return_error_literal (invocation,
+                                                     G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                                                     "Modules are disabled by a commandline switch.");
+      return TRUE;
     }
+
+  data = g_new0 (EnableModulesData, 1);
+  data->object = g_object_ref (object);
+  data->invocation = g_object_ref (invocation);
+  data->module_name = g_strdup (arg_name);
+  /* push to idle, process in main thread */
+  g_idle_add (load_modules_in_idle_cb, data);
 
   return TRUE; /* returning TRUE means that we handled the method invocation */
 }
@@ -997,41 +1033,36 @@ handle_can_format (UDisksManager         *object,
                    const gchar           *type)
 {
   gchar *required_utility = NULL;
-  gchar *binary_path = NULL;
+  GError *error = NULL;
+  gboolean ret;
 
-  if (g_strcmp0 (type, "swap") == 0)
-    required_utility = g_strdup ("mkswap");
-  else if (g_strcmp0 (type, "empty") == 0)
-    required_utility = g_strdup ("wipefs");
-  else
+  /* builtin support */
+  if (g_strcmp0 (type, "empty") == 0 || g_strcmp0 (type, "dos") == 0 || g_strcmp0 (type, "gpt") == 0)
     {
-      const gchar **supported_fs = get_supported_filesystems ();
-      for (gsize i = 0; supported_fs[i] != NULL; i++)
-        {
-          if (g_strcmp0 (type, supported_fs[i]) == 0)
-            {
-            required_utility = g_strconcat ("mkfs.", type, NULL);
-            break;
-            }
-        }
-    }
-
-  if (required_utility == NULL)
-    {
-      g_dbus_method_invocation_return_error (invocation,
-                                             UDISKS_ERROR,
-                                             UDISKS_ERROR_NOT_SUPPORTED,
-                                             "Creation of filesystem type %s is not supported",
-                                             type);
+      udisks_manager_complete_can_format (object,
+                                          invocation,
+                                          g_variant_new ("(bs)", TRUE, ""));
       return TRUE;
     }
 
-  binary_path = g_find_program_in_path (required_utility);
+  if (g_strcmp0 (type, "swap") == 0)
+    {
+      required_utility = g_strdup ("mkswap");
+      ret = bd_utils_check_util_version (required_utility, NULL, "", NULL, NULL);
+    }
+  else
+    {
+      ret = bd_fs_can_mkfs (type, NULL, &required_utility, &error);
+      if (error != NULL)
+        {
+          g_dbus_method_invocation_take_error (invocation, error);
+          return TRUE;
+        }
+    }
+
   udisks_manager_complete_can_format (object,
                                       invocation,
-                                      g_variant_new ("(bs)", binary_path != NULL,
-                                                     binary_path != NULL ? "" : required_utility));
-  g_free (binary_path);
+                                      g_variant_new ("(bs)", ret, ret ? "" : required_utility));
   g_free (required_utility);
 
   return TRUE;
@@ -1044,7 +1075,7 @@ handle_can_resize (UDisksManager         *object,
 {
   GError *error = NULL;
   gchar *required_utility = NULL;
-  BDFsResizeFlags mode;
+  BDFSResizeFlags mode;
   gboolean ret;
 
   ret = bd_fs_can_resize (type, &mode, &required_utility, &error);
@@ -1178,25 +1209,17 @@ handle_get_block_devices (UDisksManager         *object,
   return TRUE;  /* returning TRUE means that we handled the method invocation */
 }
 
-static gboolean
-compare_paths (UDisksManager         *object,
-               UDisksBlock           *block,
-               const gchar           *path)
+static inline gboolean
+match_id_format (UDisksLinuxBlock *block, const gchar *key, const gchar *val)
 {
-  const gchar *const *symlinks = NULL;
+  gchar *s;
+  gboolean ret;
 
-  if (g_strcmp0 (udisks_block_get_device (block), path) == 0)
-    return TRUE;
+  s = g_strdup_printf ("%s=%s", key, val);
+  ret = udisks_linux_block_matches_id (block, s);
+  g_free (s);
 
-  symlinks = udisks_block_get_symlinks (block);
-  if (symlinks != NULL)
-    {
-      for (guint i = 0; symlinks[i] != NULL; i++)
-        if (g_strcmp0 (symlinks[i], path) == 0)
-          return TRUE;
-    }
-
-  return FALSE;
+  return ret;
 }
 
 static gboolean
@@ -1208,6 +1231,8 @@ handle_resolve_device (UDisksManager         *object,
   const gchar *devpath = NULL;
   const gchar *devuuid = NULL;
   const gchar *devlabel = NULL;
+  const gchar *partuuid = NULL;
+  const gchar *partlabel = NULL;
 
   GSList *blocks = NULL;
   GSList *blocks_p = NULL;
@@ -1218,28 +1243,42 @@ handle_resolve_device (UDisksManager         *object,
   guint num_found = 0;
   const gchar **ret_paths = NULL;
 
-  gboolean found = FALSE;
   guint i = 0;
 
   g_variant_lookup (arg_devspec, "path", "&s", &devpath);
   g_variant_lookup (arg_devspec, "uuid", "&s", &devuuid);
   g_variant_lookup (arg_devspec, "label", "&s", &devlabel);
+  g_variant_lookup (arg_devspec, "partuuid", "&s", &partuuid);
+  g_variant_lookup (arg_devspec, "partlabel", "&s", &partlabel);
+
+  if (!devpath && !devuuid && !devlabel && !partuuid && !partlabel)
+    {
+      g_dbus_method_invocation_return_error_literal (invocation, UDISKS_ERROR, UDISKS_ERROR_FAILED,
+                                                     "Invalid device specification provided");
+      return TRUE;
+    }
 
   blocks = get_block_objects (object, &num_blocks);
 
   for (blocks_p = blocks; blocks_p != NULL; blocks_p = blocks_p->next)
     {
-      if (devpath != NULL)
-          found = compare_paths (object, blocks_p->data, devpath);
+      UDisksLinuxBlock *block = UDISKS_LINUX_BLOCK (blocks_p->data);
+      gboolean found = TRUE;
 
+      if (devpath != NULL)
+          found = udisks_linux_block_matches_id (block, devpath);
       if (devuuid != NULL)
-          found = g_strcmp0 (udisks_block_get_id_uuid (blocks_p->data), devuuid) == 0;
+          found = found && match_id_format (block, "UUID", devuuid);
       if (devlabel != NULL)
-          found = g_strcmp0 (udisks_block_get_id_label (blocks_p->data), devlabel) == 0;
+          found = found && match_id_format (block, "LABEL", devlabel);
+      if (partuuid != NULL)
+          found = found && match_id_format (block, "PARTUUID", partuuid);
+      if (partlabel != NULL)
+          found = found && match_id_format (block, "PARTLABEL", partlabel);
 
       if (found)
         {
-          ret = g_slist_prepend (ret, blocks_p->data);
+          ret = g_slist_prepend (ret, block);
           num_found++;
         }
     }

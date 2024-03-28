@@ -1,7 +1,7 @@
 
 m4_define([udisks_major_version], [2])
-m4_define([udisks_minor_version], [9])
-m4_define([udisks_micro_version], [4])
+m4_define([udisks_minor_version], [10])
+m4_define([udisks_micro_version], [1])
 
 m4_define([udisks_version], [udisks_major_version.udisks_minor_version.udisks_micro_version])
 
@@ -120,7 +120,11 @@ AC_ARG_ENABLE(daemon,
               enable_daemon=yes)
 AM_CONDITIONAL(ENABLE_DAEMON, test "$enable_daemon" != no)
 
-GOBJECT_INTROSPECTION_CHECK([0.6.2])
+# GObject-introspection
+found_introspection=no
+m4_ifdef([GOBJECT_INTROSPECTION_CHECK],
+         [GOBJECT_INTROSPECTION_CHECK([0.6.2])],
+         [AM_CONDITIONAL(HAVE_INTROSPECTION, test "x$found_introspection" = "xyes")])
 
 # Behavior
 #
@@ -139,7 +143,7 @@ fi
 # Libraries
 #
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.50])
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.68])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
@@ -164,7 +168,7 @@ if test "x$enable_daemon" = "xyes"; then
   AC_SUBST(GMODULE_CFLAGS)
   AC_SUBST(GMODULE_LIBS)
 
-  PKG_CHECK_MODULES(BLOCKDEV, [blockdev >= 2.25])
+  PKG_CHECK_MODULES(BLOCKDEV, [blockdev >= 3.0])
   AC_SUBST(BLOCKDEV_CFLAGS)
   AC_SUBST(BLOCKDEV_LIBS)
 
@@ -172,17 +176,13 @@ if test "x$enable_daemon" = "xyes"; then
   AC_SUBST(LIBATASMART_CFLAGS)
   AC_SUBST(LIBATASMART_LIBS)
 
-  PKG_CHECK_MODULES(LIBMOUNT, [mount >= 2.18])
+  PKG_CHECK_MODULES(LIBBLKID, [blkid])
+  AC_SUBST(LIBBLKID_CFLAGS)
+  AC_SUBST(LIBBLKID_LIBS)
+
+  PKG_CHECK_MODULES(LIBMOUNT, [mount >= 2.30])
   AC_SUBST(LIBMOUNT_CFLAGS)
   AC_SUBST(LIBMOUNT_LIBS)
-
-  PKG_CHECK_MODULES(LIBMOUNT_UTAB, [mount >= 2.30],
-                    [have_libmount_utab=yes],
-                    [have_libmount_utab=no])
-  if test "x$have_libmount_utab" = "xyes"; then
-    AC_DEFINE([HAVE_LIBMOUNT_UTAB], 1, [Define to 1 if libmount utab functionality is available])
-  fi
-  AC_SUBST(HAVE_LIBMOUNT_UTAB)
 
   PKG_CHECK_MODULES(LIBUUID, [uuid])
   AC_SUBST(LIBUUID_CFLAGS)
@@ -215,11 +215,9 @@ if test "x$enable_daemon" = "xyes"; then
   AC_SUBST(LIBELOGIND_CFLAGS)
   AC_SUBST(LIBELOGIND_LIBS)
 else
-  have_libmount_utab=no
   have_libsystemd_login=no
   have_libelogind=no
 fi
-AM_CONDITIONAL(HAVE_LIBMOUNT_UTAB, test x$have_libmount_utab = xyes)
 AM_CONDITIONAL(HAVE_LIBSYSTEMD_LOGIN, test x$have_libsystemd_login = xyes)
 AM_CONDITIONAL(HAVE_LIBELOGIND, test x$have_libelogind = xyes)
 
@@ -316,23 +314,6 @@ if test "x$enable_lvm2" = "xyes" \
 fi
 AM_CONDITIONAL(HAVE_LVM2, [test "$have_lvm2" = "yes"])
 
-# LVMCache
-have_lvmcache=no
-AC_ARG_ENABLE(lvmcache, AS_HELP_STRING([--enable-lvmcache], [enable LVMCache support]))
-if test "x$enable_lvmcache" = "xyes" \
-     -o "x$enable_modules" = "xyes" \
-     -o "x$enable_available_modules" = "xyes"; then
-
-  if test "x$have_lvm2" = "xno"; then
-     if test "x$enable_lvmcache" = "xyes" -o "x$enable_modules" = "xyes"; then
-         AC_MSG_ERROR([lvmcache support requested, but lvm2 module not enabled])
-     fi
-  fi
-  have_lvmcache=yes
-  AC_DEFINE(HAVE_LVMCACHE, 1, [Define if lvmcache is available])
-fi
-AM_CONDITIONAL(HAVE_LVMCACHE, [test "$have_lvmcache" = "yes"])
-
 # iSCSI module
 have_iscsi=no
 have_libiscsi_session_info="no"
@@ -412,74 +393,6 @@ if test "x$enable_btrfs" = "xyes" \
 fi
 AM_CONDITIONAL(HAVE_BTRFS, [test "x$have_btrfs" = "xyes"])
 
-# ZRAM module
-have_kbd="no"
-have_swap="no"
-have_zram="no"
-AC_ARG_ENABLE(zram, AS_HELP_STRING([--enable-zram], [enable ZRAM support]))
-if test "x$enable_zram" = "xyes" \
-     -o "x$enable_modules" = "xyes" \
-     -o "x$enable_available_modules" = "xyes"; then
-    # libblockdev
-    SAVE_CFLAGS=$CFLAGS
-    SAVE_LDFLAGS=$LDFLAGS
-    CFLAGS="$GLIB_CFLAGS"
-    LDFLAGS="$GLIB_LIBS"
-
-    # libblockdev-kbd
-    AC_MSG_CHECKING([libblockdev-kbd presence])
-    AC_TRY_COMPILE([#include <blockdev/kbd.h>], [],
-                   [AC_MSG_RESULT([yes])
-                    have_kbd=yes],
-                   [AC_MSG_RESULT([no])
-                    have_kbd=no])
-
-    if test "x$have_kbd" = "xno"; then
-        if test "x$enable_zram" = "xyes" -o "x$enable_modules" = "xyes"; then
-            AC_MSG_ERROR([KBD support requested but header or library not found])
-        fi
-    fi
-
-    CFLAGS="$GLIB_CFLAGS"
-    LDFLAGS="$GLIB_LIBS"
-
-    # libblockdev-swap
-    AC_MSG_CHECKING([libblockdev-swap presence])
-    AC_TRY_COMPILE([#include <blockdev/swap.h>], [],
-                   [AC_MSG_RESULT([yes])
-                   have_swap=yes],
-                   [AC_MSG_RESULT([no])
-                   have_swap=no])
-
-    CFLAGS=$SAVE_CFLAGS
-    LDFLAGS=$SAVE_LDFLAGS
-
-    if test "x$have_swap" = "xno"; then
-        if test "x$enable_zram" = "xyes" -o "x$enable_modules" = "xyes"; then
-            AC_MSG_ERROR([SWAP support requested but header or library not found])
-        fi
-    fi
-
-    # needs systemd
-    if test -z "$systemdsystemunitdir"; then
-        AC_MSG_ERROR([systemd is required for ZRAM support])
-    fi
-
-    have_zram="yes"
-
-    if test "$have_kbd" = "yes" -a "$have_swap" = "yes"; then
-       AC_DEFINE(HAVE_ZRAM, 1, [Define, if libblockdev-kbd and libblockdev-swap are available])
-    fi
-
-    AC_ARG_WITH([zramconfdir],
-      [AS_HELP_STRING([--with-zramconfdir=DIR], [Directory for ZRAM configuration])],
-      [zramconfdir=$withval],
-      [zramconfdir="${prefix}/lib/zram.conf.d"])
-    AC_SUBST([zramconfdir], [$zramconfdir])
-fi
-AM_CONDITIONAL(HAVE_ZRAM, [test "$have_kbd" = "yes" -a "$have_swap" = "yes"])
-
-
 # LSM module
 have_lsm=no
 have_libconfig=no
@@ -513,64 +426,7 @@ if test "x$enable_lsm" = "xyes" \
 fi
 AM_CONDITIONAL(HAVE_LSM, [test "x$have_lsm" = "xyes"])
 
-# Bcache module
-have_bcache=no
-AC_ARG_ENABLE(bcache, AS_HELP_STRING([--enable-bcache], [enable Bcache support]))
-if test "x$enable_bcache" = "xyes" \
-     -o "x$enable_modules" = "xyes" \
-     -o "x$enable_available_modules" = "xyes"; then
-    # libblockdev
-    SAVE_CFLAGS=$CFLAGS
-    SAVE_LDFLAGS=$LDFLAGS
-    CFLAGS="$GLIB_CFLAGS"
-    LDFLAGS="$GLIB_LIBS"
-
-    # libblockdev-kbd
-    AC_MSG_CHECKING([libblockdev-kbd presence])
-    AC_TRY_COMPILE([#include <blockdev/kbd.h>], [],
-                   [AC_MSG_RESULT([yes])
-                    have_bcache=yes],
-                   [AC_MSG_RESULT([no])
-                    have_bcache=no])
-    CFLAGS=$SAVE_CFLAGS
-    LDFLAGS=$SAVE_LDFLAGS
-
-    if test "x$have_bcache" = "xno"; then
-        if test "x$enable_bcache" = "xyes" -o "x$enable_modules" = "xyes"; then
-            AC_MSG_ERROR([Bcache support requested but header or library not found])
-        fi
-    fi
-fi
-AM_CONDITIONAL(HAVE_BCACHE, [test "x$have_bcache" = "xyes"])
-
-# VDO module
-have_vdo=no
-AC_ARG_ENABLE(vdo, AS_HELP_STRING([--enable-vdo], [enable VDO support]))
-if test "x$enable_vdo" = "xyes"; then
-    # libblockdev
-    SAVE_CFLAGS=$CFLAGS
-    SAVE_LDFLAGS=$LDFLAGS
-    CFLAGS="$GLIB_CFLAGS"
-    LDFLAGS="$GLIB_LIBS"
-
-    # libblockdev-vdo
-    AC_MSG_CHECKING([libblockdev-vdo presence])
-    AC_TRY_COMPILE([#include <blockdev/vdo.h>], [],
-                   [AC_MSG_RESULT([yes])
-                    have_vdo=yes],
-                   [AC_MSG_RESULT([no])
-                    have_vdo=no])
-    CFLAGS=$SAVE_CFLAGS
-    LDFLAGS=$SAVE_LDFLAGS
-
-    if test "x$have_vdo" = "xno"; then
-        if test "x$enable_vdo" = "xyes" -o "x$enable_modules" = "xyes"; then
-            AC_MSG_ERROR([VDO support requested but header or library not found])
-        fi
-    fi
-fi
-AM_CONDITIONAL(HAVE_VDO, [test "x$have_vdo" = "xyes"])
-
+have_swap="no"
 if test "x$enable_daemon" = "xyes"; then
   # libblockdev part
   SAVE_CFLAGS=$CFLAGS
@@ -691,6 +547,26 @@ if test "x$enable_daemon" = "xyes"; then
   if test "x$have_crypto" = "xno"; then
     AC_MSG_ERROR([BLOCKDEV CRYPTO support requested but header or library not found])
   fi
+
+  # libblockdev nvme
+  SAVE_CFLAGS=$CFLAGS
+  SAVE_LDFLAGS=$LDFLAGS
+
+  CFLAGS="$GLIB_CFLAGS"
+  LDFLAGS="$GLIB_LIBS"
+  AC_MSG_CHECKING([libblockdev-nvme presence])
+  AC_TRY_COMPILE([#include <blockdev/nvme.h>], [],
+                 [AC_MSG_RESULT([yes])
+                 have_nvme=yes],
+                 [AC_MSG_RESULT([no])
+                 have_nvme=no])
+
+  CFLAGS=$SAVE_CFLAGS
+  LDFLAGS=$SAVE_LDFLAGS
+
+  if test "x$have_nvme" = "xno"; then
+    AC_MSG_ERROR([BLOCKDEV NVMe support requested but header or library not found])
+  fi
 fi
 
 
@@ -703,6 +579,11 @@ AM_GNU_GETTEXT([external])
 GETTEXT_PACKAGE=udisks2
 AC_SUBST([GETTEXT_PACKAGE])
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[gettext domain])
+
+# explicit check for msgfmt, needed for polkit files processing
+AS_IF([test -z "$MSGFMT" -o "$MSGFMT" = ":"], [
+  AC_MSG_ERROR([msgfmt not found (gettext package)])
+])
 
 AC_DEFINE([PROJECT_SYSCONF_DIR], ["udisks2"], [Project configuration directory])
 AC_DEFINE([PACKAGE_NAME_UDISKS2], ["udisks2"], [Full package name for UDisks2 compatibility])
@@ -741,18 +622,9 @@ modules/iscsi/data/udisks2-iscsi.pc
 modules/lvm2/Makefile
 modules/lvm2/data/Makefile
 modules/lvm2/data/udisks2-lvm2.pc
-modules/zram/Makefile
-modules/zram/data/Makefile
-modules/zram/data/udisks2-zram.pc
 modules/lsm/Makefile
 modules/lsm/data/Makefile
 modules/lsm/data/udisks2-lsm.pc
-modules/bcache/Makefile
-modules/bcache/data/Makefile
-modules/bcache/data/udisks2-bcache.pc
-modules/vdo/Makefile
-modules/vdo/data/Makefile
-modules/vdo/data/udisks2-vdo.pc
 doc/Makefile
 doc/udisks2-docs.xml.in
 doc/udisks2-sections.txt.in
@@ -786,19 +658,6 @@ doc/udisks2-docs.xml.btrfs.dbus
 doc/udisks2-docs.xml.btrfs.generated
 doc/udisks2-sections.txt.btrfs.sections
 doc/udisks2.types.btrfs
-doc/udisks2-docs.xml.zram.dbus
-doc/udisks2-docs.xml.zram.generated
-doc/udisks2-docs.xml.zram.block_devices
-doc/udisks2-sections.txt.zram.sections
-doc/udisks2.types.zram
-doc/udisks2-docs.xml.bcache.dbus
-doc/udisks2-docs.xml.bcache.generated
-doc/udisks2-sections.txt.bcache.sections
-doc/udisks2.types.bcache
-doc/udisks2-docs.xml.vdo.dbus
-doc/udisks2-docs.xml.vdo.generated
-doc/udisks2-sections.txt.vdo.sections
-doc/udisks2.types.vdo
 po/Makefile.in
 ])
 
@@ -825,7 +684,6 @@ echo "
         using libelogind:           ${have_libelogind}
         use /media for mounting:    ${fhs_media}
         acl support:                ${have_acl}
-        using libmount/utab:        ${have_libmount_utab}
 
         compiler:                   ${CC}
         cflags:                     ${CFLAGS}
@@ -841,9 +699,5 @@ echo "
         BTRFS module:               ${have_btrfs}
         iSCSI module:               ${have_iscsi}${have_libiscsi_session_info_msg}
         LVM2  module:               ${have_lvm2}
-        LVMCache:                   ${have_lvmcache}
-        Zram module:                ${have_zram}
         LibStorageMgmt module:      ${have_lsm}
-        Bcache module:              ${have_bcache}
-        VDO module (deprecated):    ${have_vdo}
 "
