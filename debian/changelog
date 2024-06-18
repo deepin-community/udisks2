@@ -1,3 +1,10 @@
+udisks2 (2.10.1-6deepin1) unstable; urgency=medium
+
+  * Apply deepin patches.
+  * Refresh fix-Modify-the-solution-to-the-rules-file-conflict.patch.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Tue, 18 Jun 2024 14:30:24 +0800
+
 udisks2 (2.10.1-6) unstable; urgency=medium
 
   [ Martin Pitt ]
