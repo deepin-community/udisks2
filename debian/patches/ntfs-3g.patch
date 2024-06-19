@@ -1,0 +1,24 @@
+Description: Attempt to use "ntfs-3g" as an alternative if "ntfs3" fails
+Author: Tianyu Chen <sweetyfish@deepin.org>
+Origin: vendor
+Bug-Deepin: https://github.com/linuxdeepin/developer-center/issues/9357
+Forwarded: no
+Last-Update: 2024-06-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/src/udiskslinuxfilesystem.c
++++ b/src/udiskslinuxfilesystem.c
+@@ -1224,6 +1224,13 @@
+               g_clear_error (&error);
+               continue;
+             }
++          /* Attempt to use "ntfs-3g" as an alternative if "ntfs3" fails */
++          if (g_strcmp0((*mount_options_i)->fs_type, "ntfs3") == 0 &&
++              g_error_matches(error, BD_FS_ERROR, BD_FS_ERROR_FAIL))
++            {
++              g_clear_error (&error);
++              continue;
++            }
+           /* Clean up the created mount point */
+           if (g_rmdir (*mount_point_to_use) != 0)
+             udisks_warning ("Error removing directory %s: %m", *mount_point_to_use);
