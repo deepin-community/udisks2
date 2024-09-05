@@ -1,0 +1,200 @@
+diff --git a/data/builtin_mount_options.conf b/data/builtin_mount_options.conf
+index 1d635fa..b2dc62c 100644
+--- a/data/builtin_mount_options.conf
++++ b/data/builtin_mount_options.conf
+@@ -21,10 +21,10 @@ ntfs:ntfs3_allow=uid=$UID,gid=$GID,umask,dmask,fmask,iocharset,discard,nodiscard
+ ntfs_drivers=ntfs3,ntfs
+ 
+ iso9660_defaults=uid=$UID,gid=$GID,iocharset=utf8,mode=0400,dmode=0500
+-iso9660_allow=uid=$UID,gid=$GID,norock,nojoliet,iocharset,mode,dmode
++iso9660_allow=uid=$UID,gid=$GID,norock,nojoliet,iocharset,mode,dmode,context
+ 
+ udf_defaults=uid=$UID,gid=$GID,iocharset=utf8
+-udf_allow=uid=$UID,gid=$GID,iocharset,utf8,umask,mode,dmode,unhide,undelete
++udf_allow=uid=$UID,gid=$GID,iocharset,utf8,umask,mode,dmode,unhide,undelete,context
+ 
+ hfsplus_defaults=uid=$UID,gid=$GID,nls=utf8
+ hfsplus_allow=uid=$UID,gid=$GID,creator,type,umask,session,part,decompose,nodecompose,force,nls
+diff --git a/src/udisksdaemonutil.c b/src/udisksdaemonutil.c
+index 3db92f5..ae6688b 100644
+--- a/src/udisksdaemonutil.c
++++ b/src/udisksdaemonutil.c
+@@ -1959,3 +1959,21 @@ udisks_module_validate_name (const gchar *module_name)
+ }
+ 
+ /* ---------------------------------------------------------------------------------------------------- */
++
++extern gboolean is_pid_dde_filemanager(pid_t pid);
++
++gboolean is_pid_dde_filemanager(pid_t pid)
++{
++    char exe [PATH_MAX+1];
++    snprintf(exe, sizeof(exe), "/proc/%d/exe", pid);
++
++    char path[PATH_MAX+1];
++    int len;
++    if ((len = readlink(exe, path, PATH_MAX)) < 0)
++        return FALSE;
++
++    if( 0 == strncmp("/usr/bin/dde-file-manager", path, strlen("/usr/bin/dde-file-manager")))
++        return TRUE;
++
++    return FALSE;
++}
+diff --git a/src/udiskslinuxblock.c b/src/udiskslinuxblock.c
+index 829dd5f..8fc45d4 100644
+--- a/src/udiskslinuxblock.c
++++ b/src/udiskslinuxblock.c
+@@ -1028,7 +1028,7 @@ udisks_linux_block_update (UDisksLinuxBlock       *block,
+       gchar *dm_uuid;
+       dm_uuid = get_sysfs_attr (device->udev_device, "dm/uuid");
+       if (dm_uuid != NULL &&
+-           (g_str_has_prefix (dm_uuid, "CRYPT-LUKS") || g_str_has_prefix (dm_uuid, "CRYPT-BITLK") || g_str_has_prefix (dm_uuid, "CRYPT-TCRYPT")))
++           (g_str_has_prefix (dm_uuid, "CRYPT-LUKS") || g_str_has_prefix (dm_uuid, "CRYPT-BITLK") || g_str_has_prefix (dm_uuid, "CRYPT-TCRYPT") || g_str_has_prefix (dm_uuid, "CRYPT-PLAIN")))
+         {
+           gchar *slave_sysfs_path;
+           slave_sysfs_path = get_slave_sysfs_path (g_udev_device_get_sysfs_path (device->udev_device));
+diff --git a/src/udiskslinuxblockobject.c b/src/udiskslinuxblockobject.c
+index d5da4bc..3cd79a9 100644
+--- a/src/udiskslinuxblockobject.c
++++ b/src/udiskslinuxblockobject.c
+@@ -798,10 +798,36 @@ encrypted_check (UDisksObject *object)
+ {
+   UDisksBlock *block = udisks_object_peek_block (object);
+ 
+-  return udisks_linux_block_is_luks (block) ||
++  if (udisks_linux_block_is_luks (block) ||
+          udisks_linux_block_is_tcrypt (block) ||
+          udisks_linux_block_is_bitlk (block) ||
+-         udisks_linux_block_is_unknown_crypto (block);
++         udisks_linux_block_is_unknown_crypto (block))
++    return TRUE;
++
++  // 中孚红盘 vid为 aaaa或bbbb， 是加密盘
++  const gchar* id_type = udisks_block_get_id_type (block);
++  const gchar* id_usage = udisks_block_get_id_usage (block);
++  if( (id_type && g_strcmp0 (id_type, "") == 0)
++     && (id_usage == NULL || (id_usage && g_strcmp0 (id_usage, "") == 0))) {
++
++    UDisksLinuxBlockObject *block_object = UDISKS_LINUX_BLOCK_OBJECT (object);
++    UDisksLinuxDevice* device = NULL;
++    if(block_object)
++        device = udisks_linux_block_object_get_device (block_object);
++
++    if(device){
++        const gchar *vendor = g_udev_device_get_property (device->udev_device, "ID_VENDOR_ID");
++        g_object_unref (device);
++        if ( vendor && strlen(vendor) == strlen("aaaa") &&
++            (g_strncasecmp (vendor, "aaaa", 4) == 0 ) ){
++            udisks_block_set_id_usage (block, "crypto");
++            udisks_block_set_id_type (block, "crypto_unknown");
++            return TRUE;
++        }
++    }
++  }
++
++  return FALSE;  
+ }
+ 
+ static void
+diff --git a/src/udiskslinuxencrypted.c b/src/udiskslinuxencrypted.c
+index 9bcbd2f..9ba3cac 100644
+--- a/src/udiskslinuxencrypted.c
++++ b/src/udiskslinuxencrypted.c
+@@ -664,6 +664,8 @@ handle_unlock (UDisksEncrypted        *encrypted,
+ 
+ /* ---------------------------------------------------------------------------------------------------- */
+ 
++extern gboolean is_pid_dde_filemanager(pid_t pid);
++
+ gboolean
+ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
+                              GDBusMethodInvocation  *invocation,
+@@ -688,6 +690,8 @@ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
+   gboolean is_luks;
+   gboolean is_bitlk;
+   gboolean handle_as_tcrypt;
++  gboolean is_ddefilemanager = FALSE; //zhongfu reddisk
++  pid_t caller_pid;
+ 
+   object = udisks_daemon_util_dup_object (encrypted, error);
+   if (object == NULL)
+@@ -759,10 +763,21 @@ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
+       goto out;
+     }
+ 
++    // 允许文件管理器卸载
++    if( udisks_daemon_util_get_caller_pid_sync(daemon,
++                                            invocation,
++                                            NULL,
++                                            &caller_pid,
++                                            error))
++    {
++        if(  is_pid_dde_filemanager(caller_pid) )
++            is_ddefilemanager = TRUE;
++    }
++
+   /* Check that the user is authorized to lock the device - if he
+    * already unlocked it, he is implicitly authorized...
+    */
+-  if (caller_uid != 0 && (caller_uid != unlocked_by_uid))
++  if (caller_uid != 0 && (caller_uid != unlocked_by_uid) && is_ddefilemanager == FALSE )
+     {
+       if (!udisks_daemon_util_check_authorization_sync_with_error (daemon,
+                                                                    object,
+diff --git a/src/udiskslinuxfilesystem.c b/src/udiskslinuxfilesystem.c
+index 92a251e..09fc498 100644
+--- a/src/udiskslinuxfilesystem.c
++++ b/src/udiskslinuxfilesystem.c
+@@ -1470,6 +1470,8 @@ wait_for_filesystem_mount_points (UDisksDaemon *daemon,
+   return object;
+ }
+ 
++extern gboolean is_pid_dde_filemanager(pid_t pid);
++
+ /* runs in thread dedicated to handling @invocation */
+ static gboolean
+ handle_unmount (UDisksFilesystem      *filesystem,
+@@ -1495,6 +1497,8 @@ handle_unmount (UDisksFilesystem      *filesystem,
+   const gchar *const *user_mount_option = NULL;
+   guint n_option = 0;
+   gboolean permissionmanager_mount = FALSE;
++  pid_t caller_pid;
++  gboolean is_ddefilemanager = FALSE; //zhongfu reddisk
+   UDisksObject *filesystem_object = NULL;
+   WaitForFilesystemMountPointsData wait_data = {NULL, 0, NULL};
+ 
+@@ -1664,6 +1668,17 @@ handle_unmount (UDisksFilesystem      *filesystem,
+           }
+       }
+ 
++    // 允许文件管理器卸载
++    if( udisks_daemon_util_get_caller_pid_sync(daemon,
++                                            invocation,
++                                            NULL,
++                                            &caller_pid,
++                                            error))
++    {
++        if( is_pid_dde_filemanager(caller_pid) )
++            is_ddefilemanager = TRUE;
++    }
++
+   if (caller_uid != 0 && (caller_uid != mounted_by_uid) && permissionmanager_mount == FALSE)
+     {
+       const gchar *action_id;
+diff --git a/src/udiskslinuxmountoptions.c b/src/udiskslinuxmountoptions.c
+index 95a0aa8..b5678dc 100644
+--- a/src/udiskslinuxmountoptions.c
++++ b/src/udiskslinuxmountoptions.c
+@@ -1140,6 +1140,11 @@ calculate_mount_options_for_fs_type (UDisksDaemon  *daemon,
+                                                   options,
+                                                   shared_fs);
+ 
++  // add cdrom audit  zhangya@uniontech.com
++  if( strcmp(fs_type, "iso9660") == 0 || strcmp(fs_type, "udf") == 0 ){
++    g_hash_table_insert (options_to_use, g_strdup("context"), g_strdup ("system_u:object_r:deepin_rwd_usaudit_t:s0"));
++  }
++
+   /* validate mount options */
+   str = g_string_new ("uhelper=udisks2,nodev,nosuid");
+   g_variant_iter_init (&iter, options_to_use);
