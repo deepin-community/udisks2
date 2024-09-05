@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin3) unstable; urgency=medium
+
+  * add usec-udisks2-mac-patches.patch
+
+ -- Liang Bo <liangbo@uniontech.com>  Thu, 05 Sep 2024 10:49:48 +0800
+
 udisks2 (2.10.1-6deepin2) unstable; urgency=medium
 
   * ntfs-3g.patch: Attempt to use "ntfs-3g" as an alternative if "ntfs3" fails
