@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin3.1) unstable; urgency=medium
+
+  * update options_to_use usage
+
+ -- Liang Bo <liangbo@uniontech.com>  Thu, 12 Sep 2024 15:20:15 +0800
+ 
 udisks2 (2.10.1-6deepin3) unstable; urgency=medium
 
   * add usec-udisks2-mac-patches.patch
