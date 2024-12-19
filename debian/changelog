@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin5) unstable; urgency=medium
+
+  * merge v20 patch.
+
+ -- xinpeng.wang <wangxinpeng@uniontech.com>  Thu, 19 Dec 2024 15:37:08 +0800
+
 udisks2 (2.10.1-6deepin4) unstable; urgency=medium
 
   * update options_to_use usage
