@@ -212,7 +212,7 @@ index 95a0aa8..65124ed 100644
                                                    shared_fs);
  
 +  // add cdrom audit  zhangya@uniontech.com
-+  if( strcmp(fs_type, "iso9660") == 0 || strcmp(fs_type, "udf") == 0 ){
++  if ((strcmp(fs_type, "iso9660") == 0 || strcmp(fs_type, "udf") == 0) && access("/proc/1/attr/usid", F_OK) == 0) {
 +    g_variant_iter_init (&iter, options_to_use);
 +    g_variant_builder_init (&builder, G_VARIANT_TYPE("a{ss}"));
 +    while (g_variant_iter_next (&iter, "{&s&s}", &key, &value)) {
