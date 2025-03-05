@@ -1,3 +1,11 @@
+udisks2 (2.10.1-6deepin6) unstable; urgency=medium
+
+  * fix: usec: iso9660/udf mount with useccontext failed in deepin.
+  *     deepin社区版iso挂载选项usececontext挂载失败
+  *     Bug: https://pms.uniontech.com/bug-view-306521.html
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 05 Mar 2025 19:14:08 +0800
+
 udisks2 (2.10.1-6deepin5) unstable; urgency=medium
 
   * merge v20 patch.
