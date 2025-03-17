@@ -1,7 +1,7 @@
 Index: udisks2/data/udisks2.service.in
 ===================================================================
 --- udisks2.orig/data/udisks2.service.in	2024-12-19 09:47:58.932385402 +0800
-+++ udisks2/data/udisks2.service.in	2024-12-19 14:55:19.000000000 +0800
++++ udisks2/data/udisks2.service.in	2025-03-12 15:50:37.000000000 +0800
 @@ -5,7 +5,7 @@
  [Service]
  Type=dbus
@@ -14,7 +14,7 @@ Index: udisks2/data/udisks2.service.in
 Index: udisks2/src/main.c
 ===================================================================
 --- udisks2.orig/src/main.c	2024-12-19 09:47:58.972386938 +0800
-+++ udisks2/src/main.c	2024-12-19 14:55:57.846088472 +0800
++++ udisks2/src/main.c	2025-03-12 15:50:37.000000000 +0800
 @@ -24,6 +24,8 @@
  #include <gio/gio.h>
  #include <glib-unix.h>
@@ -34,8 +34,8 @@ Index: udisks2/src/main.c
    if (g_getenv ("PATH") == NULL)
 Index: udisks2/src/udisksdaemonutil.c
 ===================================================================
---- udisks2.orig/src/udisksdaemonutil.c	2024-12-19 14:55:19.000000000 +0800
-+++ udisks2/src/udisksdaemonutil.c	2024-12-19 14:55:19.000000000 +0800
+--- udisks2.orig/src/udisksdaemonutil.c	2025-03-12 15:50:37.000000000 +0800
++++ udisks2/src/udisksdaemonutil.c	2025-03-12 15:50:37.000000000 +0800
 @@ -743,6 +743,7 @@
                                                                 invocation,
                                                                 &error))
@@ -46,8 +46,8 @@ Index: udisks2/src/udisksdaemonutil.c
      }
 Index: udisks2/src/udiskslinuxfilesystem.c
 ===================================================================
---- udisks2.orig/src/udiskslinuxfilesystem.c	2024-12-19 14:55:19.000000000 +0800
-+++ udisks2/src/udiskslinuxfilesystem.c	2024-12-19 14:55:19.000000000 +0800
+--- udisks2.orig/src/udiskslinuxfilesystem.c	2025-03-12 15:50:37.000000000 +0800
++++ udisks2/src/udiskslinuxfilesystem.c	2025-03-12 16:07:19.996186300 +0800
 @@ -966,6 +966,7 @@
      {
        if (g_mkdir_with_parents (mount_point_to_use, 0755) != 0)
@@ -72,30 +72,30 @@ Index: udisks2/src/udiskslinuxfilesystem.c
        return FALSE;
      }
  
-@@ -1155,6 +1158,7 @@
+@@ -1154,6 +1157,7 @@
+   /* Calculate filesystem type (guaranteed to be valid UTF-8) */
    if (!calculate_fs_type (block, options, &fs_signature, &fs_type_to_use, &error))
      {
-       g_dbus_method_invocation_take_error (invocation, error);
 +      udisks_warning ("%s", error!=NULL ? error->message : "calculate fs type error");
+       g_dbus_method_invocation_take_error (invocation, error);
        return FALSE;
      }
- 
-@@ -1170,6 +1174,7 @@
+@@ -1169,6 +1173,7 @@
+                                                &error);
    if (*mount_point_to_use == NULL)
      {
-       g_dbus_method_invocation_take_error (invocation, error);
 +      udisks_warning ("%s", error!=NULL ? error->message : "calculate mount point error");
+       g_dbus_method_invocation_take_error (invocation, error);
        g_free (fs_signature);
        g_free (fs_type_to_use);
-       return FALSE;
-@@ -1188,6 +1193,7 @@
+@@ -1187,6 +1192,7 @@
+   g_free (fs_type_to_use);
    if (mount_options == NULL)
      {
-       g_dbus_method_invocation_take_error (invocation, error);
 +      udisks_warning ("%s", error!=NULL ? error->message : "calculate mount options error");
+       g_dbus_method_invocation_take_error (invocation, error);
        return FALSE;
      }
- 
 @@ -1199,6 +1205,7 @@
                                               UDISKS_ERROR_FAILED,
                                               "Error creating mount point `%s': %m",
