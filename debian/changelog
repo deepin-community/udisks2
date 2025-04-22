@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin8) unstable; urgency=medium
+
+  * fix: usec: iso9660/udf mount failed in sw/mips kernel without usec=1
+
+ -- zhangya <zhangya@uniontech.com>  Tue, 22 Apr 2025 13:23:49 +0800
+
 udisks2 (2.10.1-6deepin7) unstable; urgency=medium
 
   * fix: error log make crash.
