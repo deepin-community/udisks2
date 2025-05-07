@@ -1,3 +1,12 @@
+udisks2 (2.10.1-6deepin9) unstable; urgency=medium
+
+  * fix: usec: udisks-daemon-resources.c是编译中间文件,
+  *            orig.tar.xz文件时间早于编译服务器时间时, 导致udisks-daemon-resources.c没有重新生成.
+  *            导致builtin_mount_options.conf的修改没有生效.
+  *            Bug: https://pms.uniontech.com/bug-view-315265.html
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 07 May 2025 16:47:49 +0800
+
 udisks2 (2.10.1-6deepin8) unstable; urgency=medium
 
   * fix: usec: iso9660/udf mount failed in sw/mips kernel without usec=1
