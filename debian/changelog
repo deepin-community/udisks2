@@ -1,3 +1,11 @@
+udisks2 (2.10.1-6deepin10) unstable; urgency=medium
+
+  [ Salvatore Bonaccorso ]
+  * udiskslinuxfilesystemhelpers: Mount private mounts with
+    'nodev,nosuid'
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 20 Jun 2025 16:04:59 +0800
+
 udisks2 (2.10.1-6deepin9) unstable; urgency=medium
 
   * fix: usec: udisks-daemon-resources.c是编译中间文件,
