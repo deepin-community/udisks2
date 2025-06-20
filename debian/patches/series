@@ -10,3 +10,4 @@ usec-udisks2-mac-patches.patch
 uniontech-fix-gbk-Chinese-encoding-display-garble-code.patch
 uniontech-add-handle-mount-log.patch
 uniontech-fix-use-after-free.patch
+udiskslinuxfilesystemhelpers-Mount-private-mounts-wi.patch
