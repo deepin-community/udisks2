@@ -1,0 +1,23 @@
+From: Vojtech Trefny <vtrefny@redhat.com>
+Date: Mon, 24 Feb 2025 12:11:51 +0100
+Subject: tests: Fix expected error message with util-linux 2.41
+
+Fixes: #1353
+(cherry picked from commit ccf772b2fe3505b181f5adf8ca3f912c003032f1)
+---
+ src/tests/integration-test | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/tests/integration-test b/src/tests/integration-test
+index 65028d6..a00403d 100755
+--- a/src/tests/integration-test
++++ b/src/tests/integration-test
+@@ -1112,7 +1112,7 @@ class FS(UDisksTestCase):
+             except GLib.GError as e:
+                 msg = r"(is write-protected but `rw' option given|" \
+                         "is write-protected but explicit read-write mode requested|" \
+-                        "fsconfig system call failed: /dev/sr.*: Can't open blockdev)"
++                        "fsconfig.*failed: /dev/sr.*: Can't open blockdev)"
+                 if not re.search(msg, str(e)):
+                     self.fail('Mounting read-only device with \'rw\' option failed '
+                               'with an unexpected error.\nGot: %s\nExpected: \'%s\''

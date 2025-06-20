@@ -1,0 +1,31 @@
+From: Tomas Bzatek <tbzatek@redhat.com>
+Date: Tue, 30 Apr 2024 16:44:51 +0200
+Subject: integration-test: Adapt to the new libmount context error messages
+
+---
+ src/tests/integration-test | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/tests/integration-test b/src/tests/integration-test
+index 8d7ffcf..26766db 100755
+--- a/src/tests/integration-test
++++ b/src/tests/integration-test
+@@ -1106,12 +1106,13 @@ class FS(UDisksTestCase):
+                 ro_options = GLib.Variant('a{sv}', {'options': GLib.Variant('s', 'rw')})
+                 cd_fs.call_mount_sync(ro_options, None)
+             except GLib.GError as e:
+-                new_msg = 'is write-protected but explicit read-write mode requested'
+-                old_msg = 'is write-protected but `rw\' option given'
+-                if not (old_msg in str(e) or new_msg  in str(e)):
+-                    self.fail('Mounting read-only device with \'rw\' option failed'
++                msg = r"(is write-protected but `rw' option given|" \
++                        "is write-protected but explicit read-write mode requested|" \
++                        "fsconfig system call failed: /dev/sr.*: Can't open blockdev)"
++                if not re.search(msg, str(e)):
++                    self.fail('Mounting read-only device with \'rw\' option failed '
+                               'with an unexpected error.\nGot: %s\nExpected: \'%s\''
+-                              ' or \'%s\'' % (str(e), new_msg, old_msg))
++                              % (str(e), msg))
+             else:
+                 self.retry_busy(cd_fs.call_unmount_sync, no_options, None)
+                 self.fail('Mounting read-only device didn\'t fail with \'rw\' option.')

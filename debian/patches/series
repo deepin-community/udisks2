@@ -1,12 +1,6 @@
 tests-Fix-targetcli_config.json.patch
-
-hide-swap-partition-and-extended-partition.patch
-# udiskslinuxprovider-Filter-out-spurious-uevents.patch
-fix-Modify-the-solution-to-the-rules-file-conflict.patch
-allow-user-umount-permissionmanagers-mount-point.patch
-filesystem-mount-system-enable.patch
-ntfs-3g.patch
-usec-udisks2-mac-patches.patch
-uniontech-fix-gbk-Chinese-encoding-display-garble-code.patch
-uniontech-add-handle-mount-log.patch
-uniontech-fix-use-after-free.patch
+integration-test-Adapt-to-the-new-libmount-context-error-.patch
+Do-not-overwrite-CPPFLAGS.patch
+integration-test-Fix-change-label-test-with-exfatprogs-1..patch
+tests-Fix-expected-error-message-with-util-linux-2.41.patch
+udiskslinuxfilesystemhelpers-Mount-private-mounts-wi.patch

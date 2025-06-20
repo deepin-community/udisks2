@@ -1,0 +1,118 @@
+From: Michael Biebl <biebl@debian.org>
+Date: Thu, 4 Jul 2024 15:37:36 +0200
+Subject: Do not overwrite CPPFLAGS
+
+Use AM_CPPFLAGS instead of ovewriting CPPFLAGS.
+CPPFLAGS is a user variable reserved for local modifications.
+See
+https://www.gnu.org/software/automake/manual/html_node/Flag-Variables-Ordering.html
+https://github.com/storaged-project/udisks/pull/1296
+---
+ modules/btrfs/Makefile.am | 4 ++--
+ modules/iscsi/Makefile.am | 4 ++--
+ modules/lsm/Makefile.am   | 4 ++--
+ modules/lvm2/Makefile.am  | 4 ++--
+ src/Makefile.am           | 2 +-
+ 5 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/modules/btrfs/Makefile.am b/modules/btrfs/Makefile.am
+index f96cd16..4d0150e 100644
+--- a/modules/btrfs/Makefile.am
++++ b/modules/btrfs/Makefile.am
+@@ -4,7 +4,7 @@ SUBDIRS = data
+ 
+ NULL =
+ 
+-CPPFLAGS =                                                                     \
++AM_CPPFLAGS =                                                                  \
+ 	-I$(top_builddir) -I$(top_srcdir)                                      \
+ 	-DPACKAGE_LIBEXEC_DIR=\""$(libexecdir)"\"                              \
+ 	-DPACKAGE_SYSCONF_DIR=\""$(sysconfdir)"\"                              \
+@@ -51,7 +51,7 @@ libudisks2_btrfs_la_SOURCES =                                                  \
+ 	$(NULL)
+ 
+ libudisks2_btrfs_la_CPPFLAGS =                                                 \
+-	$(CPPFLAGS)                                                            \
++	$(AM_CPPFLAGS)                                                         \
+ 	-DG_LOG_DOMAIN=\"libudisks2-btrfs\"                                    \
+ 	$(NULL)
+ 
+diff --git a/modules/iscsi/Makefile.am b/modules/iscsi/Makefile.am
+index 2cecc30..ec55ea6 100644
+--- a/modules/iscsi/Makefile.am
++++ b/modules/iscsi/Makefile.am
+@@ -4,7 +4,7 @@ SUBDIRS = data
+ 
+ NULL =
+ 
+-CPPFLAGS =                                                                     \
++AM_CPPFLAGS =                                                                  \
+ 	-I$(top_builddir) -I$(top_srcdir)                                      \
+ 	-DPACKAGE_LIBEXEC_DIR=\""$(libexecdir)"\"                              \
+ 	-DPACKAGE_SYSCONF_DIR=\""$(sysconfdir)"\"                              \
+@@ -56,7 +56,7 @@ libudisks2_iscsi_la_SOURCES +=                                                 \
+ endif # BUILD_ISCSI_SESSION_OBJECT
+ 
+ libudisks2_iscsi_la_CPPFLAGS =                                                 \
+-	$(CPPFLAGS)                                                            \
++	$(AM_CPPFLAGS)                                                         \
+ 	-DG_LOG_DOMAIN=\"libudisks2-iscsi\"                                    \
+ 	$(NULL)
+ 
+diff --git a/modules/lsm/Makefile.am b/modules/lsm/Makefile.am
+index b77a901..f8095b8 100644
+--- a/modules/lsm/Makefile.am
++++ b/modules/lsm/Makefile.am
+@@ -4,7 +4,7 @@ SUBDIRS = data
+ 
+ NULL =
+ 
+-CPPFLAGS =                                                                     \
++AM_CPPFLAGS =                                                                  \
+ 	-I$(top_builddir) -I$(top_srcdir)                                      \
+ 	-DPACKAGE_LIBEXEC_DIR=\""$(libexecdir)"\"                              \
+ 	-DPACKAGE_SYSCONF_DIR=\""$(sysconfdir)"\"                              \
+@@ -48,7 +48,7 @@ libudisks2_lsm_la_SOURCES =                                                    \
+ 	$(NULL)
+ 
+ libudisks2_lsm_la_CPPFLAGS =                                                   \
+-	$(CPPFLAGS)                                                            \
++	$(AM_CPPFLAGS)                                                         \
+ 	-DG_LOG_DOMAIN=\"libudisks2-lsm\"                                      \
+ 	$(NULL)
+ 
+diff --git a/modules/lvm2/Makefile.am b/modules/lvm2/Makefile.am
+index 67b8aa6..29ef382 100644
+--- a/modules/lvm2/Makefile.am
++++ b/modules/lvm2/Makefile.am
+@@ -4,7 +4,7 @@ SUBDIRS = data
+ 
+ NULL =
+ 
+-CPPFLAGS =                                                                     \
++AM_CPPFLAGS =                                                                  \
+ 	-I$(top_builddir) -I$(top_srcdir)                                      \
+ 	-DPACKAGE_LIBEXEC_DIR=\""$(libexecdir)"\"                              \
+ 	-DPACKAGE_SYSCONF_DIR=\""$(sysconfdir)"\"                              \
+@@ -55,7 +55,7 @@ libudisks2_lvm2_la_SOURCES =                                                   \
+ 	$(NULL)
+ 
+ libudisks2_lvm2_la_CPPFLAGS =                                                  \
+-	$(CPPFLAGS)                                                            \
++	$(AM_CPPFLAGS)                                                         \
+ 	-DG_LOG_DOMAIN=\"libudisks2-lvm2\"                                     \
+ 	$(NULL)
+ 
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 5a174d1..2e42844 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -8,7 +8,7 @@ EXTRA_DIST =
+ 
+ CLEANFILES =
+ 
+-CPPFLAGS =                                                                     \
++AM_CPPFLAGS =                                                                  \
+ 	-I$(top_builddir) -I$(top_srcdir)                                      \
+ 	-DPACKAGE_LIBEXEC_DIR=\""$(libexecdir)"\"                              \
+ 	-DPACKAGE_SYSCONF_DIR=\""$(sysconfdir)"\"                              \

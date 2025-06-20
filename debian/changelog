@@ -1,62 +1,71 @@
-udisks2 (2.10.1-6deepin9) unstable; urgency=medium
+udisks2 (2.10.1-12.1) unstable; urgency=high
 
-  * fix: usec: udisks-daemon-resources.c是编译中间文件,
-  *            orig.tar.xz文件时间早于编译服务器时间时, 导致udisks-daemon-resources.c没有重新生成.
-  *            导致builtin_mount_options.conf的修改没有生效.
-  *            Bug: https://pms.uniontech.com/bug-view-315265.html
+  * Non-maintainer upload by the Security Team.
+  * udiskslinuxfilesystemhelpers: Mount private mounts with 'nodev,nosuid'
 
- -- zhangya <zhangya@uniontech.com>  Wed, 07 May 2025 16:47:49 +0800
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 09 Jun 2025 16:29:29 +0200
 
-udisks2 (2.10.1-6deepin8) unstable; urgency=medium
+udisks2 (2.10.1-12) unstable; urgency=medium
 
-  * fix: usec: iso9660/udf mount failed in sw/mips kernel without usec=1
+  * tests: Fix expected error message with util-linux 2.41.
+    Patch cherry-picked from upstream Git. (Closes: #1098673)
+  * Switch debian-branch to debian/unstable in gbp.conf
 
- -- zhangya <zhangya@uniontech.com>  Tue, 22 Apr 2025 13:23:49 +0800
+ -- Michael Biebl <biebl@debian.org>  Tue, 25 Feb 2025 12:57:07 +0100
 
-udisks2 (2.10.1-6deepin7) unstable; urgency=medium
+udisks2 (2.10.1-11) unstable; urgency=medium
 
-  * fix: error log make crash.
+  * Replace dependency on dbus with default-dbus-system-bus | dbus-system-bus.
+    This makes it easier to swap in alternative implementations like
+    dbus-broker.
 
- -- xinpeng.wang <wangxinpeng@uniontech.com>  Mon, 17 Mar 2025 15:21:49 +0800
+ -- Michael Biebl <biebl@debian.org>  Fri, 27 Sep 2024 01:26:14 +0200
 
-udisks2 (2.10.1-6deepin6) unstable; urgency=medium
+udisks2 (2.10.1-10) unstable; urgency=medium
 
-  * fix: usec: iso9660/udf mount with useccontext failed in deepin.
-  *     deepin社区版iso挂载选项usececontext挂载失败
-  *     Bug: https://pms.uniontech.com/bug-view-306521.html
+  [ Alessandro Astone ]
+  * debian: Add patch to fix tests with exfatprogs 1.2.5
 
- -- zhangya <zhangya@uniontech.com>  Wed, 05 Mar 2025 19:14:08 +0800
+ -- Michael Biebl <biebl@debian.org>  Wed, 14 Aug 2024 12:15:51 +0200
 
-udisks2 (2.10.1-6deepin5) unstable; urgency=medium
+udisks2 (2.10.1-9) unstable; urgency=medium
 
-  * merge v20 patch.
+  * Disable build path variation for reprotest on Salsa CI.
+    In src/udisksmodulemanager.c the build path (BUILD_DIR) is embeded
+    causing reprotest to fail.
+  * Do not overwrite CPPFLAGS and use AM_CPPFLAGS instead.
+    This ensures that all hardening build flags are correctly applied.
+  * Disable test-crossbuild-arm64 on Salsa CI.
+    This requires changes to gobject-introspection for it to actually work.
+    See #1030223.
 
- -- xinpeng.wang <wangxinpeng@uniontech.com>  Thu, 19 Dec 2024 15:37:08 +0800
+ -- Michael Biebl <biebl@debian.org>  Thu, 04 Jul 2024 17:52:56 +0200
 
-udisks2 (2.10.1-6deepin4) unstable; urgency=medium
+udisks2 (2.10.1-8) unstable; urgency=medium
 
-  * update options_to_use usage
+  * Enable standard salsa CI
+  * Do not automatically mount unmaintained file systems.
+    Ship a udev rules files named 70-insecure-fs.rules which sets the udev
+    property UDISKS_AUTO to 0 for file systems that are marked as "Orphan"
+    or "Odd Fixes" in the kernel MAINTAINERS file. Those are more at risk of
+    having security-sensitive defects which could be exploited by a crafted
+    file system.
+    The list includes the following file systems:
+    affs, ecryptfs, efs, hfs, hfsplus, jffs2, jfs, qnx6, sysv.
+    As we require ID_FS_TYPE to be set, use priority 70 so it is ordered
+    after 60-persistent-storage.rules.
+    Thanks to Marco d'Itri (Closes: #1041552)
+  * Bump Standards-Version to 4.7.0
+  * Drop Ubuntu specific workaround for exfatprogs
 
- -- Liang Bo <liangbo@uniontech.com>  Thu, 12 Sep 2024 15:20:15 +0800
+ -- Michael Biebl <biebl@debian.org>  Wed, 03 Jul 2024 19:00:16 +0200
 
-udisks2 (2.10.1-6deepin3) unstable; urgency=medium
+udisks2 (2.10.1-7) unstable; urgency=medium
 
-  * add usec-udisks2-mac-patches.patch
+  * integration-test: Adapt to the new libmount context error messages
+    (Closes: #1070019)
 
- -- Liang Bo <liangbo@uniontech.com>  Thu, 05 Sep 2024 10:49:48 +0800
-
-udisks2 (2.10.1-6deepin2) unstable; urgency=medium
-
-  * ntfs-3g.patch: Attempt to use "ntfs-3g" as an alternative if "ntfs3" fails
-
- -- Tianyu Chen <sweetyfish@deepin.org>  Wed, 19 Jun 2024 13:44:00 +0800
-
-udisks2 (2.10.1-6deepin1) unstable; urgency=medium
-
-  * Apply deepin patches.
-  * Refresh fix-Modify-the-solution-to-the-rules-file-conflict.patch.
-
- -- Tianyu Chen <sweetyfish@deepin.org>  Tue, 18 Jun 2024 14:30:24 +0800
+ -- Michael Biebl <biebl@debian.org>  Tue, 30 Apr 2024 17:27:36 +0200
 
 udisks2 (2.10.1-6) unstable; urgency=medium
 
