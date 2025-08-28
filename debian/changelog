@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin11) unstable; urgency=medium
+
+  * udiskslinuxmanager: Add lower bounds check to fd_index (CVE-2025-8067)
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 29 Aug 2025 01:48:11 +0800
+
 udisks2 (2.10.1-6deepin10) unstable; urgency=medium
 
   [ Salvatore Bonaccorso ]

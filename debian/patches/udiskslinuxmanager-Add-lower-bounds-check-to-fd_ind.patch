@@ -1,0 +1,25 @@
+From: Marc Deslauriers <marc.deslauriers@canonical.com>
+Date: Tue, 15 Jul 2025 13:34:08 -0400
+Subject: udiskslinuxmanager: Add lower bounds check to fd_index
+
+Make sure fd_index isn't negative as this can lead to an OOB read
+resulting in a crash, or to exposing internal file descriptors.
+
+Reported by Michael Imfeld (born0monday).
+---
+ src/udiskslinuxmanager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/udiskslinuxmanager.c b/src/udiskslinuxmanager.c
+index b09947a..0a0d1b1 100644
+--- a/src/udiskslinuxmanager.c
++++ b/src/udiskslinuxmanager.c
+@@ -381,7 +381,7 @@ handle_loop_setup (UDisksManager          *object,
+     goto out;
+ 
+   fd_num = g_variant_get_handle (fd_index);
+-  if (fd_list == NULL || fd_num >= g_unix_fd_list_get_length (fd_list))
++  if (fd_list == NULL || fd_num < 0 || fd_num >= g_unix_fd_list_get_length (fd_list))
+     {
+       g_dbus_method_invocation_return_error (invocation,
+                                              UDISKS_ERROR,
