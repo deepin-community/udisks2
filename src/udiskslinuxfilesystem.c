@@ -932,10 +932,10 @@ handle_mount_fstab (UDisksDaemon          *daemon,
       /* Translators: Shown in authentication dialog when the user
        * requests mounting a filesystem.
        *
-       * Do not translate $(drive), it's a placeholder and
+       * Do not translate $(drive.name), it's a placeholder and
        * will be replaced by the name of the drive/device in question
        */
-      message = N_("Authentication is required to mount $(drive)");
+      message = N_("Authentication is required to mount $(drive.name)");
       if (mount_other_user)
         {
           action_id = "org.freedesktop.udisks2.filesystem-mount-other-user";
@@ -1018,13 +1018,13 @@ handle_mount_fstab (UDisksDaemon          *daemon,
                * user requests mounting a filesystem that is in
                * /etc/fstab file with the x-udisks-auth option.
                *
-               * Do not translate $(drive), it's a
+               * Do not translate $(drive.name), it's a
                * placeholder and will be replaced by the name of
                * the drive/device in question
                *
                * Do not translate /etc/fstab
                */
-              message = N_("Authentication is required to mount $(drive) referenced in the /etc/fstab file");
+              message = N_("Authentication is required to mount $(drive.name) referenced in the /etc/fstab file");
               if (!udisks_daemon_util_check_authorization_sync (daemon,
                                                                 object,
                                                                 action_id,
@@ -1123,10 +1123,10 @@ handle_mount_dynamic (UDisksDaemon          *daemon,
   /* Translators: Shown in authentication dialog when the user
    * requests mounting a filesystem.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to mount $(drive)");
+  message = N_("Authentication is required to mount $(drive.name)");
   if (mount_other_user)
     {
       action_id = "org.freedesktop.udisks2.filesystem-mount-other-user";
@@ -1599,13 +1599,13 @@ handle_unmount (UDisksFilesystem      *filesystem,
                                                                  * user requests unmounting a filesystem that is in
                                                                  * /etc/fstab file with the x-udisks-auth option.
                                                                  *
-                                                                 * Do not translate $(drive), it's a
+                                                                 * Do not translate $(drive.name), it's a
                                                                  * placeholder and will be replaced by the name of
                                                                  * the drive/device in question
                                                                  *
                                                                  * Do not translate /etc/fstab
                                                                  */
-                                                                N_("Authentication is required to unmount $(drive) referenced in the /etc/fstab file"),
+                                                                N_("Authentication is required to unmount $(drive.name) referenced in the /etc/fstab file"),
                                                                 invocation))
                 goto out;
               unmount_fstab_as_root = TRUE;
@@ -1650,10 +1650,10 @@ handle_unmount (UDisksFilesystem      *filesystem,
        * requests unmounting a filesystem previously mounted by
        * another user.
        *
-       * Do not translate $(drive), it's a placeholder and
+       * Do not translate $(drive.name), it's a placeholder and
        * will be replaced by the name of the drive/device in question
        */
-      message = N_("Authentication is required to unmount $(drive) mounted by another user");
+      message = N_("Authentication is required to unmount $(drive.name) mounted by another user");
 
       if (!udisks_daemon_util_check_authorization_sync (daemon,
                                                         object,
@@ -1818,10 +1818,10 @@ handle_set_label (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests changing the filesystem label.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to change the filesystem label on $(drive)");
+  message = N_("Authentication is required to change the filesystem label on $(drive.name)");
   if (!udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))
@@ -2000,10 +2000,10 @@ handle_resize (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests resizing the filesystem.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to resize the filesystem on $(drive)");
+  message = N_("Authentication is required to resize the filesystem on $(drive.name)");
   if (! udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))
@@ -2171,10 +2171,10 @@ handle_repair (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests resizing the filesystem.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to repair the filesystem on $(drive)");
+  message = N_("Authentication is required to repair the filesystem on $(drive.name)");
   if (! udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))
@@ -2339,10 +2339,10 @@ handle_check (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests resizing the filesystem.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to check the filesystem on $(drive)");
+  message = N_("Authentication is required to check the filesystem on $(drive.name)");
   if (! udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))
@@ -2499,10 +2499,10 @@ handle_take_ownership (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests taking ownership of the filesystem.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to change ownership of the filesystem on $(drive)");
+  message = N_("Authentication is required to change ownership of the filesystem on $(drive.name)");
 
   /* Check that the user is actually authorized to check the filesystem. */
   if (! udisks_daemon_util_check_authorization_sync (daemon,
@@ -2666,10 +2666,10 @@ handle_set_uuid (UDisksFilesystem      *filesystem,
   /* Translators: Shown in authentication dialog when the user
    * requests changing the filesystem UUID.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to change the filesystem UUID on $(drive)");
+  message = N_("Authentication is required to change the filesystem UUID on $(drive.name)");
   if (!udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))

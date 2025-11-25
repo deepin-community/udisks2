@@ -492,10 +492,10 @@ handle_unlock (UDisksEncrypted        *encrypted,
   /* Translators: Shown in authentication dialog when the user
    * requests unlocking an encrypted device.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to unlock the encrypted device $(drive)");
+  message = N_("Authentication is required to unlock the encrypted device $(drive.name)");
   if (!udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (is_in_crypttab && has_option (crypttab_options, "x-udisks-auth"))
@@ -772,10 +772,10 @@ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
                                                                     * requests locking an encrypted device that was previously.
                                                                     * unlocked by another user.
                                                                     *
-                                                                    * Do not translate $(drive), it's a placeholder and
+                                                                    * Do not translate $(drive.name), it's a placeholder and
                                                                     * will be replaced by the name of the drive/device in question
                                                                     */
-                                                                   N_("Authentication is required to lock the encrypted device $(drive) unlocked by another user"),
+                                                                   N_("Authentication is required to lock the encrypted device $(drive.name) unlocked by another user"),
                                                                    invocation,
                                                                    error))
         {
@@ -960,10 +960,10 @@ handle_change_passphrase (UDisksEncrypted        *encrypted,
                                                     /* Translators: Shown in authentication dialog when the user
                                                      * requests unlocking an encrypted device.
                                                      *
-                                                     * Do not translate $(drive), it's a placeholder and
+                                                     * Do not translate $(drive.name), it's a placeholder and
                                                      * will be replaced by the name of the drive/device in question
                                                      */
-                                                    N_("Authentication is required to unlock the encrypted device $(drive)"),
+                                                    N_("Authentication is required to unlock the encrypted device $(drive.name)"),
                                                     invocation))
     goto out;
 
@@ -1094,10 +1094,10 @@ handle_resize (UDisksEncrypted       *encrypted,
   /* Translators: Shown in authentication dialog when the user
    * requests resizing a encrypted block device.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to resize the encrypted device $(drive)");
+  message = N_("Authentication is required to resize the encrypted device $(drive.name)");
   if (! udisks_daemon_util_setup_by_user (daemon, object, caller_uid))
     {
       if (udisks_block_get_hint_system (block))

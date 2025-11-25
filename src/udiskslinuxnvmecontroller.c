@@ -460,10 +460,10 @@ handle_smart_update (UDisksNVMeController  *_object,
   /* Translators: Shown in authentication dialog when the user
    * refreshes SMART data from a disk.
    *
-   * Do not translate $(drive), it's a placeholder and
+   * Do not translate $(drive.name), it's a placeholder and
    * will be replaced by the name of the drive/device in question
    */
-  message = N_("Authentication is required to update SMART data from $(drive)");
+  message = N_("Authentication is required to update SMART data from $(drive.name)");
   action_id = "org.freedesktop.udisks2.nvme-smart-update";
 
   /* Check that the user is authorized */
@@ -822,10 +822,10 @@ handle_smart_selftest_start (UDisksNVMeController  *_ctrl,
                                                     /* Translators: Shown in authentication dialog when the user
                                                      * initiates a device self-test.
                                                      *
-                                                     * Do not translate $(drive), it's a placeholder and
+                                                     * Do not translate $(drive.name), it's a placeholder and
                                                      * will be replaced by the name of the drive/device in question
                                                      */
-                                                    N_("Authentication is required to start a device self-test on $(drive)"),
+                                                    N_("Authentication is required to start a device self-test on $(drive.name)"),
                                                     invocation))
     goto out;
 
@@ -915,10 +915,10 @@ handle_smart_selftest_abort (UDisksNVMeController  *_ctrl,
                                                     /* Translators: Shown in authentication dialog when the user
                                                      * aborts a running device self-test.
                                                      *
-                                                     * Do not translate $(drive), it's a placeholder and
+                                                     * Do not translate $(drive.name), it's a placeholder and
                                                      * will be replaced by the name of the drive/device in question
                                                      */
-                                                    N_("Authentication is required to abort a device self-test on $(drive)"),
+                                                    N_("Authentication is required to abort a device self-test on $(drive.name)"),
                                                     invocation))
     goto out;
 
@@ -1217,10 +1217,10 @@ handle_sanitize_start (UDisksNVMeController  *_object,
                                                     /* Translators: Shown in authentication dialog when the user
                                                      * initiates a sanitize operation.
                                                      *
-                                                     * Do not translate $(drive), it's a placeholder and
+                                                     * Do not translate $(drive.name), it's a placeholder and
                                                      * will be replaced by the name of the drive/device in question
                                                      */
-                                                    N_("Authentication is required to perform a sanitize operation of $(drive)"),
+                                                    N_("Authentication is required to perform a sanitize operation of $(drive.name)"),
                                                     invocation))
     goto out;
 
