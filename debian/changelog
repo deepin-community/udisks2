@@ -1,3 +1,10 @@
+udisks2 (2.10.1-6deepin11.1) unstable; urgency=medium
+
+  * fix:合入文管补丁 https://github.com/storaged-project/udisks/pull/1363
+  * 
+
+ -- tunaichao <ut006362@PECI2742>  Wed, 03 Dec 2025 17:12:16 +0800
+
 udisks2 (2.10.1-6deepin11) unstable; urgency=medium
 
   * udiskslinuxmanager: Add lower bounds check to fd_index (CVE-2025-8067)
