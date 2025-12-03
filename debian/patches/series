@@ -1,4 +1,3 @@
-provide-clearer-user-prompts-when-requesting-authorization.patch
 tests-Fix-targetcli_config.json.patch
 
 hide-swap-partition-and-extended-partition.patch
