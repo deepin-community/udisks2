@@ -12,3 +12,4 @@ uniontech-add-handle-mount-log.patch
 uniontech-fix-use-after-free.patch
 udiskslinuxfilesystemhelpers-Mount-private-mounts-wi.patch
 udiskslinuxmanager-Add-lower-bounds-check-to-fd_ind.patch
+provide-clearer-user-prompts-when-requesting-authorization.patch
