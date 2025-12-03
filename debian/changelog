@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin12) unstable; urgency=medium
+
+  * fix: Provide clearer user prompts when requesting authorization.
+
+ -- tunaichao <tunaichao@uniontech.com>  Wed, 03 Dec 2025 17:12:16 +0800
+
 udisks2 (2.10.1-6deepin11) unstable; urgency=medium
 
   * udiskslinuxmanager: Add lower bounds check to fd_index (CVE-2025-8067)
