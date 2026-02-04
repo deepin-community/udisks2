@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin13) unstable; urgency=medium
+
+  * chore: update Chinese translation
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 04 Feb 2026 11:12:00 +0800
+
 udisks2 (2.10.1-6deepin12) unstable; urgency=medium
 
   * fix: Provide clearer user prompts when requesting authorization.
