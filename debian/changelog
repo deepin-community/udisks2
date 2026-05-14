@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin14) unstable; urgency=medium
+
+  * fix: crypto reddisk supprot, add vendor id 4347.
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 14 May 2026 19:26:00 +0800
+
 udisks2 (2.10.1-6deepin13) unstable; urgency=medium
 
   * chore: update Chinese translation

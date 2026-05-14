@@ -1,8 +1,8 @@
-diff --git a/data/builtin_mount_options.conf b/data/builtin_mount_options.conf
-index 1d635fa..0afdcf7 100644
---- a/data/builtin_mount_options.conf
-+++ b/data/builtin_mount_options.conf
-@@ -21,10 +21,10 @@ ntfs:ntfs3_allow=uid=$UID,gid=$GID,umask,dmask,fmask,iocharset,discard,nodiscard
+Index: udisks2/data/builtin_mount_options.conf
+===================================================================
+--- udisks2.orig/data/builtin_mount_options.conf
++++ udisks2/data/builtin_mount_options.conf
+@@ -21,10 +21,10 @@ ntfs:ntfs3_allow=uid=$UID,gid=$GID,umask
  ntfs_drivers=ntfs3,ntfs
  
  iso9660_defaults=uid=$UID,gid=$GID,iocharset=utf8,mode=0400,dmode=0500
@@ -15,10 +15,10 @@ index 1d635fa..0afdcf7 100644
  
  hfsplus_defaults=uid=$UID,gid=$GID,nls=utf8
  hfsplus_allow=uid=$UID,gid=$GID,creator,type,umask,session,part,decompose,nodecompose,force,nls
-diff --git a/src/tests/Makefile.in b/src/tests/Makefile.in
-index 3f7bd1b..634aad5 100644
---- a/src/tests/Makefile.in
-+++ b/src/tests/Makefile.in
+Index: udisks2/src/tests/Makefile.in
+===================================================================
+--- udisks2.orig/src/tests/Makefile.in
++++ udisks2/src/tests/Makefile.in
 @@ -1178,7 +1178,7 @@ distdir-am: $(DISTFILES)
  	  fi; \
  	done
@@ -28,11 +28,11 @@ index 3f7bd1b..634aad5 100644
  check: check-recursive
  all-am: Makefile $(PROGRAMS)
  installdirs: installdirs-recursive
-diff --git a/src/udisksdaemonutil.c b/src/udisksdaemonutil.c
-index 3db92f5..ae6688b 100644
---- a/src/udisksdaemonutil.c
-+++ b/src/udisksdaemonutil.c
-@@ -1959,3 +1959,21 @@ udisks_module_validate_name (const gchar *module_name)
+Index: udisks2/src/udisksdaemonutil.c
+===================================================================
+--- udisks2.orig/src/udisksdaemonutil.c
++++ udisks2/src/udisksdaemonutil.c
+@@ -1959,3 +1959,21 @@ udisks_module_validate_name (const gchar
  }
  
  /* ---------------------------------------------------------------------------------------------------- */
@@ -54,11 +54,11 @@ index 3db92f5..ae6688b 100644
 +
 +    return FALSE;
 +}
-diff --git a/src/udiskslinuxblock.c b/src/udiskslinuxblock.c
-index 829dd5f..8fc45d4 100644
---- a/src/udiskslinuxblock.c
-+++ b/src/udiskslinuxblock.c
-@@ -1028,7 +1028,7 @@ udisks_linux_block_update (UDisksLinuxBlock       *block,
+Index: udisks2/src/udiskslinuxblock.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxblock.c
++++ udisks2/src/udiskslinuxblock.c
+@@ -1028,7 +1028,7 @@ udisks_linux_block_update (UDisksLinuxBl
        gchar *dm_uuid;
        dm_uuid = get_sysfs_attr (device->udev_device, "dm/uuid");
        if (dm_uuid != NULL &&
@@ -67,10 +67,10 @@ index 829dd5f..8fc45d4 100644
          {
            gchar *slave_sysfs_path;
            slave_sysfs_path = get_slave_sysfs_path (g_udev_device_get_sysfs_path (device->udev_device));
-diff --git a/src/udiskslinuxblockobject.c b/src/udiskslinuxblockobject.c
-index d5da4bc..3cd79a9 100644
---- a/src/udiskslinuxblockobject.c
-+++ b/src/udiskslinuxblockobject.c
+Index: udisks2/src/udiskslinuxblockobject.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxblockobject.c
++++ udisks2/src/udiskslinuxblockobject.c
 @@ -798,10 +798,36 @@ encrypted_check (UDisksObject *object)
  {
    UDisksBlock *block = udisks_object_peek_block (object);
@@ -83,10 +83,10 @@ index d5da4bc..3cd79a9 100644
 +         udisks_linux_block_is_unknown_crypto (block))
 +    return TRUE;
 +
-+  // 中孚红盘 vid为 aaaa或bbbb， 是加密盘
++  // 中孚红盘 vid为 aaaa或4347， 是加密盘
 +  const gchar* id_type = udisks_block_get_id_type (block);
 +  const gchar* id_usage = udisks_block_get_id_usage (block);
-+  if( (id_type && g_strcmp0 (id_type, "") == 0)
++  if( (id_type == NULL || g_strcmp0 (id_type, "") == 0)
 +     && (id_usage == NULL || (id_usage && g_strcmp0 (id_usage, "") == 0))) {
 +
 +    UDisksLinuxBlockObject *block_object = UDISKS_LINUX_BLOCK_OBJECT (object);
@@ -98,7 +98,7 @@ index d5da4bc..3cd79a9 100644
 +        const gchar *vendor = g_udev_device_get_property (device->udev_device, "ID_VENDOR_ID");
 +        g_object_unref (device);
 +        if ( vendor && strlen(vendor) == strlen("aaaa") &&
-+            (g_strncasecmp (vendor, "aaaa", 4) == 0 ) ){
++            (g_strncasecmp (vendor, "aaaa", 4) == 0 ||  g_strncasecmp (vendor, "4347", 4) == 0)) {
 +            udisks_block_set_id_usage (block, "crypto");
 +            udisks_block_set_id_type (block, "crypto_unknown");
 +            return TRUE;
@@ -110,11 +110,11 @@ index d5da4bc..3cd79a9 100644
  }
  
  static void
-diff --git a/src/udiskslinuxencrypted.c b/src/udiskslinuxencrypted.c
-index 9bcbd2f..9ba3cac 100644
---- a/src/udiskslinuxencrypted.c
-+++ b/src/udiskslinuxencrypted.c
-@@ -664,6 +664,8 @@ handle_unlock (UDisksEncrypted        *encrypted,
+Index: udisks2/src/udiskslinuxencrypted.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxencrypted.c
++++ udisks2/src/udiskslinuxencrypted.c
+@@ -664,6 +664,8 @@ handle_unlock (UDisksEncrypted        *e
  
  /* ---------------------------------------------------------------------------------------------------- */
  
@@ -123,7 +123,7 @@ index 9bcbd2f..9ba3cac 100644
  gboolean
  udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
                               GDBusMethodInvocation  *invocation,
-@@ -688,6 +690,8 @@ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
+@@ -688,6 +690,8 @@ udisks_linux_encrypted_lock (UDisksLinux
    gboolean is_luks;
    gboolean is_bitlk;
    gboolean handle_as_tcrypt;
@@ -132,7 +132,7 @@ index 9bcbd2f..9ba3cac 100644
  
    object = udisks_daemon_util_dup_object (encrypted, error);
    if (object == NULL)
-@@ -759,10 +763,21 @@ udisks_linux_encrypted_lock (UDisksLinuxEncrypted   *encrypted,
+@@ -759,10 +763,21 @@ udisks_linux_encrypted_lock (UDisksLinux
        goto out;
      }
  
@@ -155,11 +155,11 @@ index 9bcbd2f..9ba3cac 100644
      {
        if (!udisks_daemon_util_check_authorization_sync_with_error (daemon,
                                                                     object,
-diff --git a/src/udiskslinuxfilesystem.c b/src/udiskslinuxfilesystem.c
-index 92a251e..09fc498 100644
---- a/src/udiskslinuxfilesystem.c
-+++ b/src/udiskslinuxfilesystem.c
-@@ -1470,6 +1470,8 @@ wait_for_filesystem_mount_points (UDisksDaemon *daemon,
+Index: udisks2/src/udiskslinuxfilesystem.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxfilesystem.c
++++ udisks2/src/udiskslinuxfilesystem.c
+@@ -1470,6 +1470,8 @@ wait_for_filesystem_mount_points (UDisks
    return object;
  }
  
@@ -168,7 +168,7 @@ index 92a251e..09fc498 100644
  /* runs in thread dedicated to handling @invocation */
  static gboolean
  handle_unmount (UDisksFilesystem      *filesystem,
-@@ -1495,6 +1497,8 @@ handle_unmount (UDisksFilesystem      *filesystem,
+@@ -1495,6 +1497,8 @@ handle_unmount (UDisksFilesystem      *f
    const gchar *const *user_mount_option = NULL;
    guint n_option = 0;
    gboolean permissionmanager_mount = FALSE;
@@ -177,7 +177,7 @@ index 92a251e..09fc498 100644
    UDisksObject *filesystem_object = NULL;
    WaitForFilesystemMountPointsData wait_data = {NULL, 0, NULL};
  
-@@ -1664,6 +1668,17 @@ handle_unmount (UDisksFilesystem      *filesystem,
+@@ -1664,6 +1668,17 @@ handle_unmount (UDisksFilesystem      *f
            }
        }
  
@@ -195,11 +195,11 @@ index 92a251e..09fc498 100644
    if (caller_uid != 0 && (caller_uid != mounted_by_uid) && permissionmanager_mount == FALSE)
      {
        const gchar *action_id;
-diff --git a/src/udiskslinuxmountoptions.c b/src/udiskslinuxmountoptions.c
-index 95a0aa8..65124ed 100644
---- a/src/udiskslinuxmountoptions.c
-+++ b/src/udiskslinuxmountoptions.c
-@@ -1124,6 +1124,7 @@ calculate_mount_options_for_fs_type (UDisksDaemon  *daemon,
+Index: udisks2/src/udiskslinuxmountoptions.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxmountoptions.c
++++ udisks2/src/udiskslinuxmountoptions.c
+@@ -1124,6 +1124,7 @@ calculate_mount_options_for_fs_type (UDi
    gchar *options_to_use_str = NULL;
    gchar *key, *value;
    GString *str;
@@ -207,7 +207,7 @@ index 95a0aa8..65124ed 100644
  
    fsmo = compute_mount_options_for_fs_type (daemon, block, object, overrides, fs_type);
  
-@@ -1140,6 +1141,18 @@ calculate_mount_options_for_fs_type (UDisksDaemon  *daemon,
+@@ -1140,6 +1141,18 @@ calculate_mount_options_for_fs_type (UDi
                                                    options,
                                                    shared_fs);
  
