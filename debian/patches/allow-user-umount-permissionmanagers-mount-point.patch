@@ -1,0 +1,37 @@
+Index: udisks2/src/udiskslinuxfilesystem.c
+===================================================================
+--- udisks2.orig/src/udiskslinuxfilesystem.c	2022-11-04 11:15:03.000000000 +0800
++++ udisks2/src/udiskslinuxfilesystem.c	2022-11-04 14:21:19.316663396 +0800
+@@ -1262,6 +1262,9 @@
+   gboolean fstab_mounted;
+   gboolean success;
+   UDisksBaseJob *job = NULL;
++  const gchar *const *user_mount_option = NULL;
++  guint n_option = 0;
++  gboolean permissionmanager_mount = FALSE;
+   UDisksObject *filesystem_object = NULL;
+   WaitForFilesystemMountPointsData wait_data = {NULL, 0, NULL};
+ 
+@@ -1417,7 +1420,21 @@
+       mounted_by_uid = 0;
+     }
+ 
+-  if (caller_uid != 0 && (caller_uid != mounted_by_uid))
++    // zhangya@uniontech.com 2022-09-13
++    // permission-manager is a security service. it remount and allow user umount.
++    user_mount_option = udisks_block_get_userspace_mount_options(block);
++    if(user_mount_option)
++      {
++        for (; user_mount_option[n_option] != NULL; n_option++)
++          {
++            if( has_option(user_mount_option[n_option], "uhelper=permissionmanager"))
++              {
++                permissionmanager_mount = TRUE;
++              }
++          }
++      }
++
++  if (caller_uid != 0 && (caller_uid != mounted_by_uid) && permissionmanager_mount == FALSE)
+     {
+       const gchar *action_id;
+       const gchar *message;

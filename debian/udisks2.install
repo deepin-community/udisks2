@@ -3,7 +3,8 @@ etc/
 usr/bin/
 usr/libexec/udisks2/
 usr/lib/systemd/system/udisks2.service
-usr/lib/udev/rules.d/80-udisks2.rules
+usr/lib/udev/rules.d/80-udisks2-default.rules
+usr/lib/udev/rules.d/80-udisks2-uos.rules
 usr/sbin/
 usr/share/bash-completion/
 usr/share/zsh/site-functions/

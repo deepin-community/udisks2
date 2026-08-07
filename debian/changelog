@@ -1,3 +1,9 @@
+udisks2 (2.10.1-12.1+deb13u2deepin1) UNRELEASED; urgency=medium
+
+  * Apply deepin patches
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Aug 2026 11:20:10 +0800
+
 udisks2 (2.10.1-12.1+deb13u2) trixie-security; urgency=high
 
   * Non-maintainer upload by the Security Team.
@@ -82,6 +88,98 @@ udisks2 (2.10.1-7) unstable; urgency=medium
     (Closes: #1070019)
 
  -- Michael Biebl <biebl@debian.org>  Tue, 30 Apr 2024 17:27:36 +0200
+
+udisks2 (2.10.1-6deepin14) unstable; urgency=medium
+
+  * fix: crypto reddisk supprot, add vendor id 4347.
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 14 May 2026 19:26:00 +0800
+
+udisks2 (2.10.1-6deepin13) unstable; urgency=medium
+
+  * chore: update Chinese translation
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 04 Feb 2026 11:12:00 +0800
+
+udisks2 (2.10.1-6deepin12) unstable; urgency=medium
+
+  * fix: Provide clearer user prompts when requesting authorization.
+
+ -- tunaichao <tunaichao@uniontech.com>  Wed, 03 Dec 2025 17:12:16 +0800
+
+udisks2 (2.10.1-6deepin11) unstable; urgency=medium
+
+  * udiskslinuxmanager: Add lower bounds check to fd_index (CVE-2025-8067)
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 29 Aug 2025 01:48:11 +0800
+
+udisks2 (2.10.1-6deepin10) unstable; urgency=medium
+
+  [ Salvatore Bonaccorso ]
+  * udiskslinuxfilesystemhelpers: Mount private mounts with
+    'nodev,nosuid'
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 20 Jun 2025 16:04:59 +0800
+
+udisks2 (2.10.1-6deepin9) unstable; urgency=medium
+
+  * fix: usec: udisks-daemon-resources.c是编译中间文件,
+  *            orig.tar.xz文件时间早于编译服务器时间时, 导致udisks-daemon-resources.c没有重新生成.
+  *            导致builtin_mount_options.conf的修改没有生效.
+  *            Bug: https://pms.uniontech.com/bug-view-315265.html
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 07 May 2025 16:47:49 +0800
+
+udisks2 (2.10.1-6deepin8) unstable; urgency=medium
+
+  * fix: usec: iso9660/udf mount failed in sw/mips kernel without usec=1
+
+ -- zhangya <zhangya@uniontech.com>  Tue, 22 Apr 2025 13:23:49 +0800
+
+udisks2 (2.10.1-6deepin7) unstable; urgency=medium
+
+  * fix: error log make crash.
+
+ -- xinpeng.wang <wangxinpeng@uniontech.com>  Mon, 17 Mar 2025 15:21:49 +0800
+
+udisks2 (2.10.1-6deepin6) unstable; urgency=medium
+
+  * fix: usec: iso9660/udf mount with useccontext failed in deepin.
+  *     deepin社区版iso挂载选项usececontext挂载失败
+  *     Bug: https://pms.uniontech.com/bug-view-306521.html
+
+ -- zhangya <zhangya@uniontech.com>  Wed, 05 Mar 2025 19:14:08 +0800
+
+udisks2 (2.10.1-6deepin5) unstable; urgency=medium
+
+  * merge v20 patch.
+
+ -- xinpeng.wang <wangxinpeng@uniontech.com>  Thu, 19 Dec 2024 15:37:08 +0800
+
+udisks2 (2.10.1-6deepin4) unstable; urgency=medium
+
+  * update options_to_use usage
+
+ -- Liang Bo <liangbo@uniontech.com>  Thu, 12 Sep 2024 15:20:15 +0800
+
+udisks2 (2.10.1-6deepin3) unstable; urgency=medium
+
+  * add usec-udisks2-mac-patches.patch
+
+ -- Liang Bo <liangbo@uniontech.com>  Thu, 05 Sep 2024 10:49:48 +0800
+
+udisks2 (2.10.1-6deepin2) unstable; urgency=medium
+
+  * ntfs-3g.patch: Attempt to use "ntfs-3g" as an alternative if "ntfs3" fails
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Wed, 19 Jun 2024 13:44:00 +0800
+
+udisks2 (2.10.1-6deepin1) unstable; urgency=medium
+
+  * Apply deepin patches.
+  * Refresh fix-Modify-the-solution-to-the-rules-file-conflict.patch.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Tue, 18 Jun 2024 14:30:24 +0800
 
 udisks2 (2.10.1-6) unstable; urgency=medium
 
