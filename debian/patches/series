@@ -10,9 +10,7 @@ cve-2026-7867-02.patch
 cve-2026-7867-03.patch
 cve-2026-7867-04.patch
 cve-2026-7867-05.patch
-
 hide-swap-partition-and-extended-partition.patch
-# udiskslinuxprovider-Filter-out-spurious-uevents.patch
 fix-Modify-the-solution-to-the-rules-file-conflict.patch
 allow-user-umount-permissionmanagers-mount-point.patch
 filesystem-mount-system-enable.patch

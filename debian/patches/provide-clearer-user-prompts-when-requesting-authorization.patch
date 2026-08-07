@@ -460,10 +460,10 @@
         */
 -      message = N_("Authentication is required to mount $(drive)");
 +      message = N_("Authentication is required to mount $(device.name)");
-       if (mount_other_user)
-         {
-           action_id = "org.freedesktop.udisks2.filesystem-mount-other-user";
-@@ -1018,13 +1018,13 @@
+       if (!udisks_daemon_util_check_authorization_sync (daemon,
+                                                         object,
+                                                         action_id,
+@@ -1059,13 +1059,13 @@ handle_mount_fstab (UDisksDaemon          *daemon,
                 * user requests mounting a filesystem that is in
                 * /etc/fstab file with the x-udisks-auth option.
                 *
@@ -489,10 +489,10 @@
     */
 -  message = N_("Authentication is required to mount $(drive)");
 +  message = N_("Authentication is required to mount $(device.name)");
-   if (mount_other_user)
+   if (caller_uid != effective_uid)
      {
        action_id = "org.freedesktop.udisks2.filesystem-mount-other-user";
-@@ -1599,13 +1599,13 @@
+@@ -1695,13 +1695,13 @@ handle_unmount (UDisksFilesystem      *filesystem,
                                                                   * user requests unmounting a filesystem that is in
                                                                   * /etc/fstab file with the x-udisks-auth option.
                                                                   *
