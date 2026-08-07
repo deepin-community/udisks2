@@ -1,8 +1,23 @@
-udisks2 (2.10.1-12.1+deb13u2deepin1) UNRELEASED; urgency=medium
+udisks2 (2.10.1-12.1+deb13u2deepin1) crimson; urgency=medium
 
-  * Apply deepin patches
+  * Apply deepin changes and refresh patches:
+    - Hide swap and extended partitions from udisks (uos udev rules)
+    - Fix udev rules file conflict by shipping custom uos rules
+    - Allow users to unmount permission-manager mount points
+    - Fix filesystem mount system enable for non-system partitions
+    - Fall back to ntfs-3g if kernel ntfs3 driver fails
+    - Add useccontext mount option support for iso9660 and udf
+    - Fix GBK Chinese encoding display garbled on VFAT labels
+    - Add debug logging for mount operations
+    - Fix use-after-free in udiskslinuxmanager.c
+    - Provide clearer user prompts when requesting authorization
+    - Update Chinese translation
+    - Remove embedded GResource for builtin_mount_options.conf (load from
+      filesystem)
+    - Add support for CRYPT-PLAIN encrypted devices and ZFS red disk
+      detection
 
- -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Aug 2026 11:20:10 +0800
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Aug 2026 11:47:10 +0800
 
 udisks2 (2.10.1-12.1+deb13u2) trixie-security; urgency=high
 
