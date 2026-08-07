@@ -1,3 +1,9 @@
+udisks2 (2.10.1-6deepin15) unstable; urgency=medium
+
+  * fix(cve): CVE-2026-7867
+
+ -- deepin-ci-robot <packages@deepin.org>  Fri, 07 Aug 2026 16:06:37 +0800
+
 udisks2 (2.10.1-6deepin14) unstable; urgency=medium
 
   * fix: crypto reddisk supprot, add vendor id 4347.
