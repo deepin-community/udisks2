@@ -1,0 +1,17 @@
+# Do not automatically mount these file systems because their drivers are
+# marked as "Orphan" or "Odd Fixes" in the kernel MAINTAINERS file and so
+# are more at risk of having security-sensitive defects which could be
+# exploited by a crafted file system.
+SUBSYSTEM!="block", GOTO="udisks_insecure_fs_end"
+
+ENV{ID_FS_TYPE}=="affs", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="ecryptfs", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="efs", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="hfs", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="hfsplus", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="jffs2", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="jfs", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="qnx6", ENV{UDISKS_AUTO}="0"
+ENV{ID_FS_TYPE}=="sysv", ENV{UDISKS_AUTO}="0"
+
+LABEL="udisks_insecure_fs_end"

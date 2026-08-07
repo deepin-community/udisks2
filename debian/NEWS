@@ -1,0 +1,14 @@
+udisks2 (2.10.1-7) unstable; urgency=medium
+
+  Do not automatically mount unmaintained file systems
+  .
+  Ship a udev rules files named 70-insecure-fs.rules which sets the udev
+  property UDISKS_AUTO to 0 for file systems that are marked as "Orphan"
+  or "Odd Fixes" in the kernel MAINTAINERS file. Those are more at risk of
+  having security-sensitive defects which could be exploited by a crafted
+  file system.
+  .
+  The list includes the following file systems:
+  affs, ecryptfs, efs, hfs, hfsplus, jffs2, jfs, qnx6, sysv.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 03 Jul 2024 14:20:47 +0200
