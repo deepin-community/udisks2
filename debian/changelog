@@ -1,3 +1,109 @@
+udisks2 (2.10.1-12.1+deb13u2deepin1) crimson; urgency=medium
+
+  * Apply deepin changes and refresh patches:
+    - Hide swap and extended partitions from udisks (uos udev rules)
+    - Fix udev rules file conflict by shipping custom uos rules
+    - Allow users to unmount permission-manager mount points
+    - Fix filesystem mount system enable for non-system partitions
+    - Fall back to ntfs-3g if kernel ntfs3 driver fails
+    - Add useccontext mount option support for iso9660 and udf
+    - Fix GBK Chinese encoding display garbled on VFAT labels
+    - Add debug logging for mount operations
+    - Fix use-after-free in udiskslinuxmanager.c
+    - Provide clearer user prompts when requesting authorization
+    - Update Chinese translation
+    - Remove embedded GResource for builtin_mount_options.conf (load from
+      filesystem)
+    - Add support for CRYPT-PLAIN encrypted devices and ZFS red disk
+      detection
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Aug 2026 11:47:10 +0800
+
+udisks2 (2.10.1-12.1+deb13u2) trixie-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix local privilege escalation via 'as-user' mount spoofing
+    (CVE-2026-7867). Patches cherry-picked from the upstream
+    2.10.x-branch.
+
+ -- Alberto Garcia <berto@igalia.com>  Thu, 06 Aug 2026 16:22:46 +0200
+
+udisks2 (2.10.1-12.1+deb13u1) trixie-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * udiskslinuxmanager: Add lower bounds check to fd_index (CVE-2025-8067)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 20 Aug 2025 20:51:31 +0200
+
+udisks2 (2.10.1-12.1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * udiskslinuxfilesystemhelpers: Mount private mounts with 'nodev,nosuid'
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 09 Jun 2025 16:29:29 +0200
+
+udisks2 (2.10.1-12) unstable; urgency=medium
+
+  * tests: Fix expected error message with util-linux 2.41.
+    Patch cherry-picked from upstream Git. (Closes: #1098673)
+  * Switch debian-branch to debian/unstable in gbp.conf
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 25 Feb 2025 12:57:07 +0100
+
+udisks2 (2.10.1-11) unstable; urgency=medium
+
+  * Replace dependency on dbus with default-dbus-system-bus | dbus-system-bus.
+    This makes it easier to swap in alternative implementations like
+    dbus-broker.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 27 Sep 2024 01:26:14 +0200
+
+udisks2 (2.10.1-10) unstable; urgency=medium
+
+  [ Alessandro Astone ]
+  * debian: Add patch to fix tests with exfatprogs 1.2.5
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 14 Aug 2024 12:15:51 +0200
+
+udisks2 (2.10.1-9) unstable; urgency=medium
+
+  * Disable build path variation for reprotest on Salsa CI.
+    In src/udisksmodulemanager.c the build path (BUILD_DIR) is embeded
+    causing reprotest to fail.
+  * Do not overwrite CPPFLAGS and use AM_CPPFLAGS instead.
+    This ensures that all hardening build flags are correctly applied.
+  * Disable test-crossbuild-arm64 on Salsa CI.
+    This requires changes to gobject-introspection for it to actually work.
+    See #1030223.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 04 Jul 2024 17:52:56 +0200
+
+udisks2 (2.10.1-8) unstable; urgency=medium
+
+  * Enable standard salsa CI
+  * Do not automatically mount unmaintained file systems.
+    Ship a udev rules files named 70-insecure-fs.rules which sets the udev
+    property UDISKS_AUTO to 0 for file systems that are marked as "Orphan"
+    or "Odd Fixes" in the kernel MAINTAINERS file. Those are more at risk of
+    having security-sensitive defects which could be exploited by a crafted
+    file system.
+    The list includes the following file systems:
+    affs, ecryptfs, efs, hfs, hfsplus, jffs2, jfs, qnx6, sysv.
+    As we require ID_FS_TYPE to be set, use priority 70 so it is ordered
+    after 60-persistent-storage.rules.
+    Thanks to Marco d'Itri (Closes: #1041552)
+  * Bump Standards-Version to 4.7.0
+  * Drop Ubuntu specific workaround for exfatprogs
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 03 Jul 2024 19:00:16 +0200
+
+udisks2 (2.10.1-7) unstable; urgency=medium
+
+  * integration-test: Adapt to the new libmount context error messages
+    (Closes: #1070019)
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 30 Apr 2024 17:27:36 +0200
+
 udisks2 (2.10.1-6deepin14) unstable; urgency=medium
 
   * fix: crypto reddisk supprot, add vendor id 4347.
