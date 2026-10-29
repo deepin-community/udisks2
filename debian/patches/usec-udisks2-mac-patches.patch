@@ -218,7 +218,7 @@ Index: udisks2/src/udiskslinuxmountoptions.c
 +    while (g_variant_iter_next (&iter, "{&s&s}", &key, &value)) {
 +      g_variant_builder_add (&builder, "{ss}", key, value);
 +    }
-+    g_variant_builder_add (&builder, "{ss}", "useccontext", "system_u:object_r:deepin_rwd_usaudit_t:s0");
++    g_variant_builder_add (&builder, "{ss}", "useccontext", "system_u:object_r:deepin_rwdx_usaudit_t:s0");
 +    g_variant_unref (options_to_use);
 +    options_to_use = g_variant_builder_end(&builder);
 +  }
