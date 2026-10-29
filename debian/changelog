@@ -1,3 +1,13 @@
+udisks2 (2.10.1-12.1+deb13u2deepin3) unstable; urgency=medium
+
+  * fix: use deepin_rwdx_usaudit_t instead of deepin_rwd_usaudit_t as the
+    iso9660/udf mount label.  deepin_rwd_usaudit_t is not a member of
+    deepin_executable_file_type, so executing a program from an optical
+    disc is denied by USEC and the process is killed with SIGSEGV.
+    Same fix as udisks2 2.8.1.32-deepin1.
+
+ -- chenxuanlin <chenxuanlin@uniontech.com>  Thu, 29 Oct 2026 10:57:14 +0800
+
 udisks2 (2.10.1-12.1+deb13u2deepin2) unstable; urgency=medium
 
   * Rebuild with LTO enabled (dpkg vendor feature optimize/lto).
